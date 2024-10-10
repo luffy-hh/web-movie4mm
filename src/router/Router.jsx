@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import React, { Suspense, lazy, useState } from "react";
+import Genre from "../pages/Genre/Genre.jsx";
 const LayoutCmp = lazy(() => import("../layout/LayoutCmp.jsx"));
 const PrivateRoute = lazy(() => import("./PrivateRoute"));
 const Loader = lazy(() => import("../components/Loader/Loader"));
@@ -13,18 +14,19 @@ const Router = () => {
       <Suspense fallback={<Loader spin={true} fullscreen={true} />}>
         <Routes>
           {/* <Route path="/login" element={<Login />} /> */}
-          <Route element={<PrivateRoute />}>
-            <Route
-              path="/"
-              element={
-                <LayoutCmp
-                  setIsSmallScreen={setIsSmallScreen}
-                  isSmallScreen={isSmallScreen}
-                />
-              }
-            >
-              <Route index element={<Home isSmallScreen={isSmallScreen} />} />
-              {/* <Route index element={<Dashboard />} />
+          {/* <Route element={<PrivateRoute />}> */}
+          <Route
+            path="/"
+            element={
+              <LayoutCmp
+                setIsSmallScreen={setIsSmallScreen}
+                isSmallScreen={isSmallScreen}
+              />
+            }
+          >
+            <Route index element={<Home isSmallScreen={isSmallScreen} />} />
+            <Route path="genre/:type" element={<Genre />} />
+            {/* <Route index element={<Dashboard />} />
                 <Route path="cars" element={<Car />} />
                 <Route path="cars/create" element={<CarCreate />} />
                 <Route path="cars/:id" element={<CarDetail />}>
@@ -61,8 +63,8 @@ const Router = () => {
                 <Route path="user-management" element={<UserManagement />} />
                 <Route path="user-management/create" element={<UserCreate />} />
                 <Route path="user-management/:id/edit" element={<UserEdit />} /> */}
-            </Route>
           </Route>
+          {/* </Route> */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>

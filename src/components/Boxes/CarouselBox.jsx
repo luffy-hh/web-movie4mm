@@ -7,7 +7,10 @@ const CarouselBox = ({
   slidesToScroll = 1,
   slidesToShow = 1,
   title,
-  className,
+  wrapperClassName,
+  carouselClassName,
+  imgClassName,
+  data = [],
 }) => {
   const carouselRef = useRef();
   const next = () => {
@@ -19,7 +22,9 @@ const CarouselBox = ({
   };
 
   return (
-    <div className="w-[70%] mx-auto my-16">
+    <div
+      className={addExtraClassNames("w-full mx-auto my-16 ", wrapperClassName)}
+    >
       <div className="flex items-center justify-between mb-4">
         <p className="text-xl font-semibold pb-2 border-b-2 border-[#0769b4]">
           {title}
@@ -41,12 +46,30 @@ const CarouselBox = ({
         slidesToScroll={slidesToScroll}
         autoplay={false}
         arrows={false}
-        className={addExtraClassNames("h-[20rem]", className)}
+        className={addExtraClassNames(" max-h-[20rem]", carouselClassName)}
       >
+        {data.map((item) => (
+          <a href="/" className="px-6">
+            <div className="text-blue-700 hover:text-slate-500">
+              <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
+                <img
+                  src={item.img}
+                  alt="photo"
+                  className={addExtraClassNames("w-full", imgClassName)}
+                />
+              </div>
+              <p className=" text-center mt-4 text-xl">{item.title}</p>
+            </div>
+          </a>
+        ))}
         <a href="/" className="px-6">
           <div className="text-blue-700 hover:text-slate-500">
             <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
-              <img src="/public/imgs/1.jpg" alt="photo" />
+              <img
+                src="/public/imgs/1.jpg"
+                alt="photo"
+                className={addExtraClassNames("w-full", imgClassName)}
+              />
             </div>
             <p className=" text-center mt-4 text-xl">ManU vs Tottenham</p>
           </div>
@@ -54,7 +77,11 @@ const CarouselBox = ({
         <a href="/" className="px-6">
           <div className=" text-blue-700 hover:text-slate-500">
             <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
-              <img src="/public/imgs/2.jpg" alt="photo" />
+              <img
+                src="/public/imgs/2.jpg"
+                alt="photo"
+                className={addExtraClassNames("w-full", imgClassName)}
+              />
             </div>
             <p className=" text-center mt-4 text-xl">ManU vs Tottenham</p>
           </div>
@@ -62,7 +89,11 @@ const CarouselBox = ({
         <a href="/" className="px-6">
           <div className=" text-blue-700 hover:text-slate-500">
             <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
-              <img src="/public/imgs/3.jpg" alt="photo" />
+              <img
+                src="/public/imgs/3.jpg"
+                alt="photo"
+                className={addExtraClassNames("w-full", imgClassName)}
+              />
             </div>
             <p className=" text-center mt-4 text-xl">ManU vs Tottenham</p>
           </div>
@@ -70,7 +101,11 @@ const CarouselBox = ({
         <a href="/" className="px-6">
           <div className=" text-blue-700 hover:text-slate-500">
             <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
-              <img src="/public/imgs/4.jpg" alt="photo" />
+              <img
+                src="/public/imgs/4.jpg"
+                alt="photo"
+                className={addExtraClassNames("w-full", imgClassName)}
+              />
             </div>
             <p className=" text-center mt-4 text-xl">ManU vs Tottenham</p>
           </div>
@@ -78,20 +113,36 @@ const CarouselBox = ({
         <a href="/" className="px-6">
           <div className=" text-blue-700 hover:text-slate-500">
             <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
-              <img src="/public/imgs/5.jpg" alt="photo" />
+              <img
+                src="/public/imgs/5.jpg"
+                alt="photo"
+                className={addExtraClassNames("w-full", imgClassName)}
+              />
             </div>
             <p className=" text-center mt-4 text-xl">ManU vs Tottenham</p>
           </div>
         </a>
         <a href="/" className="px-6">
           <div className=" text-blue-700 hover:text-slate-500">
-            <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center"></div>
+            <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
+              <img
+                src="/public/imgs/5.jpg"
+                alt="photo"
+                className={addExtraClassNames("w-full", imgClassName)}
+              />
+            </div>
             <p className=" text-center mt-4 text-xl">ManU vs Tottenham</p>
           </div>
         </a>
         <a href="/" className="px-6">
           <div className=" text-blue-700 hover:text-slate-500">
-            <div className="h-[100%] bg-[url('/public/imgs/1.jpg')] bg-no-repeat bg-[length:100%_100%] bg-center"></div>
+            <div className="h-[100%] bg-[url('/public/imgs/1.jpg')] bg-no-repeat bg-[length:100%_100%] bg-center">
+              <img
+                src="/public/imgs/5.jpg"
+                alt="photo"
+                className={addExtraClassNames("w-full", imgClassName)}
+              />
+            </div>
             <p className=" text-center mt-4 text-xl">ManU vs Tottenham</p>
           </div>
         </a>
@@ -105,8 +156,11 @@ CarouselBox.propTypes = {
   slidesToScroll: PropTypes.number,
   autoplay: PropTypes.bool,
   arrows: PropTypes.bool,
-  className: PropTypes.string,
+  carouselClassName: PropTypes.string,
   title: PropTypes.string.isRequired,
+  data: PropTypes.array.isRequired,
+  wrapperClassName: PropTypes.string,
+  imgClassName: PropTypes.string,
 };
 
 export default CarouselBox;

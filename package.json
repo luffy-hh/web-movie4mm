@@ -1,7 +1,7 @@
 {
-  "name": "car_db",
+  "name": "web.movie4mm",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 
 import { Layout } from "antd";
 import Header from "./components/Header.jsx";
+import Footer from "./components/Footer.jsx";
 
 const LayoutCmp = ({ setIsSmallScreen, isSmallScreen }) => {
   const dispatch = useDispatch();
@@ -111,7 +112,11 @@ const LayoutCmp = ({ setIsSmallScreen, isSmallScreen }) => {
           onClick={handleMenuClick}
         />
       )} */}
-      <div className="fixed bottom-6 right-40 rtl:left-6 z-50">
+      <div
+        className={`fixed ${
+          showTopButton ? "move-to-top" : "move-to-bottom"
+        }  transition-all duration-1000 right-[10%] rtl:left-6 z-50`}
+      >
         {showTopButton && (
           <button
             type="button"
@@ -140,9 +145,12 @@ const LayoutCmp = ({ setIsSmallScreen, isSmallScreen }) => {
           isSmallScreen={isSmallScreen}
           setIsSmallScreen={setIsSmallScreen}
         />
-        <Content>
+        <Content
+          className={`${isSmallScreen ? "px-2 w-full" : "w-[70%] mx-auto"}`}
+        >
           <Outlet />
         </Content>
+        <Footer />
       </Layout>
     </Layout>
   );

@@ -1,7 +1,8 @@
-import { Button, Carousel, ConfigProvider } from "antd";
+import { Button, Carousel, ConfigProvider, Tag } from "antd";
 import React from "react";
 import PropTypes from "prop-types";
 import CarouselBox from "../components/Boxes/CarouselBox";
+import GridBox from "../components/Boxes/GridBox";
 const Home = ({ isSmallScreen }) => {
   return (
     <>
@@ -22,9 +23,7 @@ const Home = ({ isSmallScreen }) => {
             infinite
             adaptiveHeight={true}
             arrowSize={20}
-            className={`h-[40rem] ${
-              isSmallScreen ? "w-full" : "w-[70%]"
-            } mx-auto mt-8 bg-slate-400/10 rounded-xl overflow-hidden`}
+            className={`h-[40rem] w-full mx-auto mt-8 bg-slate-400/10 rounded-xl overflow-hidden`}
           >
             <a href="/">
               <div className="h-[40rem] bg-[url('/public/imgs/1.jpg')] bg-no-repeat bg-[length:100%_100%] bg-center group relative">
@@ -137,11 +136,27 @@ const Home = ({ isSmallScreen }) => {
           </Carousel>
         </ConfigProvider>
       </div>
-      <CarouselBox slidesToShow={3} slidesToScroll={1} title={"Live-Sport"} />
       <CarouselBox
-        slidesToShow={5}
+        data={[]}
+        slidesToShow={3}
+        slidesToScroll={1}
+        title={"Live-Sport"}
+        imgClassName={"h-[18rem]"}
+      />
+      <CarouselBox
+        data={[]}
+        slidesToShow={isSmallScreen ? 3 : 5}
         slidesToScroll={1}
         title={"Featured TV Channels"}
+        imgClassName={"h-[10rem]"}
+      />
+      <GridBox cardClassName={"!p-0"} title={"Resolution"} titleTag={"4K"} />
+      <GridBox cardClassName={"!p-0"} title={"Release"} titleTag={"2024"} />
+      <GridBox cardClassName={"!p-0"} title={"Latest Movies"} titleTag={""} />
+      <GridBox
+        cardClassName={"!p-0"}
+        title={"Latest TV Series"}
+        titleTag={""}
       />
     </>
   );
