@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 // import SideBar from "../components/Bars/SideBar";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
 import { Layout } from "antd";
-import Header from "./components/Header.jsx";
+const Header = lazy(() => import("./components/Header.jsx"));
 import Footer from "./components/Footer.jsx";
+import Loader from "../components/Loader/Loader.jsx";
+import { setIsSmallScreen } from "../app/ThemeConfig/themeConfigSlice.jsx";
 
-const LayoutCmp = ({ setIsSmallScreen, isSmallScreen }) => {
+const LayoutCmp = ({}) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const nav = useNavigate();
   const [showTopButton, setShowTopButton] = useState(false);
+  const isSmallScreen = useSelector((state) => state.theme.isSmallScreen);
 
   // console.log(carsFull, driversFull);
   // const { car_no } = location.state;
@@ -29,9 +32,9 @@ const LayoutCmp = ({ setIsSmallScreen, isSmallScreen }) => {
     if (path.includes("/")) return "Home | Movie4mm";
     return "Home";
   };
-  const handleMenuClick = (e) => {
-    nav(e.key);
-  };
+  // const handleMenuClick = (e) => {
+  //   nav(e.key);
+  // };
   const goToTop = () => {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
@@ -63,96 +66,72 @@ const LayoutCmp = ({ setIsSmallScreen, isSmallScreen }) => {
       window.removeEventListener("onscroll", onScrollHandler);
     };
   }, []);
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 640px)");
+    const handleMediaQueryChange = (e) => {
+      dispatch(setIsSmallScreen(e.matches));
+    };
+
+    // Set the initial value
+    setIsSmallScreen(mediaQuery.matches);
+
+    // Add the listener
+    mediaQuery.addEventListener("change", handleMediaQueryChange);
+
+    // Clean up the listener on component unmount
+    return () => {
+      mediaQuery.removeEventListener("change", handleMediaQueryChange);
+    };
+  }, []);
 
   useEffect(() => {
     document.title = getTitle(location.pathname);
   }, [location.pathname]);
   return (
-    <Layout className=" antialiased">
-      {/* {isSmallScreen ? (
-        <Sider
-          style={{
-            minHeight: "100vh",
-            maxHeight: "auto",
-            backgroundColor: "#343a3f",
-          }}
-          className="custom-sider"
-          breakpoint="md"
-          zeroWidthTriggerStyle={{ top: "10px" }}
-          collapsedWidth="0"
-          onBreakpoint={(broken) => {
-            // console.log(broken);
-          }}
-          onCollapse={(collapsed, type) => {
-            // console.log(collapsed, type);
-          }}
+    <Suspense fallback={<Loader spin={true} fullscreen={true} />}>
+      <Layout className=" antialiased">
+        <div
+          className={`fixed ${
+            showTopButton ? "move-to-top" : "move-to-bottom"
+          } ani right-[10%] rtl:left-6 z-50`}
         >
-          <div
-            className=" text-white text-center px-5 py-7 cursor-pointer bg-[#0769b4]"
-            onClick={() => nav("/")}
-          >
-            Linn Car DB
-          </div>
-          <Menu
-            style={{
-              backgroundColor: "#343a3f ",
-            }}
-            theme="dark"
-            mode="inline"
-            selectedKeys={`/${location.pathname.split("/")[1]}`}
-            items={sideBarData}
-            onClick={handleMenuClick}
-          />
-        </Sider>
-      ) : (
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          items={sideBarData}
-          onClick={handleMenuClick}
-        />
-      )} */}
-      <div
-        className={`fixed ${
-          showTopButton ? "move-to-top" : "move-to-bottom"
-        }  transition-all duration-1000 right-[10%] rtl:left-6 z-50`}
-      >
-        {showTopButton && (
-          <button
-            type="button"
-            className="rounded-full p-2 animate-pulse bg-white border-[#C427C4] border-2 shadow-lg hover:shadow-xl"
-            onClick={goToTop}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="1.5"
+          {showTopButton && (
+            <button
+              type="button"
+              className="rounded-full p-2 bg-[#C427C4] border-[#C427C4] border-2 shadow-lg hover:shadow-xl"
+              onClick={goToTop}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M8 7l4-4m0 0l4 4m-4-4v18"
-              />
-            </svg>
-          </button>
-        )}
-      </div>
-      <Layout>
-        <Header
-          isSmallScreen={isSmallScreen}
-          setIsSmallScreen={setIsSmallScreen}
-        />
-        <Content
-          className={`${isSmallScreen ? "px-2 w-full" : "w-[70%] mx-auto"}`}
-        >
-          <Outlet />
-        </Content>
-        <Footer />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-8 w-8"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="white"
+                strokeWidth="1.5"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M8 7l4-4m0 0l4 4m-4-4v18"
+                />
+              </svg>
+            </button>
+          )}
+        </div>
+        <Layout>
+          <Header
+            isSmallScreen={isSmallScreen}
+            setIsSmallScreen={setIsSmallScreen}
+          />
+          <Content
+            className={`${isSmallScreen ? "px-2 w-full" : "w-[70%] mx-auto"}`}
+          >
+            <Outlet />
+          </Content>
+          <Footer />
+        </Layout>
       </Layout>
-    </Layout>
+    </Suspense>
   );
 };
 

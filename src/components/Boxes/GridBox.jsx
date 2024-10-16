@@ -24,8 +24,64 @@ const data = [
   {
     title: "Title 6",
   },
+  {
+    title: "Title 1 Testing",
+  },
+  {
+    title: "Title 2 long form",
+  },
+  {
+    title: "Title 3 super very long form",
+  },
+  {
+    title: "Title 4",
+  },
+  {
+    title: "Title 5",
+  },
+  {
+    title: "Title 6",
+  },
+  {
+    title: "Title 1 Testing",
+  },
+  {
+    title: "Title 2 long form",
+  },
+  {
+    title: "Title 3 super very long form",
+  },
+  {
+    title: "Title 4",
+  },
+  {
+    title: "Title 5",
+  },
+  {
+    title: "Title 6",
+  },
+  {
+    title: "Title 1 Testing",
+  },
+  {
+    title: "Title 2 long form",
+  },
 ];
-const GridBox = ({ title, titleTag, className, cardClassName }) => {
+const GridBox = ({
+  title,
+  titleTag,
+  className,
+  cardClassName,
+  grid = {
+    gutter: 16,
+    xs: 2,
+    sm: 2,
+    md: 3,
+    lg: 4,
+    xl: 5,
+    xxl: 5,
+  },
+}) => {
   const [isMaximized, setIsMaximized] = useState(true);
   const handleMaximize = () => {
     setIsMaximized(!isMaximized);
@@ -33,28 +89,30 @@ const GridBox = ({ title, titleTag, className, cardClassName }) => {
 
   return (
     <div className={addExtraClassNames(className, "mb-10")}>
-      <div className="flex justify-between p-2">
-        <p className="text-2xl mb-2 flex items-center">
-          <span className=" inline-block border-b-2 pb-2 border-[#0769b4] mr-6">
-            {title}
-          </span>
-          <Tag color="#2db7f5" className="text-2xl py-2 font-semibold">
-            {titleTag}
-          </Tag>
-        </p>
-        {/* <div>
+      {title && (
+        <div className="flex justify-between p-2">
+          <p className="text-2xl mb-2 flex items-center">
+            <span className=" inline-block border-b-2 pb-2 border-[#0769b4] mr-6">
+              {title}
+            </span>
+            <Tag color="#2db7f5" className="text-2xl py-2 font-semibold">
+              {titleTag}
+            </Tag>
+          </p>
+          {/* <div>
           <button style={{ marginRight: "5px" }} onClick={handleMaximize}>
             {isMaximized ? <FaMinimize /> : <FaMaximize />}
           </button>
         </div> */}
-        <Link
-          to={"/"}
-          className="flex items-center gap-2 font-semibold hover:cursor-pointer hover:underline hover:underline-offset-4"
-        >
-          See all
-          <FaAngleDoubleRight />
-        </Link>
-      </div>
+          <Link
+            to={"/"}
+            className="flex items-center gap-2 font-semibold hover:cursor-pointer hover:underline hover:underline-offset-4"
+          >
+            See all
+            <FaAngleDoubleRight />
+          </Link>
+        </div>
+      )}
       <div
         style={{
           transition: "height 0.5s ease-in-out",
@@ -63,15 +121,7 @@ const GridBox = ({ title, titleTag, className, cardClassName }) => {
         }}
       >
         <List
-          grid={{
-            gutter: 16,
-            xs: 2,
-            sm: 2,
-            md: 3,
-            lg: 4,
-            xl: 5,
-            xxl: 5,
-          }}
+          grid={{ ...grid }}
           dataSource={data}
           className={`p-5`}
           renderItem={(item) => (
@@ -83,7 +133,7 @@ const GridBox = ({ title, titleTag, className, cardClassName }) => {
                 )}
               >
                 <img
-                  src="/public/imgs/1.jpg"
+                  src="/imgs/1.jpg"
                   alt={item.title}
                   className="absolute top-0 left-0 w-full h-full z-10"
                 />
@@ -140,10 +190,12 @@ const GridBox = ({ title, titleTag, className, cardClassName }) => {
 };
 
 GridBox.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   titleTag: PropTypes.string,
   cardClassName: PropTypes.string,
   className: PropTypes.string,
+  grid: PropTypes.object,
+  data: PropTypes.array,
 };
 
 export default GridBox;

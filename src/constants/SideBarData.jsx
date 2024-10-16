@@ -144,7 +144,7 @@ export const sideBarData = [
   {
     label: "Release",
     // icon: <FaCaretDown />,
-    key: "year",
+    key: "release",
     children: [
       {
         label: "2024",
@@ -187,18 +187,18 @@ export const sideBarData = [
   {
     label: "Movies",
     // icon: <AiOutlineHistory />,
-    key: "/driving-history",
+    key: "/movies",
   },
 
   {
     label: "Series",
     // icon: <TbReport />,
-    key: "/reports",
+    key: "/series",
   },
   {
     label: "A-Z List",
     // icon: <BsFuelPump />,
-    key: "/fuel",
+    key: "/a-z",
   },
   {
     label: (
@@ -209,19 +209,35 @@ export const sideBarData = [
     ),
     // icon: <FaCaretDown />,
     // icon: ,
-    key: "live",
+    key: "live-tv",
     children: [
       {
-        label: "All",
-        key: "/all",
+        label: "ALL CHANNELS",
+        key: "",
       },
       {
-        label: "Live Now",
+        label: "LIVE NOW",
         key: "/live-now",
       },
       {
-        label: "Sports",
+        label: "SPORTS",
         key: "/sports",
+      },
+      {
+        label: "MOVIE",
+        key: "/movie",
+      },
+      {
+        label: "KIDS",
+        key: "/kids",
+      },
+      {
+        label: "NEWS",
+        key: "/news",
+      },
+      {
+        label: "DOCUMENTARY",
+        key: "/tv-documentary",
       },
     ],
   },

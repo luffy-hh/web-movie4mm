@@ -3,7 +3,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import CarouselBox from "../components/Boxes/CarouselBox";
 import GridBox from "../components/Boxes/GridBox";
-const Home = ({ isSmallScreen }) => {
+import { useSelector } from "react-redux";
+const Home = () => {
+  const isSmallScreen = useSelector((state) => state.theme.isSmallScreen);
   return (
     <>
       <div className="top-carousel">
@@ -26,7 +28,7 @@ const Home = ({ isSmallScreen }) => {
             className={`h-[40rem] w-full mx-auto mt-8 bg-slate-400/10 rounded-xl overflow-hidden`}
           >
             <a href="/">
-              <div className="h-[40rem] bg-[url('/public/imgs/1.jpg')] bg-no-repeat bg-[length:100%_100%] bg-center group relative">
+              <div className="h-[40rem] bg-[url('/imgs/1.jpg')] bg-no-repeat bg-[length:100%_100%] bg-center group relative">
                 <div className="p-4 w-[20rem] bg-slate-700/40 h-full text-white absolute left-0 transform translate-x-[-20rem] opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
                   <p className="text-2xl text-blue-600">Sea</p>
                   <div className="p-2 border bg-slate-900/80">
@@ -44,7 +46,7 @@ const Home = ({ isSmallScreen }) => {
               </div>
             </a>
             <a href="/">
-              <div className="h-[40rem] bg-[url('/public/imgs/2.jpg')] bg-no-repeat bg-[length:100%_100%] bg-center group relative">
+              <div className="h-[40rem] bg-[url('/imgs/2.jpg')] bg-no-repeat bg-[length:100%_100%] bg-center group relative">
                 <div className="p-4 w-[20rem] bg-slate-700/40 h-full text-white absolute left-0 transform translate-x-[-20rem] opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
                   <p className="text-2xl text-blue-600">Sunset</p>
                   <div className="p-2 border bg-slate-900/80">
@@ -62,7 +64,7 @@ const Home = ({ isSmallScreen }) => {
               </div>
             </a>
             <a href="/">
-              <div className="h-[40rem] bg-[url('/public/imgs/3.jpg')] bg-no-repeat bg-[length:100%_100%] bg-center group relative">
+              <div className="h-[40rem] bg-[url('/imgs/3.jpg')] bg-no-repeat bg-[length:100%_100%] bg-center group relative">
                 <div className="p-4 w-[20rem] bg-slate-700/40 h-full text-white absolute left-0 transform translate-x-[-20rem] opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
                   <p className="text-2xl text-blue-600">Old</p>
                   <div className="p-2 border bg-slate-900/80">
@@ -80,7 +82,7 @@ const Home = ({ isSmallScreen }) => {
               </div>
             </a>
             <a href="/">
-              <div className="h-[40rem] bg-[url('/public/imgs/4.jpg')] bg-no-repeat bg-[length:100%_100%] bg-center group relative">
+              <div className="h-[40rem] bg-[url('/imgs/4.jpg')] bg-no-repeat bg-[length:100%_100%] bg-center group relative">
                 <div className="p-4 w-[20rem] bg-slate-700/40 h-full text-white absolute left-0 transform translate-x-[-20rem] opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
                   <p className="text-2xl text-blue-600">Horror</p>
                   <div className="p-2 border bg-slate-900/80">
@@ -98,7 +100,7 @@ const Home = ({ isSmallScreen }) => {
               </div>
             </a>
             <a href="/">
-              <div className="h-[40rem] bg-[url('/public/imgs/5.jpg')] bg-no-repeat bg-[length:100%_100%] bg-center group relative">
+              <div className="h-[40rem] bg-[url('/imgs/5.jpg')] bg-no-repeat bg-[length:100%_100%] bg-center group relative">
                 <div className="p-4 w-[20rem] bg-slate-700/40 h-full text-white absolute left-0 transform translate-x-[-20rem] opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
                   <p className="text-2xl text-blue-600">Action</p>
                   <div className="p-2 border bg-slate-900/80">
@@ -116,7 +118,7 @@ const Home = ({ isSmallScreen }) => {
               </div>
             </a>
             <a href="/">
-              <div className="h-[40rem] bg-[url('/public/imgs/6.jpg')] bg-no-repeat bg-[length:100%_100%] bg-center group relative">
+              <div className="h-[40rem] bg-[url('/imgs/6.jpg')] bg-no-repeat bg-[length:100%_100%] bg-center group relative">
                 <div className="p-4 w-[20rem] bg-slate-700/40 h-full text-white absolute left-0 transform translate-x-[-20rem] opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
                   <p className="text-2xl text-blue-600">India</p>
                   <div className="p-2 border bg-slate-900/80">
@@ -160,10 +162,6 @@ const Home = ({ isSmallScreen }) => {
       />
     </>
   );
-};
-
-Home.propTypes = {
-  isSmallScreen: PropTypes.bool,
 };
 
 export default Home;

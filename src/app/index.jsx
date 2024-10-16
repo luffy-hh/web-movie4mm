@@ -6,6 +6,7 @@ import DrivingHistorySlice from "./DrivingHistorySlice/DrivingHistorySlice";
 import MaintenanceSlice from "./MaintenanceSlice/MaintenanceSlice";
 import ReportSlice from "./ReportSlice/ReportSlice";
 import DashboardSlice from "./DashboardSlice/DashboardSlice";
+import themeConfigSlice from "./ThemeConfig/themeConfigSlice";
 
 export const store = configureStore({
   reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
     maintenance: MaintenanceSlice,
     report: ReportSlice,
     dashboard: DashboardSlice,
+    theme: themeConfigSlice,
   },
 });

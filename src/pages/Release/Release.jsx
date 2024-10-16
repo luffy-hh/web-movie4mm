@@ -1,25 +1,23 @@
-import { Breadcrumb } from "antd";
 import React from "react";
-import { useParams } from "react-router-dom";
 import GridBox from "../../components/Boxes/GridBox";
 import ListPageTitle from "../../components/ListPageTitle";
+import { useParams } from "react-router-dom";
 
-const Genre = () => {
-  const { type } = useParams();
+const Release = () => {
+  const { year } = useParams();
   const routes = [
     {
       path: "/",
       breadcrumbName: "Home",
     },
     {
-      path: `/genre/${type}`,
-      breadcrumbName: type.toUpperCase(),
+      path: `/release/${year}`,
+      breadcrumbName: year,
     },
   ];
-  //   console.log(type);
   return (
     <div className="my-8">
-      <ListPageTitle routes={routes} title={`GENRE: ${type?.toUpperCase()}`} />
+      <ListPageTitle routes={routes} title={`Release: ${year}`} />
       <GridBox
         cardClassName={"!p-0"}
         grid={{ gutter: 16, xs: 2, sm: 2, md: 3, lg: 5, xl: 6, xxl: 6 }}
@@ -28,4 +26,4 @@ const Genre = () => {
   );
 };
 
-export default Genre;
+export default Release;

@@ -48,8 +48,8 @@ const CarouselBox = ({
         arrows={false}
         className={addExtraClassNames(" max-h-[20rem]", carouselClassName)}
       >
-        {data.map((item) => (
-          <a href="/" className="px-6">
+        {data.map((item, i) => (
+          <a href="/" className="px-6" key={i}>
             <div className="text-blue-700 hover:text-slate-500">
               <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
                 <img
@@ -66,7 +66,7 @@ const CarouselBox = ({
           <div className="text-blue-700 hover:text-slate-500">
             <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
               <img
-                src="/public/imgs/1.jpg"
+                src="/imgs/1.jpg"
                 alt="photo"
                 className={addExtraClassNames("w-full", imgClassName)}
               />
@@ -78,7 +78,7 @@ const CarouselBox = ({
           <div className=" text-blue-700 hover:text-slate-500">
             <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
               <img
-                src="/public/imgs/2.jpg"
+                src="/imgs/2.jpg"
                 alt="photo"
                 className={addExtraClassNames("w-full", imgClassName)}
               />
@@ -90,7 +90,7 @@ const CarouselBox = ({
           <div className=" text-blue-700 hover:text-slate-500">
             <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
               <img
-                src="/public/imgs/3.jpg"
+                src="/imgs/3.jpg"
                 alt="photo"
                 className={addExtraClassNames("w-full", imgClassName)}
               />
@@ -102,7 +102,7 @@ const CarouselBox = ({
           <div className=" text-blue-700 hover:text-slate-500">
             <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
               <img
-                src="/public/imgs/4.jpg"
+                src="/imgs/4.jpg"
                 alt="photo"
                 className={addExtraClassNames("w-full", imgClassName)}
               />
@@ -114,7 +114,7 @@ const CarouselBox = ({
           <div className=" text-blue-700 hover:text-slate-500">
             <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
               <img
-                src="/public/imgs/5.jpg"
+                src="/imgs/5.jpg"
                 alt="photo"
                 className={addExtraClassNames("w-full", imgClassName)}
               />
@@ -126,7 +126,7 @@ const CarouselBox = ({
           <div className=" text-blue-700 hover:text-slate-500">
             <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
               <img
-                src="/public/imgs/5.jpg"
+                src="/imgs/5.jpg"
                 alt="photo"
                 className={addExtraClassNames("w-full", imgClassName)}
               />
@@ -136,9 +136,9 @@ const CarouselBox = ({
         </a>
         <a href="/" className="px-6">
           <div className=" text-blue-700 hover:text-slate-500">
-            <div className="h-[100%] bg-[url('/public/imgs/1.jpg')] bg-no-repeat bg-[length:100%_100%] bg-center">
+            <div className="h-[100%] bg-[url('/imgs/1.jpg')] bg-no-repeat bg-[length:100%_100%] bg-center">
               <img
-                src="/public/imgs/5.jpg"
+                src="/imgs/5.jpg"
                 alt="photo"
                 className={addExtraClassNames("w-full", imgClassName)}
               />
