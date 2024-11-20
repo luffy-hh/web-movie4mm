@@ -5,12 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
 import { Layout } from "antd";
+
 const Header = lazy(() => import("./components/Header.jsx"));
 import Footer from "./components/Footer.jsx";
 import Loader from "../components/Loader/Loader.jsx";
 import { setIsSmallScreen } from "../app/ThemeConfig/themeConfigSlice.jsx";
+import { fetchAllGenre } from "../app/HomeSlice/HomeSlice.jsx";
 
-const LayoutCmp = ({}) => {
+const LayoutCmp = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const nav = useNavigate();
@@ -22,15 +24,16 @@ const LayoutCmp = ({}) => {
   const { Content } = Layout;
 
   const getTitle = (path) => {
-    if (path.includes("/cars")) return "Cars List";
-    if (path.includes("/drivers")) return "Drivers List";
-    if (path.includes("/driving-history")) return "Driving Ways";
-    if (path.includes("/reports")) return "Reports";
-    if (path.includes("/fuel")) return "Fuel Records";
-    if (path.includes("/maintenance")) return "Maintenance Records";
-    if (path.includes("/user-management")) return "User Manage";
-    if (path.includes("/")) return "Home | Movie4mm";
-    return "Home";
+    if (path.includes("/genre")) return "Genres | Movie4mm";
+    if (path.includes("/release")) return "Release | Movie4mm";
+    if (path.includes("/movies")) return "Movies | Movie4mm";
+    if (path.includes("/series")) return "Series | Movie4mm";
+    if (path.includes("/a-z")) return "A-Z | Movie4mm";
+    if (path.includes("/watch")) return "Watch | Movie4mm";
+    if (path.includes("/live-tv")) return "Live | Movie4mm";
+    if (path.includes("/watch-live")) return "Watch-Live | Movie4mm";
+
+    return "Home | Movie4mm";
   };
   // const handleMenuClick = (e) => {
   //   nav(e.key);
@@ -82,11 +85,16 @@ const LayoutCmp = ({}) => {
     return () => {
       mediaQuery.removeEventListener("change", handleMediaQueryChange);
     };
-  }, []);
+  }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchAllGenre({ api: "/all_genre" }));
+  }, [dispatch]);
 
   useEffect(() => {
     document.title = getTitle(location.pathname);
   }, [location.pathname]);
+
+  useEffect(() => {}, []);
   return (
     <Suspense fallback={<Loader spin={true} fullscreen={true} />}>
       <Layout className=" antialiased">
@@ -118,25 +126,20 @@ const LayoutCmp = ({}) => {
             </button>
           )}
         </div>
-        <Layout>
-          <Header
-            isSmallScreen={isSmallScreen}
-            setIsSmallScreen={setIsSmallScreen}
-          />
-          <Content
-            className={`${isSmallScreen ? "px-2 w-full" : "w-[70%] mx-auto"}`}
-          >
-            <Outlet />
-          </Content>
-          <Footer />
-        </Layout>
+
+        <Header
+          isSmallScreen={isSmallScreen}
+          setIsSmallScreen={setIsSmallScreen}
+        />
+        <Content
+          className={`${isSmallScreen ? "px-2 w-full" : "w-[70%] mx-auto"}`}
+        >
+          <Outlet />
+        </Content>
+        <Footer />
       </Layout>
     </Suspense>
   );
 };
 
-LayoutCmp.propTypes = {
-  setIsSmallScreen: PropTypes.func,
-  isSmallScreen: PropTypes.bool,
-};
 export default LayoutCmp;

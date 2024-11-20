@@ -423,3 +423,114 @@ export const countriesArray = [
   { label: "Zambia", value: "zambia", icon: <FaPlus /> },
   { label: "Zimbabwe", value: "zimbabwe", icon: <FaPlus /> },
 ];
+
+export const aToZ = [
+  {
+    label: "0-9",
+    key: "number",
+  },
+  {
+    label: "A",
+    key: "a",
+  },
+  {
+    label: "B",
+    key: "b",
+  },
+  {
+    label: "C",
+    key: "c",
+  },
+  {
+    label: "D",
+    key: "d",
+  },
+  {
+    label: "E",
+    key: "e",
+  },
+  {
+    label: "F",
+    key: "f",
+  },
+  {
+    label: "G",
+    key: "g",
+  },
+  {
+    label: "H",
+    key: "h",
+  },
+  {
+    label: "I",
+    key: "i",
+  },
+  {
+    label: "J",
+    key: "j",
+  },
+  {
+    label: "K",
+    key: "k",
+  },
+  {
+    label: "L",
+    key: "l",
+  },
+  {
+    label: "M",
+    key: "m",
+  },
+  {
+    label: "N",
+    key: "n",
+  },
+  {
+    label: "O",
+    key: "o",
+  },
+  {
+    label: "P",
+    key: "p",
+  },
+  {
+    label: "Q",
+    key: "q",
+  },
+  {
+    label: "R",
+    key: "r",
+  },
+  {
+    label: "S",
+    key: "s",
+  },
+  {
+    label: "T",
+    key: "t",
+  },
+  {
+    label: "U",
+    key: "u",
+  },
+  {
+    label: "V",
+    key: "v",
+  },
+  {
+    label: "W",
+    key: "w",
+  },
+  {
+    label: "X",
+    key: "x",
+  },
+  {
+    label: "Y",
+    key: "y",
+  },
+  {
+    label: "Z",
+    key: "z",
+  },
+];

@@ -5,87 +5,58 @@ import { FaAngleDoubleRight, FaInfoCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { addExtraClassNames } from "../../utilities/UtilFunctions";
+import withRouter from "../HOCs/withRouter";
+
 const data = [
-  {
-    title: "Title 1 Testing",
-  },
-  {
-    title: "Title 2 long form",
-  },
-  {
-    title: "Title 3 super very long form",
-  },
-  {
-    title: "Title 4",
-  },
-  {
-    title: "Title 5",
-  },
-  {
-    title: "Title 6",
-  },
-  {
-    title: "Title 1 Testing",
-  },
-  {
-    title: "Title 2 long form",
-  },
-  {
-    title: "Title 3 super very long form",
-  },
-  {
-    title: "Title 4",
-  },
-  {
-    title: "Title 5",
-  },
-  {
-    title: "Title 6",
-  },
-  {
-    title: "Title 1 Testing",
-  },
-  {
-    title: "Title 2 long form",
-  },
-  {
-    title: "Title 3 super very long form",
-  },
-  {
-    title: "Title 4",
-  },
-  {
-    title: "Title 5",
-  },
-  {
-    title: "Title 6",
-  },
-  {
-    title: "Title 1 Testing",
-  },
-  {
-    title: "Title 2 long form",
-  },
+  { id: 1, title: "Title 1 Testing" },
+  { id: 2, title: "Title 2 long form" },
+  { id: 3, title: "Title 3 super very long form" },
+  { id: 4, title: "Title 4" },
+  { id: 5, title: "Title 5" },
+  { id: 6, title: "Title 6" },
+  { id: 7, title: "Title 1 Testing" },
+  { id: 8, title: "Title 2 long form" },
+  { id: 9, title: "Title 3 super very long form" },
+  { id: 10, title: "Title 4" },
+  { id: 11, title: "Title 5" },
+  { id: 12, title: "Title 6" },
+  { id: 13, title: "Title 1 Testing" },
+  { id: 14, title: "Title 2 long form" },
+  { id: 15, title: "Title 3 super very long form" },
+  { id: 16, title: "Title 4" },
+  { id: 17, title: "Title 5" },
+  { id: 18, title: "Title 6" },
+  { id: 19, title: "Title 1 Testing" },
+  { id: 20, title: "Title 2 long form" },
 ];
 const GridBox = ({
+  pagination = false,
+  router,
   title,
   titleTag,
+  items = [],
+  type,
+  loading = false,
   className,
   cardClassName,
+  onChange,
+  seeMore = true,
+  seeMorePath,
   grid = {
     gutter: 16,
     xs: 2,
     sm: 2,
     md: 3,
     lg: 4,
-    xl: 5,
-    xxl: 5,
+    xl: 6,
+    xxl: 6,
   },
 }) => {
   const [isMaximized, setIsMaximized] = useState(true);
   const handleMaximize = () => {
     setIsMaximized(!isMaximized);
   };
+  // console.log(pagination);
 
   return (
     <div className={addExtraClassNames(className, "mb-10")}>
@@ -95,22 +66,26 @@ const GridBox = ({
             <span className=" inline-block border-b-2 pb-2 border-[#0769b4] mr-6">
               {title}
             </span>
-            <Tag color="#2db7f5" className="text-2xl py-2 font-semibold">
-              {titleTag}
-            </Tag>
+            {titleTag && (
+              <Tag color="#2db7f5" className="text-2xl py-2 font-semibold">
+                {titleTag}
+              </Tag>
+            )}
           </p>
           {/* <div>
           <button style={{ marginRight: "5px" }} onClick={handleMaximize}>
             {isMaximized ? <FaMinimize /> : <FaMaximize />}
           </button>
         </div> */}
-          <Link
-            to={"/"}
-            className="flex items-center gap-2 font-semibold hover:cursor-pointer hover:underline hover:underline-offset-4"
-          >
-            See all
-            <FaAngleDoubleRight />
-          </Link>
+          {seeMore && (
+            <Link
+              to={seeMorePath}
+              className="flex items-center gap-2 font-semibold hover:cursor-pointer hover:underline hover:underline-offset-4"
+            >
+              See all
+              <FaAngleDoubleRight />
+            </Link>
+          )}
         </div>
       )}
       <div
@@ -122,39 +97,42 @@ const GridBox = ({
       >
         <List
           grid={{ ...grid }}
-          dataSource={data}
-          className={`p-5`}
+          dataSource={items}
+          className={`p-5 flex flex-col gap-4`}
+          pagination={pagination}
+          onChange={onChange}
+          loading={loading}
           renderItem={(item) => (
             <List.Item>
               <div
                 className={addExtraClassNames(
                   "relative aspect-[16/21] w-full group overflow-hidden",
-                  cardClassName
+                  cardClassName,
                 )}
               >
                 <img
-                  src="/imgs/1.jpg"
+                  src={item.thumbnail_url}
                   alt={item.title}
                   className="absolute top-0 left-0 w-full h-full z-10"
                 />
                 <div className="absolute top-2 w-full left-0 z-20 flex justify-between items-center px-1 flex-wrap gap-2">
                   <div className="flex gap-2">
                     <Tag className="text-sm !m-0" color="#7e22ce">
-                      4k
+                      {item.video_quality}
                     </Tag>
                     <Tag className="text-sm !m-0" color="#c026d3">
-                      2024
+                      {item.release}
                     </Tag>
                   </div>
                   <Tag
                     className="text-sm !m-0 flex items-center gap-1"
                     color="#fbbf24"
                   >
-                    <FaInfoCircle /> IMDB 5.6
+                    <FaInfoCircle /> IMDB {item.imdb_rating}
                   </Tag>
                 </div>
 
-                <p className="absolute text-center bottom-0 left-0 translate-x-[35%] w-[60%] z-20 text-white break-words overflow-ellipsis">
+                <p className="absolute text-center bottom-0 left-0 w-[100%] bg-gradient-to-t from-gray-500 to-transparent z-20 text-white break-words overflow-ellipsis">
                   {item.title}
                 </p>
 
@@ -164,7 +142,14 @@ const GridBox = ({
                 {/* Play Button with Border Animation */}
                 <div className="absolute inset-0 flex justify-center items-center z-40 opacity-0 scale-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 ease-out ">
                   {/* Play Button Wrapper */}
-                  <div className="relative w-20 h-20 flex justify-center items-center  rounded-full custom-group">
+                  <div
+                    onClick={() =>
+                      router.nav(`/watch/${type}/${item.videos_id}`, {
+                        state: { ...item },
+                      })
+                    }
+                    className="relative w-20 h-20 flex justify-center items-center  rounded-full custom-group"
+                  >
                     {/* Border that will change on button hover */}
                     <div className="absolute inset-0 rounded-full border-4 border-[#f92d2d] transition-all duration-300 spin-border"></div>
 
@@ -191,11 +176,17 @@ const GridBox = ({
 
 GridBox.propTypes = {
   title: PropTypes.string,
+  items: PropTypes.array,
   titleTag: PropTypes.string,
   cardClassName: PropTypes.string,
   className: PropTypes.string,
   grid: PropTypes.object,
   data: PropTypes.array,
+  router: PropTypes.object,
+  seeMore: PropTypes.bool,
+  seeMorePath: PropTypes.string,
+  type: PropTypes.string,
+  pagination: PropTypes.object || PropTypes.bool,
 };
-
-export default GridBox;
+const GridBoxWithRouter = withRouter(GridBox);
+export default GridBoxWithRouter;

@@ -1,18 +1,20 @@
 import { Breadcrumb } from "antd";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import GridBox from "../../components/Boxes/GridBox";
 import ListPageTitle from "../../components/ListPageTitle";
 
 const Genre = () => {
-  const { type } = useParams();
+  const { id } = useParams();
+  const location = useLocation();
+  const { type } = location.state;
   const routes = [
     {
       path: "/",
       breadcrumbName: "Home",
     },
     {
-      path: `/genre/${type}`,
+      path: `/genre/${id}`,
       breadcrumbName: type.toUpperCase(),
     },
   ];

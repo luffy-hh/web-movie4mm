@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 import { Drawer, Layout, Menu } from "antd";
+
 import { sideBarData } from "../../constants/SideBarData";
 import { FaBars, FaX } from "react-icons/fa6";
 import CustomInput from "../../components/Inputs/CustomInput";
@@ -7,7 +8,7 @@ import { Link } from "react-router-dom";
 import withRouter from "../../components/HOCs/withRouter";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
-import { render } from "react-dom";
+import { getAllGenres } from "../../app/HomeSlice/HomeSlice.jsx";
 
 const { Header: AntHeader } = Layout;
 
@@ -16,7 +17,8 @@ const Header = ({ router }) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const isSmallScreen = useSelector((state) => state.theme.isSmallScreen);
   const [renderScreen, setRenderScreen] = useState(false);
-  console.log(isSmallScreen, sideBarData);
+  // console.log(isSmallScreen, sideBarData);
+  const genreList = useSelector(getAllGenres);
 
   useEffect(() => {
     setRenderScreen(isSmallScreen);
@@ -71,11 +73,29 @@ const Header = ({ router }) => {
     );
   };
 
+  const menuItemClickHandler = (e) => {
+    const selectedKey = (e.keyPath[1] ? e.keyPath[1] : "") + e?.keyPath[0];
+    const selectedItem = sideBarData(genreList).find((item) => {
+      console.log(item, e.keyPath[0]);
+
+      return item.key === e?.keyPath[0];
+    });
+    console.log(selectedKey);
+    const column = selectedItem ? selectedItem.column : null;
+    // console.log(column);
+
+    router.nav(selectedKey, {
+      state: {
+        type: column,
+      },
+    });
+  };
+
   return (
     <AntHeader
-      className={`flex h-auto ${
+      className={`flex h-auto flex-wrap ${
         isSmallScreen ? "justify-between py-2 px-4" : "justify-center"
-      } items-center gap-4 text-white`} //bg-[#0769b4] text-white h-20 border-l-2 border-l-zinc-700
+      } items-center gap-4 py-4 text-white`} //bg-[#0769b4] text-white h-20 border-l-2 border-l-zinc-700
     >
       <Link to={"/"} className="flex items-center">
         <img src="/imgs/logo.png" className="h-12 cursor-pointer" />
@@ -88,25 +108,25 @@ const Header = ({ router }) => {
           <FaBars />
         </div>
       )}
-
-      <div className="flex items-center gap-4">
-        {!isSmallScreen && (
+      {!isSmallScreen && (
+        <div className="flex items-center justify-center gap-4 flex-wrap">
           <Menu
             onClick={(e) => {
-              router.nav((e.keyPath[1] ? e.keyPath[1] : "") + e?.keyPath[0]);
-              //   console.log(e);
+              setOpenDrawer(false);
+              router.nav((e.keyPath[1] ? e.keyPath[1] : "") + e?.keyPath[0], {
+                state: {
+                  type: e?.item?.props?.column,
+                },
+              });
+              // console.log(e);
             }}
             mode="horizontal"
             theme="dark"
-            items={sideBarData}
+            items={sideBarData(genreList)}
           />
-        )}
-
-        {!isSmallScreen && (
           <CustomInput placeholder="Search" className={"w-[20rem]"} />
-        )}
-      </div>
-
+        </div>
+      )}
       <Drawer
         title={drawerTitle()}
         closeIcon={
@@ -118,15 +138,15 @@ const Header = ({ router }) => {
         getContainer={false}
         styles={{
           header: {
-            height: "auto",
             padding: "4px 10px",
             background: "#001529",
           },
           body: {
             padding: 0,
+            background: "#001529",
           },
         }}
-        placement={"top"}
+        placement={"right"}
         width={500}
         onClose={() => {
           setOpenDrawer(false);
@@ -136,12 +156,8 @@ const Header = ({ router }) => {
         <Menu
           mode="inline"
           theme="dark"
-          items={transformMenuItems(sideBarData)}
-          onClick={(e) => {
-            setOpenDrawer(false);
-            router.nav((e.keyPath[1] ? e.keyPath[1] : "") + e?.keyPath[0]);
-            // console.log(e);
-          }}
+          items={transformMenuItems(sideBarData(genreList))}
+          onClick={menuItemClickHandler}
         />
       </Drawer>
     </AntHeader>

@@ -3,18 +3,28 @@ import { useEffect, useRef } from "react";
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa6";
 import PropTypes from "prop-types";
 import { addExtraClassNames } from "../../utilities/UtilFunctions";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 const CarouselBox = ({
   slidesToScroll = 1,
   slidesToShow = 1,
+  slidesToShowSmall = 3,
   title,
+  type,
   wrapperClassName,
   carouselClassName,
   imgClassName,
   data = [],
+  clickAble = false,
+  onClick = () => {},
+  infinite = true,
 }) => {
+  const isSmallScreen = useSelector((state) => state.theme.isSmallScreen);
   const carouselRef = useRef();
   const next = () => {
     carouselRef.current.next();
+    console.log(carouselRef.current);
   };
 
   const prev = () => {
@@ -42,110 +52,62 @@ const CarouselBox = ({
         dots={false}
         draggable={true}
         ref={carouselRef}
-        slidesToShow={slidesToShow}
+        slidesToShow={isSmallScreen ? slidesToShowSmall : slidesToShow}
         slidesToScroll={slidesToScroll}
         autoplay={false}
         arrows={false}
         className={addExtraClassNames(" max-h-[20rem]", carouselClassName)}
+        infinite={infinite}
       >
-        {data.map((item, i) => (
-          <a href="/" className="px-6" key={i}>
-            <div className="text-blue-700 hover:text-slate-500">
-              <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
-                <img
-                  src={item.img}
-                  alt="photo"
-                  className={addExtraClassNames("w-full", imgClassName)}
-                />
+        {data.map((item, i) => {
+          if (clickAble) {
+            return (
+              <div
+                className="text-blue-700 hover:text-slate-500 relative cursor-pointer mr-5"
+                key={i}
+                onClick={() => onClick(item.file_url)}
+              >
+                {item?.current && (
+                  <p
+                    className={
+                      "absolute top-0 left-2 p-2 bg-yellow-200 text-black font-xl font-bold"
+                    }
+                  >
+                    Playing...
+                  </p>
+                )}
+                <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
+                  <img
+                    src={item.poster_url}
+                    alt="photo"
+                    className={addExtraClassNames("w-full", imgClassName)}
+                  />
+                </div>
+                <p className=" text-center mt-4 text-xl">{item.tv_name}</p>
               </div>
-              <p className=" text-center mt-4 text-xl">{item.title}</p>
-            </div>
-          </a>
-        ))}
-        <a href="/" className="px-6">
-          <div className="text-blue-700 hover:text-slate-500">
-            <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
-              <img
-                src="/imgs/1.jpg"
-                alt="photo"
-                className={addExtraClassNames("w-full", imgClassName)}
-              />
-            </div>
-            <p className=" text-center mt-4 text-xl">ManU vs Tottenham</p>
-          </div>
-        </a>
-        <a href="/" className="px-6">
-          <div className=" text-blue-700 hover:text-slate-500">
-            <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
-              <img
-                src="/imgs/2.jpg"
-                alt="photo"
-                className={addExtraClassNames("w-full", imgClassName)}
-              />
-            </div>
-            <p className=" text-center mt-4 text-xl">ManU vs Tottenham</p>
-          </div>
-        </a>
-        <a href="/" className="px-6">
-          <div className=" text-blue-700 hover:text-slate-500">
-            <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
-              <img
-                src="/imgs/3.jpg"
-                alt="photo"
-                className={addExtraClassNames("w-full", imgClassName)}
-              />
-            </div>
-            <p className=" text-center mt-4 text-xl">ManU vs Tottenham</p>
-          </div>
-        </a>
-        <a href="/" className="px-6">
-          <div className=" text-blue-700 hover:text-slate-500">
-            <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
-              <img
-                src="/imgs/4.jpg"
-                alt="photo"
-                className={addExtraClassNames("w-full", imgClassName)}
-              />
-            </div>
-            <p className=" text-center mt-4 text-xl">ManU vs Tottenham</p>
-          </div>
-        </a>
-        <a href="/" className="px-6">
-          <div className=" text-blue-700 hover:text-slate-500">
-            <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
-              <img
-                src="/imgs/5.jpg"
-                alt="photo"
-                className={addExtraClassNames("w-full", imgClassName)}
-              />
-            </div>
-            <p className=" text-center mt-4 text-xl">ManU vs Tottenham</p>
-          </div>
-        </a>
-        <a href="/" className="px-6">
-          <div className=" text-blue-700 hover:text-slate-500">
-            <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
-              <img
-                src="/imgs/5.jpg"
-                alt="photo"
-                className={addExtraClassNames("w-full", imgClassName)}
-              />
-            </div>
-            <p className=" text-center mt-4 text-xl">ManU vs Tottenham</p>
-          </div>
-        </a>
-        <a href="/" className="px-6">
-          <div className=" text-blue-700 hover:text-slate-500">
-            <div className="h-[100%] bg-[url('/imgs/1.jpg')] bg-no-repeat bg-[length:100%_100%] bg-center">
-              <img
-                src="/imgs/5.jpg"
-                alt="photo"
-                className={addExtraClassNames("w-full", imgClassName)}
-              />
-            </div>
-            <p className=" text-center mt-4 text-xl">ManU vs Tottenham</p>
-          </div>
-        </a>
+            );
+          } else {
+            return (
+              <Link
+                to={`/watch-live/${item.live_tv_id}`}
+                state={{ ...item, type: type }}
+                className="px-6 mr-5"
+                key={i}
+              >
+                <div className="text-blue-700 hover:text-slate-500">
+                  <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
+                    <img
+                      src={item.poster_url}
+                      alt="photo"
+                      className={addExtraClassNames("w-full", imgClassName)}
+                    />
+                  </div>
+                  <p className=" text-center mt-4 text-xl">{item.tv_name}</p>
+                </div>
+              </Link>
+            );
+          }
+        })}
       </Carousel>
     </div>
   );
@@ -153,6 +115,7 @@ const CarouselBox = ({
 
 CarouselBox.propTypes = {
   slidesToShow: PropTypes.number,
+  slidesToShowSmall: PropTypes.number,
   slidesToScroll: PropTypes.number,
   autoplay: PropTypes.bool,
   arrows: PropTypes.bool,
@@ -161,6 +124,10 @@ CarouselBox.propTypes = {
   data: PropTypes.array.isRequired,
   wrapperClassName: PropTypes.string,
   imgClassName: PropTypes.string,
+  clickAble: PropTypes.bool,
+  onClick: PropTypes.func,
+  infinite: PropTypes.bool,
+  type: PropTypes.string,
 };
 
 export default CarouselBox;

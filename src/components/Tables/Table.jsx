@@ -1,5 +1,5 @@
-import { Table } from "ant-table-extensions";
-import { Button } from "antd";
+import {} from "ant-table-extensions";
+import { Button, Table } from "antd";
 import * as XLSX from "xlsx";
 
 const CustomTable = ({
@@ -173,7 +173,7 @@ const CustomTable = ({
   return (
     <>
       {exportableProps && extraButton && (
-        <div className='w-full flex'>
+        <div className="w-full flex">
           <Button {...exportableProps.btnProps} onClick={handleExport}>
             {exportableProps.children}
           </Button>

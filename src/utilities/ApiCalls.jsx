@@ -1,21 +1,47 @@
 import { expireToken } from "./UtilFunctions";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
+const headers = {
+  "API-KEY": import.meta.env.VITE_API_KEY,
+};
 
 export const getDataWithToken = async (api) => {
   // console.log("api>>", BASE_URL + api);
   try {
     const response = await fetch(BASE_URL + api, {
       method: "GET",
+      // mode:"no-cors",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
+        ...headers,
       },
     });
     if (response.status === 401) {
       expireToken();
     }
-    // console.log(`${api}>> Get:`, dataResponse);
+    console.log(`${api}>> Get:`, response);
+    return await response.json();
+  } catch (error) {
+    throw new Error("Error Getting Data", error);
+  }
+};
+
+export const getData = async (api) => {
+  // console.log("api>>", BASE_URL + api);
+  try {
+    const response = await fetch(BASE_URL + api, {
+      method: "GET",
+      // mode:"no-cors",
+      headers: {
+        "Content-Type": "application/json",
+        ...headers,
+      },
+    });
+    if (response.status === 401) {
+      expireToken();
+    }
+    console.log(`${api}>> Get:`, response);
     return await response.json();
   } catch (error) {
     throw new Error("Error Getting Data", error);
@@ -27,6 +53,7 @@ export const postData = async (api, postData) => {
   try {
     const response = await fetch(BASE_URL + api, {
       method: "POST",
+      // mode:"no-cors",
       headers: {
         "Content-Type": "application/json",
         // Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -48,6 +75,7 @@ export const postDataWithToken = async (api, postData) => {
     // console.log(postData);
     const response = await fetch(BASE_URL + api, {
       method: "POST",
+      // mode:"no-cors",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
@@ -87,6 +115,7 @@ export const postMultipartDataWithToken = async (api, postData) => {
     // console.log(postData);
     const response = await fetch(BASE_URL + api, {
       method: "POST",
+      // mode:"no-cors",
       headers: {
         Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
       },
@@ -108,6 +137,7 @@ export const deleteDataWithToken = async (api) => {
   try {
     const response = await fetch(BASE_URL + api, {
       method: "DELETE",
+      // mode:"no-cors",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,

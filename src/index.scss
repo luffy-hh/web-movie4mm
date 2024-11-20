@@ -64,6 +64,9 @@ body {
   @apply border-slate-500;
 }
 
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 .table-scroll {
   @media only screen and (max-width: 64em) {
     overflow-x: auto;
