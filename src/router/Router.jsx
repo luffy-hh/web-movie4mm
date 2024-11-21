@@ -37,7 +37,7 @@ const Router = () => {
             <Route path="series" element={<Series />} />
             <Route path="a-z" element={<A_Z />} />
             <Route path="live-tv" element={<LiveTv />} />
-            <Route path="live-tv/:name" element={<LiveTvCategory />} />
+            <Route path="live-tv/:id" element={<LiveTvCategory />} />
             <Route path="watch-live/:id" element={<LiveTvDetail />} />
             <Route path={"popular-stars"} element={<PopularStars />} />
           </Route>

@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const inititalState = {
   theme: localStorage.getItem("theme") || "light",
   isSmallScreen: false,
-  isDarkMode: false,
+  isDarkMode: localStorage.getItem("theme") !== "light",
 };
 const themeConfigSlice = createSlice({
   name: "theme",
@@ -15,17 +15,15 @@ const themeConfigSlice = createSlice({
       state.theme = payload;
       if (payload === "dark") {
         state.isDarkMode = true;
+        localStorage.setItem("isDarkMode", true);
       } else if (payload === "light") {
         state.isDarkMode = false;
+        localStorage.setItem("isDarkMode", false);
       } else if (payload === "system") {
-        if (
+        state.isDarkMode =
           window.matchMedia &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches
-        ) {
-          state.isDarkMode = true;
-        } else {
-          state.isDarkMode = false;
-        }
+          window.matchMedia("(prefers-color-scheme: dark)").matches;
+        localStorage.setItem("isDarkMode", state.isDarkMode);
       }
       if (state.isDarkMode) {
         document.documentElement.classList.add("dark");
@@ -38,5 +36,11 @@ const themeConfigSlice = createSlice({
     },
   },
 });
+
+export const selectTheme = (state) => state.theme.theme;
+export const selectIsSmallScreen = (state) => state.theme.isSmallScreen;
+export const selectIsDarkMode = (state) => state.theme.isDarkMode;
+
 export const { setTheme, setIsSmallScreen } = themeConfigSlice.actions;
+
 export default themeConfigSlice.reducer;

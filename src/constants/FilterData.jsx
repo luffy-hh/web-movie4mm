@@ -143,15 +143,15 @@ export const genres = () => {
 export const sortOptions = [
   {
     label: "Ascending",
-    value: "ascending",
+    value: "asc",
     icon: <FaPlus />,
   },
   {
     label: "Descending",
-    value: "descending",
+    value: "desc",
     icon: <FaPlus />,
   },
-  { label: "Views", value: "views", icon: <FaPlus /> },
+  { label: "Views", value: "total_view", icon: <FaPlus /> },
   {
     label: "Rating",
     value: "rating",
@@ -159,22 +159,17 @@ export const sortOptions = [
   },
   {
     label: "Release Date",
-    value: "release_date",
+    value: "release",
     icon: <FaPlus />,
   },
   {
     label: "A-Z",
-    value: "a-z",
+    value: "az",
     icon: <FaPlus />,
   },
   {
     label: "Z-A",
-    value: "z-a",
-    icon: <FaPlus />,
-  },
-  {
-    label: "Random",
-    value: "random",
+    value: "za",
     icon: <FaPlus />,
   },
 ];

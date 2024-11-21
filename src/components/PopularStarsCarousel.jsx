@@ -5,8 +5,10 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getPopularStars } from "../app/HomeSlice/HomeSlice.jsx";
 import { FaAngleDoubleRight } from "react-icons/fa";
+import { selectIsDarkMode } from "../app/ThemeConfig/themeConfigSlice.jsx";
 
 const PopularStarsCarousel = () => {
+  const isDarkMode = useSelector(selectIsDarkMode);
   const carouselRef = useRef(null);
   const popularStars = useSelector(getPopularStars);
   const isSmallScreen = useSelector((state) => state.theme.isSmallScreen);
@@ -21,15 +23,19 @@ const PopularStarsCarousel = () => {
   return (
     <div className={"mt-8"}>
       <div className="flex items-center justify-between mb-4">
-        <p className="text-xl font-semibold pb-2 border-b-2 border-[#0769b4]">
+        <p
+          className={`text-xl font-semibold pb-2 border-b-2 border-[#0769b4] ${
+            isDarkMode && "text-white"
+          }`}
+        >
           Popular Stars
         </p>
         <div className="flex gap-2">
           <Link
             to={"popular-stars"}
-            className={
-              "flex items-center gap-2 font-semibold hover:cursor-pointer hover:underline hover:underline-offset-4"
-            }
+            className={`${
+              isDarkMode && "text-white"
+            } flex items-center gap-2 font-semibold hover:cursor-pointer hover:underline hover:underline-offset-4`}
           >
             See All <FaAngleDoubleRight />
           </Link>

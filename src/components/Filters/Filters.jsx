@@ -1,43 +1,64 @@
 import React, { useState } from "react";
 import { Slider, Tabs, Radio } from "antd";
-import {
-  countriesArray,
-  genres,
-  sortOptions,
-} from "../../constants/FilterData";
+import { sortOptions } from "../../constants/FilterData";
 import { FaPlus } from "react-icons/fa6";
-const Filters = () => {
+import {
+  getAllGenres,
+  selectAllCountry,
+} from "../../app/HomeSlice/HomeSlice.jsx";
+import { useSelector } from "react-redux";
+import { selectIsDarkMode } from "../../app/ThemeConfig/themeConfigSlice.jsx";
+import PropTypes from "prop-types";
+
+const Filters = ({ setSearchParams }) => {
+  const genreList = useSelector(getAllGenres);
+  const countryList = useSelector(selectAllCountry);
+  const isDarkMode = useSelector(selectIsDarkMode);
+
   const [selectGenre, setSelectedGenre] = useState(null);
   const [selectedSort, setSelectedSort] = useState(null);
-  const [selectedLanguage, setSelectedLanguage] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("");
   const [sliderValue, setSliderValue] = useState([0, 10]);
-  const handleGenreChange = (e) => setSelectedGenre(e.target.value);
-  const handleLanguageClick = (e) =>
-    e.target.value === selectedLanguage && setSelectedLanguage(null);
 
-  const handleGenreClick = (e) =>
-    e.target.value === selectGenre && setSelectedGenre(null);
+  const handleGenreClick = (e) => {
+    if (e.target.value === selectGenre) {
+      setSelectedGenre(null);
+      setSearchParams((prev) => ({ ...prev, category: "" }));
+    }
+  };
+  const handleCountryClick = (e) => {
+    if (e.target.value === selectedCountry) {
+      setSelectedCountry(null);
+      setSearchParams((prev) => ({ ...prev, country: "" }));
+    }
+  };
 
-  const handleCountryClick = (e) =>
-    e.target.value === selectedCountry && setSelectedCountry(null);
-
-  const handleSortClick = (e) =>
-    e.target.value === selectedSort && setSelectedSort(null);
-  // console.log(selectedLanguage);
+  const handleSortClick = (e) => {
+    if (e.target.value === selectedSort) {
+      setSelectedSort(null);
+      setSearchParams((prev) => ({ ...prev, sort: "" }));
+    }
+  };
   const items = [
     {
       label: "Filters",
       key: "2",
       children: (
-        <div className="flex flex-col">
-          <div>
+        <div className={`flex flex-col ${isDarkMode && "text-white"}`}>
+          <div className={`${isDarkMode && "text-white"}`}>
             <p className="text-xl text-center shadow">IMDB Rating</p>
             <p className="text-center mt-2">
               Rating: {sliderValue[0]} - {sliderValue[1]}
             </p>
             <Slider
-              onChange={(value) => setSliderValue(value)}
+              onChange={(value) => {
+                setSliderValue(value);
+                setSearchParams((prev) => ({
+                  ...prev,
+                  minimum_rating: value[0],
+                  maximum_rating: value[1],
+                }));
+              }}
               range
               min={0}
               step={0.1}
@@ -51,9 +72,12 @@ const Filters = () => {
             />
           </div>
           <div>
-            <p className="text-lg text-center shadow mb-2">Sort By</p>
+            <p className="text-xl text-center shadow mb-2">Sort By</p>
             <Radio.Group
-              onChange={(e) => setSelectedSort(e.target.value)}
+              onChange={(e) => {
+                setSelectedSort(e.target.value);
+                setSearchParams((prev) => ({ ...prev, sort: e.target.value }));
+              }}
               value={selectedSort}
               block
               optionType="button"
@@ -81,9 +105,15 @@ const Filters = () => {
             </Radio.Group>
           </div>
           <div className="mt-4">
-            <p className="text-lg text-center shadow mb-2">Genres</p>
+            <p className="text-xl text-center shadow mb-2">Genres</p>
             <Radio.Group
-              onChange={handleGenreChange}
+              onChange={(e) => {
+                setSelectedGenre(e.target.value);
+                setSearchParams((prev) => ({
+                  ...prev,
+                  category: e.target.value,
+                }));
+              }}
               value={selectGenre}
               block
               optionType="button"
@@ -91,96 +121,60 @@ const Filters = () => {
 
               // options={genres()}
             >
-              {genres().map((genre) => (
+              {genreList.map((genre) => (
                 <Radio.Button
-                  key={genre.value}
-                  value={genre.value}
+                  key={genre.genre_id}
+                  value={genre.genre_id}
                   onClick={handleGenreClick}
                   className="ml-2 mb-1 rounded overflow-hidden border-l-2"
                 >
                   <div className="flex gap-1 items-center">
                     <span
                       className={`inline-block ${
-                        selectGenre === genre.value ? "rotate-[45deg]" : ""
+                        selectGenre === genre.genre_id ? "rotate-[45deg]" : ""
                       }  transition-all duration-500`}
                     >
-                      {genre.icon}
+                      <FaPlus />
                     </span>
-                    {genre.label}
+                    {genre.name}
                   </div>
                 </Radio.Button>
               ))}
             </Radio.Group>
           </div>
           <div className="mt-4">
-            <p className="text-lg text-center shadow mb-2">Language</p>
-            <Radio.Group
-              onChange={(e) => setSelectedLanguage(e.target.value)}
-              value={selectedLanguage}
-              block
-              optionType="button"
-            >
-              <Radio.Button
-                value={"english"}
-                onClick={handleLanguageClick}
-                className="ml-2 mb-1 rounded overflow-hidden border-l-2"
-              >
-                <div className="flex gap-1 items-center">
-                  <span
-                    className={`inline-block ${
-                      selectedLanguage === "english" ? "rotate-[45deg]" : ""
-                    }  transition-all duration-500`}
-                  >
-                    <FaPlus />
-                  </span>
-                  English
-                </div>
-              </Radio.Button>
-              <Radio.Button
-                value={"other"}
-                onClick={handleLanguageClick}
-                className="ml-2 mb-1 rounded overflow-hidden border-l-2"
-              >
-                <div className="flex gap-1 items-center">
-                  <span
-                    className={`inline-block ${
-                      selectedLanguage === "other" ? "rotate-[45deg]" : ""
-                    }  transition-all duration-500`}
-                  >
-                    <FaPlus />
-                  </span>
-                  Other
-                </div>
-              </Radio.Button>
-            </Radio.Group>
-          </div>
-          <div className="mt-4">
-            <p className="text-lg text-center shadow mb-2">Countries</p>
+            <p className="text-xl text-center shadow mb-2">Countries</p>
             <Radio.Group
               value={selectedCountry}
-              onChange={(e) => setSelectedCountry(e.target.value)}
+              onChange={(e) => {
+                setSelectedCountry(e.target.value);
+                setSearchParams((prev) => ({
+                  ...prev,
+                  country: e.target.value,
+                }));
+              }}
               className=" max-h-[20rem] overflow-y-scroll"
               block
               optionType="button"
             >
-              {countriesArray.map((country, i) => (
+              {countryList.map((country, i) => (
                 <Radio.Button
                   key={i}
-                  value={country.value}
+                  value={country.country_id}
                   onClick={handleCountryClick}
                   className="ml-2 mb-1 rounded overflow-hidden border-l-2"
                 >
                   <div className="flex gap-1 items-center">
                     <span
                       className={`inline-block ${
-                        selectedCountry === country.value
+                        selectedCountry === country.country_id
                           ? "rotate-[45deg]"
                           : ""
                       }  transition-all duration-500`}
                     >
-                      {country.icon}
+                      <FaPlus />
                     </span>
-                    {country.label}
+                    {country.name}
                   </div>
                 </Radio.Button>
               ))}
@@ -201,4 +195,7 @@ const Filters = () => {
   );
 };
 
+Filters.propTypes = {
+  setSearchParams: PropTypes.func,
+};
 export default Filters;

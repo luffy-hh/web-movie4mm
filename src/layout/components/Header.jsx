@@ -2,23 +2,54 @@ import { lazy, useEffect, useState } from "react";
 import { Drawer, Layout, Menu } from "antd";
 
 import { sideBarData } from "../../constants/SideBarData";
-import { FaBars, FaX } from "react-icons/fa6";
+import { FaBars, FaDesktop, FaX } from "react-icons/fa6";
 import CustomInput from "../../components/Inputs/CustomInput";
 import { Link } from "react-router-dom";
 import withRouter from "../../components/HOCs/withRouter";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
-import { getAllGenres } from "../../app/HomeSlice/HomeSlice.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllGenres,
+  selectAllTvCategory,
+} from "../../app/HomeSlice/HomeSlice.jsx";
+import {
+  selectIsDarkMode,
+  selectTheme,
+  setTheme,
+} from "../../app/ThemeConfig/themeConfigSlice.jsx";
+import { LuMoon, LuSun } from "react-icons/lu";
 
 const { Header: AntHeader } = Layout;
 
 const Header = ({ router }) => {
   //   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const dispatch = useDispatch();
   const [openDrawer, setOpenDrawer] = useState(false);
   const isSmallScreen = useSelector((state) => state.theme.isSmallScreen);
   const [renderScreen, setRenderScreen] = useState(false);
+  const [categorySelectList, setCategorySelectList] = useState([]);
   // console.log(isSmallScreen, sideBarData);
   const genreList = useSelector(getAllGenres);
+  const theme = useSelector(selectTheme);
+  const isDarkMode = useSelector(selectIsDarkMode);
+  const allCategory = useSelector(selectAllTvCategory);
+  // console.log(allCategory);
+  useEffect(() => {
+    if (allCategory.length > 0) {
+      const categoryList = allCategory.map((item) => {
+        return {
+          key: `/${item.live_tv_category_id}`,
+          label: item.title,
+          column: item.title,
+        };
+      });
+      categoryList.unshift({
+        key: "",
+        label: "All Channels",
+      });
+      setCategorySelectList(categoryList);
+    }
+  }, [allCategory]);
 
   useEffect(() => {
     setRenderScreen(isSmallScreen);
@@ -49,9 +80,9 @@ const Header = ({ router }) => {
         return {
           key: item.key,
           label: item.label,
-          className: item.className,
+          className: item?.className,
           icon: item?.icon,
-          popupClassName: item.popupClassName,
+          popupClassName: item?.popupClassName,
           children: transformedChildren,
         };
       }
@@ -65,22 +96,80 @@ const Header = ({ router }) => {
 
   const drawerTitle = () => {
     return (
-      <div className="flex justify-center items-center">
-        <Link to={"/"} onClick={() => setOpenDrawer(false)}>
+      <div className="grid items-center grid-cols-2">
+        <Link
+          to={"/"}
+          onClick={() => setOpenDrawer(false)}
+          className={"justify-self-end"}
+        >
           <img src="/imgs/logo.png" className="h-12 cursor-pointer" />
         </Link>
+        <div className={"justify-self-end"}>
+          {theme === "light" ? (
+            <button
+              className={`${
+                theme === "light" &&
+                "text-3xl flex items-center p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60"
+              }`}
+              onClick={() => {
+                dispatch(setTheme("dark"));
+              }}
+            >
+              <LuSun />
+            </button>
+          ) : (
+            ""
+          )}
+          {theme === "dark" && (
+            <button
+              className={`${
+                theme === "dark" &&
+                "text-3xl text-white flex items-center p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60"
+              }`}
+              onClick={() => {
+                dispatch(setTheme("system"));
+              }}
+            >
+              <LuMoon />
+            </button>
+          )}
+          {theme === "system" && (
+            <button
+              className={`${
+                theme === "system" &&
+                "text-3xl flex items-center p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60"
+              } ${isDarkMode ? "text-white" : ""}`}
+              onClick={() => {
+                dispatch(setTheme("light"));
+              }}
+            >
+              <FaDesktop />
+            </button>
+          )}
+        </div>
       </div>
     );
   };
 
   const menuItemClickHandler = (e) => {
-    const selectedKey = (e.keyPath[1] ? e.keyPath[1] : "") + e?.keyPath[0];
-    const selectedItem = sideBarData(genreList).find((item) => {
-      console.log(item, e.keyPath[0]);
+    console.log(e);
 
-      return item.key === e?.keyPath[0];
-    });
-    console.log(selectedKey);
+    const selectedKey = (e.keyPath[1] ? e.keyPath[1] : "") + e?.keyPath[0];
+    // const selectedItem = sideBarData(genreList, categorySelectList).reduce(
+    //   (acc,item) => {
+    //
+    //     if (item.children) {
+    //       return item.children.find((child) => child.key === e.keyPath[0]);
+    //       // console.log(findItem);
+    //     } else {
+    //       return item.key === e.keyPath[0];
+    //     }
+    //   },null
+    // );
+    const selectedItem = sideBarData(genreList, categorySelectList)
+      .flatMap((item) => (item.children ? item.children : []))
+      .find((child) => child.key === e.keyPath[0]);
+    console.log(selectedItem, selectedKey, e?.keyPath[0]);
     const column = selectedItem ? selectedItem.column : null;
     // console.log(column);
 
@@ -95,7 +184,7 @@ const Header = ({ router }) => {
     <AntHeader
       className={`flex h-auto flex-wrap ${
         isSmallScreen ? "justify-between py-2 px-4" : "justify-center"
-      } items-center gap-4 py-4 text-white`} //bg-[#0769b4] text-white h-20 border-l-2 border-l-zinc-700
+      } ${isDarkMode ? "" : "bg-gray-400"} items-center gap-4 py-4 text-white`} //bg-[#0769b4] text-white h-20 border-l-2 border-l-zinc-700
     >
       <Link to={"/"} className="flex items-center">
         <img src="/imgs/logo.png" className="h-12 cursor-pointer" />
@@ -111,8 +200,13 @@ const Header = ({ router }) => {
       {!isSmallScreen && (
         <div className="flex items-center justify-center gap-4 flex-wrap">
           <Menu
+            className={`${
+              isDarkMode ? "" : "bg-gray-400"
+            } flex items-center justify-center gap-4 flex-wrap`}
             onClick={(e) => {
               setOpenDrawer(false);
+              console.log(e);
+
               router.nav((e.keyPath[1] ? e.keyPath[1] : "") + e?.keyPath[0], {
                 state: {
                   type: e?.item?.props?.column,
@@ -121,16 +215,59 @@ const Header = ({ router }) => {
               // console.log(e);
             }}
             mode="horizontal"
-            theme="dark"
-            items={sideBarData(genreList)}
+            theme={isDarkMode ? "dark" : "light"}
+            items={sideBarData(genreList, categorySelectList)}
           />
           <CustomInput placeholder="Search" className={"w-[20rem]"} />
+          <div>
+            {theme === "light" ? (
+              <button
+                className={`${
+                  theme === "light" &&
+                  "text-3xl flex items-center p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60"
+                }`}
+                onClick={() => {
+                  dispatch(setTheme("dark"));
+                }}
+              >
+                <LuSun />
+              </button>
+            ) : (
+              ""
+            )}
+            {theme === "dark" && (
+              <button
+                className={`${
+                  theme === "dark" &&
+                  "text-3xl flex items-center p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60"
+                }`}
+                onClick={() => {
+                  dispatch(setTheme("system"));
+                }}
+              >
+                <LuMoon />
+              </button>
+            )}
+            {theme === "system" && (
+              <button
+                className={`${
+                  theme === "system" &&
+                  "text-3xl flex items-center p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60"
+                }`}
+                onClick={() => {
+                  dispatch(setTheme("light"));
+                }}
+              >
+                <FaDesktop />
+              </button>
+            )}
+          </div>
         </div>
       )}
       <Drawer
         title={drawerTitle()}
         closeIcon={
-          <div className="text-white">
+          <div style={{ color: isDarkMode ? "white" : "black" }}>
             <FaX />
           </div>
         }
@@ -139,11 +276,11 @@ const Header = ({ router }) => {
         styles={{
           header: {
             padding: "4px 10px",
-            background: "#001529",
+            background: isDarkMode ? "#001529" : "#fff",
           },
           body: {
             padding: 0,
-            background: "#001529",
+            background: isDarkMode ? "#001529" : "#fff",
           },
         }}
         placement={"right"}
@@ -155,8 +292,8 @@ const Header = ({ router }) => {
       >
         <Menu
           mode="inline"
-          theme="dark"
-          items={transformMenuItems(sideBarData(genreList))}
+          theme={isDarkMode ? "dark" : "light"}
+          items={transformMenuItems(sideBarData(genreList, categorySelectList))}
           onClick={menuItemClickHandler}
         />
       </Drawer>

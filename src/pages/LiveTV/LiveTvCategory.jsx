@@ -1,16 +1,34 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import CarouselBox from "../../components/Boxes/CarouselBox";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchChannelByEachCategory,
+  selectChannelByEachCategory,
+} from "../../app/TvChannelSlice/TvChannelSlice.jsx";
 
 const LiveTvCategory = () => {
-  const { name } = useParams();
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const channelList = useSelector(selectChannelByEachCategory);
+  console.log(channelList);
+
+  const { id } = useParams();
+  const { type } = location.state;
+  useEffect(() => {
+    dispatch(
+      fetchChannelByEachCategory({
+        api: `/tv_channel_by_category_id?live_tv_category_id=${id}`,
+      }),
+    );
+  }, [id]);
   //   console.log(name);
   return (
     <div className="w-full h-full mx-auto">
       <CarouselBox
-        data={[]}
+        data={channelList}
         slidesToShow={5}
-        title={`${name
+        title={`${type
           .replace(/_/g, " ")
           .split(" ")
           .map((word) => word.charAt(0).toUpperCase() + word.slice(1))

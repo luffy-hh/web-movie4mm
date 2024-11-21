@@ -1,0 +1,30 @@
+@charset "UTF-8";
+
+/*input[type="number"] {*/
+/*    -moz-appearance: textfield;*/
+/*}*/
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-webkit-appearance: none;
+  -ms-webkit-appearance: none;
+  -o-webkit-appearance: none;
+  -khtml-webkit-appearance: none;
+  margin: 0;
+}
+
+.ant-picker-input input::placeholder {
+  @apply dark:!text-white-dark;
+}
+
+.ant-select .ant-select-selection-item {
+  @apply !font-semibold;
+}
+
+/* .ant-select .ant-select-selector {
+  @apply !border-none !shadow-none;
+} */
+
+/* .ant-select-open .ant-select-selector {
+  @apply !border-none;
+} */

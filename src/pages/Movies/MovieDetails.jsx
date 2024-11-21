@@ -14,12 +14,15 @@ import {
 } from "../../app/MovieSlice/MovieSlice.jsx";
 import Loader from "../../components/Loader/Loader.jsx";
 import dayjs from "dayjs";
+import { selectIsDarkMode } from "../../app/ThemeConfig/themeConfigSlice.jsx";
 
 const MovieDetails = () => {
   const location = useLocation();
   const { id, type } = useParams();
+  const playerRef = useRef(null);
   const dispatch = useDispatch();
   const movieDetails = useSelector(movieDetailsSelector);
+  const isDarkMode = useSelector(selectIsDarkMode);
   const movieDetailsStatus = useSelector(movieDetailsStatusSelector);
   const [videoLink, setVideoLink] = useState("");
   const [is_tvseries, setIs_tvseries] = useState(false);
@@ -80,7 +83,7 @@ const MovieDetails = () => {
       }),
     );
   }, [dispatch, is_tvseries, id]);
-  console.log(location, movieDetails, details);
+  console.log(details, playerRef);
 
   useEffect(() => {}, []);
   return (
@@ -90,6 +93,7 @@ const MovieDetails = () => {
       ) : (
         <div className="w-full mx-auto pt-5">
           <Plyr
+            ref={playerRef}
             source={{
               type: "video",
               sources: [
@@ -152,25 +156,56 @@ const MovieDetails = () => {
               </Tag>
             </div>
           )}
-          {is_tvseries &&
-            details.seriesArray.map((item, index) => (
-              <CarouselBox
-                data={item.episodes.map((item) => ({
-                  ...item,
-                  current: item.file_url === videoLink,
-                  poster_url: item.image_url,
-                  tv_name: item.episodes_name,
+          {
+            is_tvseries && (
+              <Tabs
+                // centered={true}
+                tabBarGutter={5}
+                type={"card"}
+                className={`${isDarkMode && "dark"} mt-4`}
+                items={details.seriesArray.map((item) => ({
+                  label: item.seasons_name,
+                  key: item.seasons_id,
+                  children: (
+                    <CarouselBox
+                      data={item.episodes.map((item) => ({
+                        ...item,
+                        current: item.file_url === videoLink,
+                        poster_url: item.image_url,
+                        tv_name: item.episodes_name,
+                      }))}
+                      slidesToShow={5}
+                      slidesToShowSmall={3}
+                      slidesToScroll={3}
+                      title={""}
+                      key={item.seasons_id}
+                      clickAble={true}
+                      infinite={false}
+                      onClick={setVideoLink}
+                    />
+                  ),
                 }))}
-                slidesToShow={5}
-                slidesToShowSmall={3}
-                title={item.seasons_name}
-                key={index}
-                clickAble={true}
-                infinite={false}
-                onClick={setVideoLink}
               />
-            ))}
-          <div>
+            )
+            // details.seriesArray.map((item, index) => (
+            //   <CarouselBox
+            //     data={item.episodes.map((item) => ({
+            //       ...item,
+            //       current: item.file_url === videoLink,
+            //       poster_url: item.image_url,
+            //       tv_name: item.episodes_name,
+            //     }))}
+            //     slidesToShow={5}
+            //     slidesToShowSmall={3}
+            //     title={item.seasons_name}
+            //     key={index}
+            //     clickAble={true}
+            //     infinite={false}
+            //     onClick={setVideoLink}
+            //   />
+            // ))
+          }
+          <div className={isDarkMode && "text-white"}>
             <div className="flex items-center gap-4 mb-4 mt-4">
               <p className="text-xl font-semibold pb-2 border-b-2 border-[#0769b4]">
                 {title}
@@ -183,7 +218,11 @@ const MovieDetails = () => {
               </Tag>
             </div>
           </div>
-          <div className="flex gap-4 flex-col sm:flex-row mb-12">
+          <div
+            className={`flex gap-4 flex-col sm:flex-row mb-12 ${
+              isDarkMode ? "text-white" : ""
+            }`}
+          >
             <div className="min-w-[20rem] h-auto">
               <img src={details.detail.thumbnail_url} alt="thumbnail" />
             </div>
@@ -234,30 +273,6 @@ const MovieDetails = () => {
                         )}
                       </span>
                     ))}
-                  </p>
-                  <p className=" text-left text-wrap leading-6">
-                    <span className="inline-block font-bold text-xl mr-2">
-                      Director:{" "}
-                    </span>
-                    <Link to={"/"} className=" text-indigo-700">
-                      Aung Aung
-                    </Link>
-                    ,
-                    <Link to={"/"} className=" text-indigo-700">
-                      Seong Chang-yeon
-                    </Link>
-                    ,
-                    <Link to={"/"} className=" text-indigo-700">
-                      Jung Myung-sook
-                    </Link>
-                  </p>
-                  <p className=" text-left text-wrap leading-6">
-                    <span className="inline-block font-bold text-xl mr-2">
-                      Writer:
-                    </span>
-                    <Link to={"/"} className=" text-indigo-700">
-                      Jeon Soon-wook
-                    </Link>
                   </p>
                   <p className=" text-left">
                     <span className="inline-block font-bold text-xl mr-2">

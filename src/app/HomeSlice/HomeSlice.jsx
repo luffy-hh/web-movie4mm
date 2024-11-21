@@ -14,10 +14,33 @@ const initialState = {
   allPopularStars: [],
   allPopularStarsStatus: "idle",
   allPopularStarsMsg: "",
+
+  allCountry: [],
+  allCountryStatus: "idle",
+  allCountryMsg: "",
+
+  allTvCategory: [],
+  allTvCategoryStatus: "idle",
+  allTvCategoryMsg: "",
 };
 
 export const fetchAllGenre = createAsyncThunk(
   "home/fetchAllGenre",
+  async ({ api }, thunkApi) => {
+    try {
+      const response = await getData(api);
+      if (response.responseCode !== "000" || response.status === false) {
+        return thunkApi.rejectWithValue(response);
+      }
+      return response;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
+export const fetchAllCountry = createAsyncThunk(
+  "home/fetchAllCountry",
   async ({ api }, thunkApi) => {
     try {
       const response = await getData(api);
@@ -52,6 +75,21 @@ export const getHomeContent = createAsyncThunk(
     try {
       const response = await getData(api);
       console.log(response);
+      if (response.responseCode !== "000" || response.status === false) {
+        return thunkApi.rejectWithValue(response);
+      }
+      return response;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
+export const fetchAllTvCategory = createAsyncThunk(
+  "home/fetchAllTvCategory",
+  async ({ api }, thunkApi) => {
+    try {
+      const response = await getData(api);
       if (response.responseCode !== "000" || response.status === false) {
         return thunkApi.rejectWithValue(response);
       }
@@ -118,6 +156,34 @@ const homeSlice = createSlice({
       .addCase(fetchAllPopularStars.pending, (state) => {
         state.allPopularStarsStatus = "loading";
       });
+
+    builder
+      .addCase(fetchAllCountry.fulfilled, (state, action) => {
+        state.allCountryStatus = "success";
+        state.allCountryMsg = action.payload.responseMessage;
+        state.allCountry = action.payload.data.countries;
+      })
+      .addCase(fetchAllCountry.rejected, (state, action) => {
+        state.allCountryStatus = "failed";
+        state.allCountryMsg = action.payload.responseMessage;
+      })
+      .addCase(fetchAllCountry.pending, (state) => {
+        state.allCountryStatus = "loading";
+      });
+
+    builder
+      .addCase(fetchAllTvCategory.fulfilled, (state, action) => {
+        state.allTvCategoryStatus = "success";
+        state.allTvCategoryMsg = action.payload.responseMessage;
+        state.allTvCategory = action.payload.data.channel_list;
+      })
+      .addCase(fetchAllTvCategory.rejected, (state, action) => {
+        state.allTvCategoryStatus = "failed";
+        state.allTvCategoryMsg = action.payload.responseMessage;
+      })
+      .addCase(fetchAllTvCategory.pending, (state) => {
+        state.allTvCategoryStatus = "loading";
+      });
   },
 });
 
@@ -134,6 +200,13 @@ export const selectAllPopularStarsStatus = (state) =>
   state.home.allPopularStarsStatus;
 export const selectAllPopularStarsMsg = (state) =>
   state.home.allPopularStarsMsg;
+export const selectAllCountry = (state) => state.home.allCountry;
+export const selectAllCountryStatus = (state) => state.home.allCountryStatus;
+export const selectAllCountryMsg = (state) => state.home.allCountryMsg;
+export const selectAllTvCategory = (state) => state.home.allTvCategory;
+export const selectAllTvCategoryStatus = (state) =>
+  state.home.allTvCategoryStatus;
+export const selectAllTvCategoryMsg = (state) => state.home.allTvCategoryMsg;
 
 export const { resetHomeStatus } = homeSlice.actions;
 

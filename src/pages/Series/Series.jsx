@@ -10,15 +10,22 @@ import {
   seriesListStatusSelector,
   seriesListTotalSelector,
 } from "../../app/MovieSlice/MovieSlice.jsx";
+import { selectIsDarkMode } from "../../app/ThemeConfig/themeConfigSlice.jsx";
 
 const Series = () => {
   const dispatch = useDispatch();
   const seriesList = useSelector(seriesListSelector);
   const seriesListTotal = useSelector(seriesListTotalSelector);
   const seriesListStatus = useSelector(seriesListStatusSelector);
+  const isDarkMode = useSelector(selectIsDarkMode);
   const [searchParams, setSearchParams] = useState({
     page: 1,
     type: "movies",
+    sort: "",
+    country: "",
+    category: "",
+    minimum_rating: 0,
+    maximum_rating: 10,
   });
   const [pagination, setPagination] = useState({
     current: 1,
@@ -27,11 +34,20 @@ const Series = () => {
     position: "both",
     align: "center",
     showSizeChanger: false,
-    onChange: (page) => setPagination((prev) => ({ ...prev, current: page })),
+    className: isDarkMode ? "dark" : "",
+    onChange: (page) => {
+      setPagination((prev) => ({ ...prev, current: page }));
+      setSearchParams((prev) => ({ ...prev, page }));
+    },
   });
   useEffect(() => {
-    dispatch(fetchSeriesList({ api: `/tvseries?page=${pagination.current}` }));
-  }, [dispatch, pagination]);
+    dispatch(
+      fetchSeriesList({
+        api: `/tvseries`,
+        reqData: { ...searchParams },
+      }),
+    );
+  }, [dispatch, pagination, searchParams]);
   useEffect(() => {
     setPagination((prev) => ({ ...prev, total: seriesListTotal }));
   }, [seriesListTotal]);
@@ -49,9 +65,10 @@ const Series = () => {
           },
         ]}
         title={"WATCH TV SERIES"}
+        titleClass={`${isDarkMode ? "text-white" : ""}`}
       />
       <div className="flex gap-2 mt-2">
-        <Filters />
+        <Filters setSearchParams={setSearchParams} />
         <GridBox
           pagination={pagination}
           loading={seriesListStatus === "loading"}

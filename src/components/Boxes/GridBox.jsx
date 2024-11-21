@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { addExtraClassNames } from "../../utilities/UtilFunctions";
 import withRouter from "../HOCs/withRouter";
+import { useSelector } from "react-redux";
+import { selectIsDarkMode } from "../../app/ThemeConfig/themeConfigSlice.jsx";
 
 const data = [
   { id: 1, title: "Title 1 Testing" },
@@ -56,12 +58,15 @@ const GridBox = ({
   const handleMaximize = () => {
     setIsMaximized(!isMaximized);
   };
+  const isDarkMode = useSelector(selectIsDarkMode);
   // console.log(pagination);
 
   return (
     <div className={addExtraClassNames(className, "mb-10")}>
       {title && (
-        <div className="flex justify-between p-2">
+        <div
+          className={`flex justify-between p-2 ${isDarkMode && "text-white"}`}
+        >
           <p className="text-2xl mb-2 flex items-center">
             <span className=" inline-block border-b-2 pb-2 border-[#0769b4] mr-6">
               {title}
@@ -144,9 +149,14 @@ const GridBox = ({
                   {/* Play Button Wrapper */}
                   <div
                     onClick={() =>
-                      router.nav(`/watch/${type}/${item.videos_id}`, {
-                        state: { ...item },
-                      })
+                      router.nav(
+                        `/watch/${
+                          item.is_tvseries === "1" ? "tvseries" : "movie"
+                        }/${item.videos_id}`,
+                        {
+                          state: { ...item },
+                        },
+                      )
                     }
                     className="relative w-20 h-20 flex justify-center items-center  rounded-full custom-group"
                   >
@@ -187,6 +197,8 @@ GridBox.propTypes = {
   seeMorePath: PropTypes.string,
   type: PropTypes.string,
   pagination: PropTypes.object || PropTypes.bool,
+  onChange: PropTypes.func,
+  loading: PropTypes.bool,
 };
 const GridBoxWithRouter = withRouter(GridBox);
 export default GridBoxWithRouter;

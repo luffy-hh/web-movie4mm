@@ -9,8 +9,16 @@ import { Layout } from "antd";
 const Header = lazy(() => import("./components/Header.jsx"));
 import Footer from "./components/Footer.jsx";
 import Loader from "../components/Loader/Loader.jsx";
-import { setIsSmallScreen } from "../app/ThemeConfig/themeConfigSlice.jsx";
-import { fetchAllGenre } from "../app/HomeSlice/HomeSlice.jsx";
+import {
+  selectIsDarkMode,
+  setIsSmallScreen,
+} from "../app/ThemeConfig/themeConfigSlice.jsx";
+import {
+  fetchAllCountry,
+  fetchAllGenre,
+  fetchAllTvCategory,
+  getHomeContent,
+} from "../app/HomeSlice/HomeSlice.jsx";
 
 const LayoutCmp = () => {
   const dispatch = useDispatch();
@@ -18,6 +26,7 @@ const LayoutCmp = () => {
   const nav = useNavigate();
   const [showTopButton, setShowTopButton] = useState(false);
   const isSmallScreen = useSelector((state) => state.theme.isSmallScreen);
+  const isDarkMode = useSelector(selectIsDarkMode);
 
   // console.log(carsFull, driversFull);
   // const { car_no } = location.state;
@@ -74,9 +83,15 @@ const LayoutCmp = () => {
     const handleMediaQueryChange = (e) => {
       dispatch(setIsSmallScreen(e.matches));
     };
+    // console.log(mediaQuery);
+
+    // Check if the screen size is small when the component mounts
+    if (mediaQuery.matches) {
+      handleMediaQueryChange({ matches: true });
+    }
 
     // Set the initial value
-    setIsSmallScreen(mediaQuery.matches);
+    dispatch(setIsSmallScreen(mediaQuery.matches));
 
     // Add the listener
     mediaQuery.addEventListener("change", handleMediaQueryChange);
@@ -87,7 +102,10 @@ const LayoutCmp = () => {
     };
   }, [dispatch]);
   useEffect(() => {
+    dispatch(getHomeContent({ api: "/home_content" }));
     dispatch(fetchAllGenre({ api: "/all_genre" }));
+    dispatch(fetchAllCountry({ api: "/all_country" }));
+    dispatch(fetchAllTvCategory({ api: "/all_tv_channel_categories" }));
   }, [dispatch]);
 
   useEffect(() => {
@@ -97,7 +115,7 @@ const LayoutCmp = () => {
   useEffect(() => {}, []);
   return (
     <Suspense fallback={<Loader spin={true} fullscreen={true} />}>
-      <Layout className=" antialiased">
+      <Layout className={`antialiased ${isDarkMode ? "bg-zinc-900" : ""}`}>
         <div
           className={`fixed ${
             showTopButton ? "move-to-top" : "move-to-bottom"
@@ -132,7 +150,9 @@ const LayoutCmp = () => {
           setIsSmallScreen={setIsSmallScreen}
         />
         <Content
-          className={`${isSmallScreen ? "px-2 w-full" : "w-[70%] mx-auto"}`}
+          className={`${
+            isSmallScreen ? "px-2 w-full" : "w-[70%] mx-auto"
+          } ${isDarkMode ? "bg-zinc-900" : ""}`}
         >
           <Outlet />
         </Content>

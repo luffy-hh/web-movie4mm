@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Radio } from "antd";
 import { FaDotCircle } from "react-icons/fa";
 import CarouselBox from "../../components/Boxes/CarouselBox";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchTvDetails,
@@ -20,7 +20,8 @@ import { toast } from "react-toastify";
 const LiveTvDetail = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const [sourceUrl, setSourceUrl] = useState(location.state.stream_url);
+  const nav = useNavigate();
+  const [sourceUrl, setSourceUrl] = useState(location.state?.stream_url);
   const [type, setType] = useState("tv");
   const [options, setOptions] = useState([]);
   const id = location.pathname.split("/").pop();
@@ -49,8 +50,10 @@ const LiveTvDetail = () => {
     if (location.state) {
       setSourceUrl(location.state.stream_url);
     }
-    if (location.state) {
+    if (location.state?.type) {
       setType(location.state.type);
+    } else {
+      nav("/");
     }
   }, [tvDetails, location]);
   useEffect(() => {

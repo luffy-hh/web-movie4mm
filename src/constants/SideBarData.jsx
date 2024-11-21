@@ -1,6 +1,8 @@
 import { Badge } from "antd";
 
-export const sideBarData = (genres) => {
+export const sideBarData = (genres, categories) => {
+  // console.log(categories);
+
   return [
     {
       label: "Home",
@@ -89,36 +91,7 @@ export const sideBarData = (genres) => {
       // icon: <FaCaretDown />,
       // icon: ,
       key: "live-tv",
-      children: [
-        {
-          label: "ALL CHANNELS",
-          key: "",
-        },
-        {
-          label: "LIVE NOW",
-          key: "/live_now",
-        },
-        {
-          label: "SPORTS",
-          key: "/sports",
-        },
-        {
-          label: "MOVIE",
-          key: "/movie",
-        },
-        {
-          label: "KIDS",
-          key: "/kids",
-        },
-        {
-          label: "NEWS",
-          key: "/news",
-        },
-        {
-          label: "DOCUMENTARY",
-          key: "/documentary_tv",
-        },
-      ],
+      children: categories,
     },
   ];
 };

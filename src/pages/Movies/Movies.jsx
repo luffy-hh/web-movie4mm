@@ -11,6 +11,7 @@ import {
   movieListStatusSelector,
   movieListTotalSelector,
 } from "../../app/MovieSlice/MovieSlice.jsx";
+import { selectIsDarkMode } from "../../app/ThemeConfig/themeConfigSlice.jsx";
 
 const Filters = lazy(() => import("../../components/Filters/Filters.jsx"));
 
@@ -19,9 +20,14 @@ const Movies = () => {
   const movieList = useSelector(movieListSelector);
   const movieListStatus = useSelector(movieListStatusSelector);
   const movieListTotal = useSelector(movieListTotalSelector);
+  const isDarkMode = useSelector(selectIsDarkMode);
   const [searchParams, setSearchParams] = useState({
     page: 1,
-    type: "movies",
+    sort: "",
+    category: "",
+    country: "",
+    minimum_rating: 0,
+    maximum_rating: 10,
   });
   const [pagination, setPagination] = useState({
     current: 1,
@@ -30,12 +36,21 @@ const Movies = () => {
     position: "both",
     align: "center",
     showSizeChanger: false,
-    onChange: (page) => setPagination((prev) => ({ ...prev, current: page })),
+    className: isDarkMode ? "dark" : "",
+    onChange: (page) => {
+      setPagination((prev) => ({ ...prev, current: page }));
+      setSearchParams((prev) => ({ ...prev, page }));
+    },
   });
 
   useEffect(() => {
-    dispatch(fetchMovieList({ api: `/movies?page=${pagination.current}` }));
-  }, [dispatch, pagination]);
+    dispatch(
+      fetchMovieList({
+        api: `/movies`,
+        reqData: { ...searchParams },
+      }),
+    );
+  }, [dispatch, pagination, searchParams]);
   useEffect(() => {
     setPagination((prev) => ({ ...prev, total: movieListTotal }));
   }, [movieListTotal]);
@@ -54,10 +69,11 @@ const Movies = () => {
           },
         ]}
         title={"WATCH MOVIES"}
+        titleClass={`${isDarkMode ? "text-white" : ""}`}
       />
       <div className="flex gap-2 mt-2">
         <Suspense fallback={<Loader spin={true} />}>
-          <Filters />
+          <Filters setSearchParams={setSearchParams} />
 
           <GridBox
             loading={movieListStatus === "loading"}

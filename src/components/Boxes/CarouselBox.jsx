@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { addExtraClassNames } from "../../utilities/UtilFunctions";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { selectIsDarkMode } from "../../app/ThemeConfig/themeConfigSlice.jsx";
 
 const CarouselBox = ({
   slidesToScroll = 1,
@@ -20,6 +21,7 @@ const CarouselBox = ({
   onClick = () => {},
   infinite = true,
 }) => {
+  const isDarkMode = useSelector(selectIsDarkMode);
   const isSmallScreen = useSelector((state) => state.theme.isSmallScreen);
   const carouselRef = useRef();
   const next = () => {
@@ -36,7 +38,11 @@ const CarouselBox = ({
       className={addExtraClassNames("w-full mx-auto my-16 ", wrapperClassName)}
     >
       <div className="flex items-center justify-between mb-4">
-        <p className="text-xl font-semibold pb-2 border-b-2 border-[#0769b4]">
+        <p
+          className={`${
+            isDarkMode && "text-white"
+          } text-xl font-semibold pb-2 border-b-2 border-[#0769b4]`}
+        >
           {title}
         </p>
         <div className="flex gap-2">
@@ -63,14 +69,14 @@ const CarouselBox = ({
           if (clickAble) {
             return (
               <div
-                className="text-blue-700 hover:text-slate-500 relative cursor-pointer mr-5"
+                className=" bg-gray-500 hover:text-slate-200 relative shadow-lg cursor-pointer p-2 mr-5"
                 key={i}
                 onClick={() => onClick(item.file_url)}
               >
                 {item?.current && (
                   <p
                     className={
-                      "absolute top-0 left-2 p-2 bg-yellow-200 text-black font-xl font-bold"
+                      "absolute top-2 left-2 p-2 bg-yellow-200 text-black font-xl font-bold"
                     }
                   >
                     Playing...
