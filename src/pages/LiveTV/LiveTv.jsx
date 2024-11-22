@@ -18,7 +18,6 @@ const LiveTv = () => {
   useEffect(() => {
     dispatch(fetchAllChannelByCategory({ api: "/all_tv_channel_by_category" }));
   }, []);
-  console.log(allChannelByCategory);
 
   return (
     <>

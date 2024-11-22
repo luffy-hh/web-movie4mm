@@ -20,7 +20,6 @@ const Genre = () => {
   const listByGenreTotal = useSelector(listByGenreTotalSelector);
   const location = useLocation();
   const { type } = location.state;
-  console.log(location);
 
   const routes = [
     {
@@ -57,7 +56,6 @@ const Genre = () => {
       }),
     );
   }, [pagination, dispatch, id]);
-  console.log(listByGenreId);
 
   //   console.log(type);
   return (

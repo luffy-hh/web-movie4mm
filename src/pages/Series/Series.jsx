@@ -20,6 +20,8 @@ import { Drawer } from "antd";
 const Series = () => {
   const dispatch = useDispatch();
   const seriesList = useSelector(seriesListSelector);
+  // console.log(seriesList);
+
   const seriesListTotal = useSelector(seriesListTotalSelector);
   const seriesListStatus = useSelector(seriesListStatusSelector);
   const isDarkMode = useSelector(selectIsDarkMode);

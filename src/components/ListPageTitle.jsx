@@ -19,7 +19,14 @@ const ListPageTitle = ({ routes, title, titleClass = "" }) => {
   };
   return (
     <div className="flex justify-between">
-      <p className={addExtraClassNames("text-3xl ", titleClass)}>{title}</p>
+      <p
+        className={addExtraClassNames(
+          `${isDarkMode && "text-white"} text-3xl`,
+          titleClass,
+        )}
+      >
+        {title}
+      </p>
       <Breadcrumb items={items(routes)} className={isDarkMode && "dark"} />
     </div>
   );

@@ -11,7 +11,7 @@ const LivePlayer = ({ url }) => {
 
     // Cleanup function to stop playing when the component unmounts
     return () => {
-      console.log("unmounted");
+      // console.log("unmounted");
 
       setIsPlaying(false);
     };

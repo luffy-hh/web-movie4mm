@@ -26,11 +26,11 @@ const LiveTvDetail = () => {
   const [options, setOptions] = useState([]);
   const id = location.pathname.split("/").pop();
   // const { id } = useParams();
-  console.log(id);
+  // console.log(id);
 
   const tvDetails = useSelector(tvDetailsSelector);
   const tvDetailsStatus = useSelector(tvDetailsStatusSelector);
-  console.log(tvDetails, location);
+  // console.log(tvDetails, location);
   useEffect(() => {
     if (
       Object.keys(tvDetails).length > 0 &&
@@ -57,7 +57,7 @@ const LiveTvDetail = () => {
     }
   }, [tvDetails, location]);
   useEffect(() => {
-    console.log("worked");
+    // console.log("worked");
     dispatch(fetchTvDetails({ api: `/single_details?id=${id}&type=${type}` }));
   }, [dispatch, id, type]);
   useEffect(() => {

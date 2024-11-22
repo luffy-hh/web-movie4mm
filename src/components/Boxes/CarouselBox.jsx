@@ -26,7 +26,7 @@ const CarouselBox = ({
   const carouselRef = useRef();
   const next = () => {
     carouselRef.current.next();
-    console.log(carouselRef.current);
+    // console.log(carouselRef.current);
   };
 
   const prev = () => {
@@ -131,7 +131,7 @@ CarouselBox.propTypes = {
   arrows: PropTypes.bool,
   carouselClassName: PropTypes.string,
   title: PropTypes.string.isRequired,
-  data: PropTypes.array.isRequired,
+  data: PropTypes.array,
   wrapperClassName: PropTypes.string,
   imgClassName: PropTypes.string,
   clickAble: PropTypes.bool,

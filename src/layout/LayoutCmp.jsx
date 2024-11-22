@@ -124,7 +124,11 @@ const LayoutCmp = () => {
   useEffect(() => {}, []);
   return (
     <Suspense fallback={<Loader spin={true} fullscreen={true} />}>
-      <Layout className={`antialiased ${isDarkMode ? "bg-zinc-900" : ""}`}>
+      <Layout
+        className={`antialiased min-h-[100vh] ${
+          isDarkMode ? "bg-zinc-900" : ""
+        }`}
+      >
         <div
           className={`fixed ${
             showTopButton ? "move-to-top" : "move-to-bottom"

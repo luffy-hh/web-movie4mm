@@ -11,7 +11,6 @@ const LiveTvCategory = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const channelList = useSelector(selectChannelByEachCategory);
-  console.log(channelList);
 
   const { id } = useParams();
   const { type } = location.state;

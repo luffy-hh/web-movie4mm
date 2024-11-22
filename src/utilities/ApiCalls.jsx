@@ -1,30 +1,31 @@
-import {expireToken} from './UtilFunctions';
-import {json} from 'react-router-dom';
+import { expireToken } from "./UtilFunctions";
+import { json } from "react-router-dom";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const headers = {
-  'API-KEY': import.meta.env.VITE_API_KEY,
+  "API-KEY": import.meta.env.VITE_API_KEY,
 };
 
 export const getDataWithToken = async (api) => {
   // console.log("api>>", BASE_URL + api);
   try {
     const response = await fetch(BASE_URL + api, {
-      method: 'GET',
+      method: "GET",
       // mode:"no-cors",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
         ...headers,
       },
     });
     if (response.status === 401) {
       expireToken();
     }
-    console.log(`${api}>> Get:`, response);
+    // console.log(`${api}>> Get:`, response);
     return await response.json();
   } catch (error) {
-    throw new Error('Error Getting Data', error);
+    console.log(error);
+    throw new Error("Error Getting Data", error);
   }
 };
 
@@ -32,7 +33,7 @@ export const getData = async (api) => {
   // console.log("api>>", BASE_URL + api);
   try {
     const response = await fetch(BASE_URL + api, {
-      method: 'GET',
+      method: "GET",
       // mode:"no-cors",
       headers: {
         ...headers,
@@ -41,18 +42,19 @@ export const getData = async (api) => {
     if (response.status === 401) {
       expireToken();
     }
-    console.log(`${api}>> Get:`, response);
+    // console.log(`${api}>> Get:`, response);
     return await response.json();
   } catch (error) {
-    throw new Error('Error Getting Data', error);
+    console.log(error);
+    throw new Error("Error Getting Data", error);
   }
 };
 
 export const postData = async (api, postData) => {
-  console.log(JSON.stringify(postData));
+  // console.log(JSON.stringify(postData));
   try {
     const response = await fetch(BASE_URL + api, {
-      method: 'POST',
+      method: "POST",
       // mode:"no-cors",
       headers: {
         ...headers,
@@ -67,18 +69,18 @@ export const postData = async (api, postData) => {
     return await response.json();
   } catch (error) {
     console.log(error);
-    throw new Error('Error in post request');
+    throw new Error("Error in post request");
   }
 };
 export const postDataWithToken = async (api, postData) => {
   try {
     // console.log(postData);
     const response = await fetch(BASE_URL + api, {
-      method: 'POST',
+      method: "POST",
       // mode:"no-cors",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
       },
       body: JSON.stringify(postData),
     });
@@ -88,8 +90,8 @@ export const postDataWithToken = async (api, postData) => {
     // console.log(`${api}>> Post:`, response);
     return await response.json();
   } catch (error) {
-    // console.log(error.stack);
-    throw new Error('Error in post request', error);
+    console.log(error);
+    throw new Error("Error in post request", error);
   }
 };
 
@@ -114,10 +116,10 @@ export const postMultipartDataWithToken = async (api, postData) => {
   try {
     // console.log(postData);
     const response = await fetch(BASE_URL + api, {
-      method: 'POST',
+      method: "POST",
       // mode:"no-cors",
       headers: {
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`,
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
       },
       body: formData,
     });
@@ -128,13 +130,13 @@ export const postMultipartDataWithToken = async (api, postData) => {
     // console.log(`${api}>> Post Multi:`, dataResponse);
     return await response.json();
   } catch (error) {
-    // console.log(error.stack);
-    throw new Error('Error in post request', error);
+    console.log(error);
+    throw new Error("Error in post request", error);
   }
 };
 
 export const postMultipartData = async (api, postData) => {
-  console.log(api, postData);
+  // console.log(api, postData);
 
   let formData = new FormData();
   // console.log(postData);
@@ -156,7 +158,7 @@ export const postMultipartData = async (api, postData) => {
   try {
     // console.log(postData);
     const response = await fetch(BASE_URL + api, {
-      method: 'POST',
+      method: "POST",
       // mode:"no-cors",
       headers: {
         ...headers,
@@ -170,19 +172,19 @@ export const postMultipartData = async (api, postData) => {
     // console.log(`${api}>> Post Multi:`, dataResponse);
     return await response.json();
   } catch (error) {
-    // console.log(error.stack);
-    throw new Error('Error in post request', error);
+    console.log(error);
+    throw new Error("Error in post request", error);
   }
 };
 
 export const deleteDataWithToken = async (api) => {
   try {
     const response = await fetch(BASE_URL + api, {
-      method: 'DELETE',
+      method: "DELETE",
       // mode:"no-cors",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
       },
     });
     if (response.status === 401) {
@@ -193,6 +195,7 @@ export const deleteDataWithToken = async (api) => {
 
     return await response.json();
   } catch (error) {
-    throw new Error('Error in delete request', error);
+    console.log(error);
+    throw new Error("Error in delete request", error);
   }
 };

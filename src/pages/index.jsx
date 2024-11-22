@@ -32,7 +32,6 @@ const Home = () => {
   const movieList = useSelector(getMovieList);
   const popularStars = useSelector(getPopularStars);
   const featuredTvChannels = useSelector(getFeaturedTvChannels);
-  console.log(popularStars, slider);
 
   useEffect(() => {
     dispatch(getHomeContent({ api: "/home_content" }));
