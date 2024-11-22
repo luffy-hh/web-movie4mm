@@ -18,6 +18,7 @@ import {
   setTheme,
 } from "../../app/ThemeConfig/themeConfigSlice.jsx";
 import { LuMoon, LuSun } from "react-icons/lu";
+import Search from "antd/es/input/Search.js";
 
 const { Header: AntHeader } = Layout;
 
@@ -28,6 +29,7 @@ const Header = ({ router }) => {
   const isSmallScreen = useSelector((state) => state.theme.isSmallScreen);
   const [renderScreen, setRenderScreen] = useState(false);
   const [categorySelectList, setCategorySelectList] = useState([]);
+  const [keyword, setKeyword] = useState("");
   // console.log(isSmallScreen, sideBarData);
   const genreList = useSelector(getAllGenres);
   const theme = useSelector(selectTheme);
@@ -152,24 +154,13 @@ const Header = ({ router }) => {
   };
 
   const menuItemClickHandler = (e) => {
-    console.log(e);
+    // console.log(e);
 
     const selectedKey = (e.keyPath[1] ? e.keyPath[1] : "") + e?.keyPath[0];
-    // const selectedItem = sideBarData(genreList, categorySelectList).reduce(
-    //   (acc,item) => {
-    //
-    //     if (item.children) {
-    //       return item.children.find((child) => child.key === e.keyPath[0]);
-    //       // console.log(findItem);
-    //     } else {
-    //       return item.key === e.keyPath[0];
-    //     }
-    //   },null
-    // );
     const selectedItem = sideBarData(genreList, categorySelectList)
       .flatMap((item) => (item.children ? item.children : []))
       .find((child) => child.key === e.keyPath[0]);
-    console.log(selectedItem, selectedKey, e?.keyPath[0]);
+    // console.log(selectedItem, selectedKey, e?.keyPath[0]);
     const column = selectedItem ? selectedItem.column : null;
     // console.log(column);
 
@@ -198,14 +189,14 @@ const Header = ({ router }) => {
         </div>
       )}
       {!isSmallScreen && (
-        <div className="flex items-center justify-center gap-4 flex-wrap">
+        <div className="flex items-center justify-center gap-2 flex-wrap">
           <Menu
             className={`${
               isDarkMode ? "" : "bg-gray-400"
-            } flex items-center justify-center gap-4 flex-wrap`}
+            } flex items-center justify-center gap-4`}
             onClick={(e) => {
               setOpenDrawer(false);
-              console.log(e);
+              // console.log(e);
 
               router.nav((e.keyPath[1] ? e.keyPath[1] : "") + e?.keyPath[0], {
                 state: {
@@ -218,9 +209,24 @@ const Header = ({ router }) => {
             theme={isDarkMode ? "dark" : "light"}
             items={sideBarData(genreList, categorySelectList)}
           />
-          <CustomInput placeholder="Search" className={"w-[20rem]"} />
+          <Search
+            placeholder="Search"
+            className={"w-[20rem]"}
+            value={keyword}
+            onSearch={(value) => {
+              // console.log(value);
+
+              router.nav(`/search`, {
+                state: {
+                  keyword,
+                },
+              });
+            }}
+            enterButton={true}
+            onChange={(e) => setKeyword(e.target.value)}
+          />
           <div>
-            {theme === "light" ? (
+            {theme === "light" && (
               <button
                 className={`${
                   theme === "light" &&
@@ -232,8 +238,6 @@ const Header = ({ router }) => {
               >
                 <LuSun />
               </button>
-            ) : (
-              ""
             )}
             {theme === "dark" && (
               <button
@@ -290,12 +294,30 @@ const Header = ({ router }) => {
         }}
         open={openDrawer}
       >
-        <Menu
-          mode="inline"
-          theme={isDarkMode ? "dark" : "light"}
-          items={transformMenuItems(sideBarData(genreList, categorySelectList))}
-          onClick={menuItemClickHandler}
-        />
+        <div className={"flex flex-col"}>
+          <Search
+            placeholder="Search"
+            className={"w-[80%] mx-auto"}
+            onSearch={(value) => {
+              router.nav(`/search`, {
+                state: {
+                  keyword,
+                },
+              });
+            }}
+            enterButton={true}
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+          />
+          <Menu
+            mode="inline"
+            theme={isDarkMode ? "dark" : "light"}
+            items={transformMenuItems(
+              sideBarData(genreList, categorySelectList),
+            )}
+            onClick={menuItemClickHandler}
+          />
+        </div>
       </Drawer>
     </AntHeader>
   );

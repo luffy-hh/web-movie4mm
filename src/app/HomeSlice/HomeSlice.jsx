@@ -22,7 +22,26 @@ const initialState = {
   allTvCategory: [],
   allTvCategoryStatus: "idle",
   allTvCategoryMsg: "",
+
+  allSearchResults: {},
+  allSearchResultsStatus: "idle",
+  allSearchResultsMsg: "",
 };
+
+export const fetchSearchAll = createAsyncThunk(
+  "home/fetchSearchAll",
+  async ({ api }, thunkApi) => {
+    try {
+      const response = await getData(api);
+      if (response.responseCode !== "000" || response.status === false) {
+        return thunkApi.rejectWithValue(response);
+      }
+      return response;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
 
 export const fetchAllGenre = createAsyncThunk(
   "home/fetchAllGenre",
@@ -74,7 +93,7 @@ export const getHomeContent = createAsyncThunk(
   async ({ api }, thunkApi) => {
     try {
       const response = await getData(api);
-      console.log(response);
+      // console.log(response);
       if (response.responseCode !== "000" || response.status === false) {
         return thunkApi.rejectWithValue(response);
       }
@@ -184,6 +203,20 @@ const homeSlice = createSlice({
       .addCase(fetchAllTvCategory.pending, (state) => {
         state.allTvCategoryStatus = "loading";
       });
+
+    builder
+      .addCase(fetchSearchAll.fulfilled, (state, action) => {
+        state.allSearchResultsStatus = "success";
+        state.allSearchResultsMsg = action.payload.responseMessage;
+        state.allSearchResults = action.payload.data;
+      })
+      .addCase(fetchSearchAll.rejected, (state, action) => {
+        state.allSearchResultsStatus = "failed";
+        state.allSearchResultsMsg = action.payload.responseMessage;
+      })
+      .addCase(fetchSearchAll.pending, (state) => {
+        state.allSearchResultsStatus = "loading";
+      });
   },
 });
 
@@ -207,6 +240,11 @@ export const selectAllTvCategory = (state) => state.home.allTvCategory;
 export const selectAllTvCategoryStatus = (state) =>
   state.home.allTvCategoryStatus;
 export const selectAllTvCategoryMsg = (state) => state.home.allTvCategoryMsg;
+export const selectAllSearchResults = (state) => state.home.allSearchResults;
+export const selectAllSearchResultsStatus = (state) =>
+  state.home.allSearchResultsStatus;
+export const selectAllSearchResultsMsg = (state) =>
+  state.home.allSearchResultsMsg;
 
 export const { resetHomeStatus } = homeSlice.actions;
 
