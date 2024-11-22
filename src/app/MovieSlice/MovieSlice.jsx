@@ -30,7 +30,47 @@ const inititalState = {
   listByGenreStatus: null,
   listByGenreMsg: null,
   listByGenreTotal: 0,
+
+  contentByStars: [],
+  contentByStarsTotal: 0,
+  contentByStarsStatus: null,
+  contentByStarsMsg: null,
+
+  contentByCountry: [],
+  contentByCountryTotal: 0,
+  contentByCountryStatus: null,
+  contentByCountryMsg: null,
 };
+
+export const fetchContentByCountry = createAsyncThunk(
+  "movie/getContentByCountry",
+  async ({ api }, thunkApi) => {
+    try {
+      const response = await getData(api);
+      if (response.responseCode !== "000" || response.status === false) {
+        return thunkApi.rejectWithValue(response);
+      }
+      return response;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
+export const fetchContentByStars = createAsyncThunk(
+  "movie/getContentByStars",
+  async ({ api }, thunkApi) => {
+    try {
+      const response = await getData(api);
+      if (response.responseCode !== "000" || response.status === false) {
+        return thunkApi.rejectWithValue(response);
+      }
+      return response;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
 
 export const fetchMovieDetails = createAsyncThunk(
   "movie/getMovieDetails",
@@ -165,8 +205,6 @@ const movieSlice = createSlice({
       })
       .addCase(fetchTvDetails.fulfilled, (state, action) => {
         state.tvDetailsStatus = "success";
-        console.log(action.payload);
-
         state.tvDetails = action.payload.data.detail;
       })
       .addCase(fetchTvDetails.rejected, (state, action) => {
@@ -187,6 +225,34 @@ const movieSlice = createSlice({
       .addCase(fetchByGenreId.rejected, (state, action) => {
         state.listByGenreStatus = "failed";
         state.listByGenreMsg = action.payload.responseMessage;
+      });
+    builder
+      .addCase(fetchContentByStars.pending, (state) => {
+        state.contentByStarsStatus = "loading";
+      })
+      .addCase(fetchContentByStars.fulfilled, (state, action) => {
+        state.contentByStarsStatus = "success";
+        state.contentByStars = action.payload.data.content_star;
+        state.contentByStarsTotal = action.payload.data.total_count;
+        state.contentByStarsMsg = action.payload.responseMessage;
+      })
+      .addCase(fetchContentByStars.rejected, (state, action) => {
+        state.contentByStarsStatus = "failed";
+        state.contentByStarsMsg = action.payload.responseMessage;
+      });
+    builder
+      .addCase(fetchContentByCountry.pending, (state) => {
+        state.contentByCountryStatus = "loading";
+      })
+      .addCase(fetchContentByCountry.fulfilled, (state, action) => {
+        state.contentByCountryStatus = "success";
+        state.contentByCountry = action.payload.data.content_country;
+        state.contentByCountryTotal = action.payload.data.total_count;
+        state.contentByCountryMsg = action.payload.responseMessage;
+      })
+      .addCase(fetchContentByCountry.rejected, (state, action) => {
+        state.contentByCountryStatus = "failed";
+        state.contentByCountryMsg = action.payload.responseMessage;
       });
   },
 });
@@ -211,4 +277,18 @@ export const listByGenreStatusSelector = (state) =>
   state.movie.listByGenreStatus;
 export const listByGenreTotalSelector = (state) => state.movie.listByGenreTotal;
 export const listByGenreMsgSelector = (state) => state.movie.listByGenreMsg;
+export const contentByStarsSelector = (state) => state.movie.contentByStars;
+export const contentByStarsStatusSelector = (state) =>
+  state.movie.contentByStarsStatus;
+export const contentByStarsMsgSelector = (state) =>
+  state.movie.contentByStarsMsg;
+export const contentByStarsTotalSelector = (state) =>
+  state.movie.contentByStarsTotal;
+export const contentByCountrySelector = (state) => state.movie.contentByCountry;
+export const contentByCountryStatusSelector = (state) =>
+  state.movie.contentByCountryStatus;
+export const contentByCountryMsgSelector = (state) =>
+  state.movie.contentByCountryMsg;
+export const contentByCountryTotalSelector = (state) =>
+  state.movie.contentByCountryTotal;
 export default movieSlice.reducer;

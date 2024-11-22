@@ -83,7 +83,7 @@ const MovieDetails = () => {
       }),
     );
   }, [dispatch, id, type]);
-  console.log(details, playerRef);
+  // console.log(details, playerRef);
 
   useEffect(() => {}, []);
   return (
@@ -108,6 +108,8 @@ const MovieDetails = () => {
               controls: [
                 "play-large",
                 "play",
+                "rewind",
+                "fast-forward",
                 "progress",
                 "current-time",
                 "mute",
@@ -119,6 +121,11 @@ const MovieDetails = () => {
                 "fullscreen",
               ],
               settings: ["captions", "quality", "speed"],
+              i18n: {
+                rewind: "Rewind 10 seconds",
+                fastForward: "Fast forward 10 seconds",
+              },
+              seekTime: 10,
               quality: {
                 default: 1080,
                 options: [240, 360, 480, 720, 1080],
@@ -140,7 +147,7 @@ const MovieDetails = () => {
                 }))}
                 value={videoLink}
                 onChange={(e) => {
-                  console.log(e);
+                  // console.log(e);
 
                   setVideoLink(e.target.value);
                 }}
@@ -156,55 +163,36 @@ const MovieDetails = () => {
               </Tag>
             </div>
           )}
-          {
-            is_tvseries && (
-              <Tabs
-                // centered={true}
-                tabBarGutter={5}
-                type={"card"}
-                className={`${isDarkMode && "dark"} mt-4`}
-                items={details.seriesArray.map((item) => ({
-                  label: item.seasons_name,
-                  key: item.seasons_id,
-                  children: (
-                    <CarouselBox
-                      data={item.episodes.map((item) => ({
-                        ...item,
-                        current: item.file_url === videoLink,
-                        poster_url: item.image_url,
-                        tv_name: item.episodes_name,
-                      }))}
-                      slidesToShow={5}
-                      slidesToShowSmall={3}
-                      slidesToScroll={3}
-                      title={""}
-                      key={item.seasons_id}
-                      clickAble={true}
-                      infinite={false}
-                      onClick={setVideoLink}
-                    />
-                  ),
-                }))}
-              />
-            )
-            // details.seriesArray.map((item, index) => (
-            //   <CarouselBox
-            //     data={item.episodes.map((item) => ({
-            //       ...item,
-            //       current: item.file_url === videoLink,
-            //       poster_url: item.image_url,
-            //       tv_name: item.episodes_name,
-            //     }))}
-            //     slidesToShow={5}
-            //     slidesToShowSmall={3}
-            //     title={item.seasons_name}
-            //     key={index}
-            //     clickAble={true}
-            //     infinite={false}
-            //     onClick={setVideoLink}
-            //   />
-            // ))
-          }
+          {is_tvseries && (
+            <Tabs
+              // centered={true}
+              tabBarGutter={5}
+              type={"card"}
+              className={`${isDarkMode && "dark"} mt-4`}
+              items={details.seriesArray.map((item) => ({
+                label: item.seasons_name,
+                key: item.seasons_id,
+                children: (
+                  <CarouselBox
+                    data={item.episodes.map((item) => ({
+                      ...item,
+                      current: item.file_url === videoLink,
+                      poster_url: item.image_url,
+                      tv_name: item.episodes_name,
+                    }))}
+                    slidesToShow={5}
+                    slidesToShowSmall={3}
+                    slidesToScroll={3}
+                    title={""}
+                    key={item.seasons_id}
+                    clickAble={true}
+                    infinite={false}
+                    onClick={setVideoLink}
+                  />
+                ),
+              }))}
+            />
+          )}
           <div className={isDarkMode && "text-white"}>
             <div className="flex items-center gap-4 mb-4 mt-4">
               <p className="text-xl font-semibold pb-2 border-b-2 border-[#0769b4]">
@@ -224,7 +212,11 @@ const MovieDetails = () => {
             }`}
           >
             <div className="min-w-[20rem] h-auto">
-              <img src={details.detail.thumbnail_url} alt="thumbnail" />
+              <img
+                src={details.detail.thumbnail_url}
+                alt="thumbnail"
+                className={"h-[10rem] sm:h-auto"}
+              />
             </div>
             <div className="flex flex-col">
               <p className="text-xl font-semibold">{title}</p>
@@ -250,7 +242,12 @@ const MovieDetails = () => {
                     </span>
                     {details.genreArray.map((item, index) => (
                       <span key={index}>
-                        <Link to={"/"} key={index} className=" text-indigo-700">
+                        <Link
+                          to={`/genre/${item.genre_id}`}
+                          state={{ ...item, type: item.name }}
+                          key={index}
+                          className=" text-indigo-700"
+                        >
                           {item.name}
                         </Link>
                         {index < details.genreArray.length - 1 && (
@@ -265,7 +262,12 @@ const MovieDetails = () => {
                     </span>
                     {details.actorArray.map((item, index) => (
                       <span key={index}>
-                        <Link to={"/"} key={index} className=" text-indigo-700">
+                        <Link
+                          to={`/content-by-star/${item.star_id}`}
+                          state={{ ...item }}
+                          key={index}
+                          className=" text-indigo-700"
+                        >
                           {item.name}
                         </Link>
                         {index < details.actorArray.length - 1 && (
@@ -280,7 +282,12 @@ const MovieDetails = () => {
                     </span>
                     {details.countryArray.map((item, index) => (
                       <span key={index}>
-                        <Link to={"/"} key={index} className=" text-indigo-700">
+                        <Link
+                          to={`/country/${item.country_id}`}
+                          state={{ ...item }}
+                          key={index}
+                          className=" text-indigo-700"
+                        >
                           {item.name}
                         </Link>
                         {index < details.countryArray.length - 1 && (

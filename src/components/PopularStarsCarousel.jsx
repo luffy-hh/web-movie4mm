@@ -14,7 +14,7 @@ const PopularStarsCarousel = () => {
   const isSmallScreen = useSelector((state) => state.theme.isSmallScreen);
   const next = () => {
     carouselRef.current.next();
-    console.log(carouselRef.current);
+    // console.log(carouselRef.current);
   };
 
   const prev = () => {
@@ -67,7 +67,7 @@ const PopularStarsCarousel = () => {
                 className={"w-full rounded-xl"}
               />
             </div>
-            <Link to={`/watch-live/${star.live_tv_id}`} state={{ ...star }}>
+            <Link to={`/content-by-star/${star.star_id}`} state={{ ...star }}>
               <p className="text-center mt-4 text-xl">{star.star_name}</p>
             </Link>
           </div>

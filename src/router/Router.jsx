@@ -17,6 +17,9 @@ const NotFoundPage = lazy(() => import("../pages/NotFoundPage"));
 import Home from "../pages";
 import Login from "../pages/Login.jsx";
 import PopularStars from "../pages/PopularStars/PopularStars.jsx";
+import Search from "../pages/Search/Search.jsx";
+import ContentByPopularStars from "../pages/PopularStars/ContentByPopularStars.jsx";
+import Country from "../pages/Country/Country.jsx";
 
 const Router = () => {
   // const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -40,6 +43,12 @@ const Router = () => {
             <Route path="live-tv/:id" element={<LiveTvCategory />} />
             <Route path="watch-live/:id" element={<LiveTvDetail />} />
             <Route path={"popular-stars"} element={<PopularStars />} />
+            <Route
+              path={"content-by-star/:id"}
+              element={<ContentByPopularStars />}
+            />
+            <Route path={"country/:id"} element={<Country />} />
+            <Route path={"search"} element={<Search />} />
           </Route>
           <Route path={"/login"} element={<Login />} />
           <Route path="*" element={<NotFoundPage />} />

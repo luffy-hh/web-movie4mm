@@ -10,6 +10,7 @@ import { Input, List, Tag } from "antd";
 import { Link } from "react-router-dom";
 import { FaAngleDoubleRight } from "react-icons/fa";
 import Loader from "../../components/Loader/Loader.jsx";
+import { selectIsDarkMode } from "../../app/ThemeConfig/themeConfigSlice.jsx";
 
 const PopularStars = () => {
   const dispatch = useDispatch();
@@ -19,8 +20,9 @@ const PopularStars = () => {
     dispatch(fetchAllPopularStars({ api: "/popular_stars" }));
   }, []);
   const popularStars = useSelector(selectAllPopularStars);
+  const isDarkMode = useSelector(selectIsDarkMode);
   const allPopularStarsStatus = useSelector(selectAllPopularStarsStatus);
-  console.log(popularStars);
+  // console.log(popularStars);
   useEffect(() => {
     if (search) {
       const filteredData = popularStars.filter((star) =>
@@ -34,7 +36,11 @@ const PopularStars = () => {
 
   return (
     <>
-      <div className="flex justify-between p-2 mb-4">
+      <div
+        className={`flex justify-between p-2 mb-4 ${
+          isDarkMode && "text-white"
+        }`}
+      >
         <p className="text-2xl mb-2 flex items-center">
           <span className=" inline-block border-b-2 pb-2 border-[#0769b4] mr-6">
             Popular Stars
@@ -64,12 +70,16 @@ const PopularStars = () => {
           // className=""
           renderItem={(item) => (
             <List.Item>
-              <Link to={`/content-by-star`} search={{ id: item.star_id }}>
-                <div className="flex flex-col items-center">
+              <Link to={`/content-by-star/${item.star_id}`} state={{ ...item }}>
+                <div
+                  className={`flex flex-col items-center ${
+                    isDarkMode && "text-white hover:text-blue-400"
+                  }`}
+                >
                   <img
                     src={item.image_url}
                     alt={item.stat_name}
-                    className="w-full h-[10rem] rounded-lg object-cover"
+                    className="w-[10rem] h-[10rem] rounded-full overflow-hidden"
                   />
                   <p className="font-semibold ">{item.star_name}</p>
                 </div>
