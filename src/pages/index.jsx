@@ -32,7 +32,7 @@ const Home = () => {
   const movieList = useSelector(getMovieList);
   const popularStars = useSelector(getPopularStars);
   const featuredTvChannels = useSelector(getFeaturedTvChannels);
-  console.log(popularStars);
+  console.log(popularStars, slider);
 
   useEffect(() => {
     dispatch(getHomeContent({ api: "/home_content" }));
@@ -81,34 +81,45 @@ const Home = () => {
                 } w-full mx-auto mt-8 bg-slate-400/10 rounded-xl overflow-hidden`}
               >
                 {Object.keys(slider).length > 0 &&
-                  slider.slide.map((item, index) => (
-                    <Link
-                      to={`watch/${item.action_type}/${item.id}`}
-                      state={{ ...item }}
-                      key={index}
-                      className={"h-full"}
-                    >
-                      <div
-                        style={{ backgroundImage: `url(${item.image_link})` }}
-                        className={`h-[50rem] bg-no-repeat bg-[length:100%_100%] bg-center group relative`}
-                      >
-                        <div className="p-4 w-[20rem] bg-slate-700/40 h-full text-white absolute left-0 transform translate-x-[-20rem] opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
-                          <p className="text-2xl text-blue-600">{item.title}</p>
-                          <div className="p-2 border bg-slate-900/80">
-                            <div>
-                              <strong>Release:</strong> 2019
-                            </div>
-                            <div>
-                              <strong>IMDB:</strong> 8
-                            </div>
-                          </div>
-                          <Button type="primary" className="mt-2">
-                            Watch Now
-                          </Button>
-                        </div>
+                  slider.slide.map((item, index) =>
+                    slider.slider_type === "image" ? (
+                      <div className={"h-full"} key={index}>
+                        <div
+                          style={{ backgroundImage: `url(${item.image_link})` }}
+                          className={`h-[50rem] bg-no-repeat bg-[length:100%_100%] bg-center group relative`}
+                        ></div>
                       </div>
-                    </Link>
-                  ))}
+                    ) : (
+                      <Link
+                        to={`watch/${item.action_type}/${item.id}`}
+                        state={{ ...item }}
+                        key={index}
+                        className={"h-full"}
+                      >
+                        <div
+                          style={{ backgroundImage: `url(${item.image_link})` }}
+                          className={`h-[50rem] bg-no-repeat bg-[length:100%_100%] bg-center group relative`}
+                        >
+                          <div className="p-4 w-[20rem] bg-slate-700/40 h-full text-white absolute left-0 transform translate-x-[-20rem] opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
+                            <p className="text-2xl text-blue-600">
+                              {item.title}
+                            </p>
+                            <div className="p-2 border bg-slate-900/80">
+                              <div>
+                                <strong>Release:</strong> 2019
+                              </div>
+                              <div>
+                                <strong>IMDB:</strong> 8
+                              </div>
+                            </div>
+                            <Button type="primary" className="mt-2">
+                              Watch Now
+                            </Button>
+                          </div>
+                        </div>
+                      </Link>
+                    ),
+                  )}
               </Carousel>
             </ConfigProvider>
           </div>
