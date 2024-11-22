@@ -63,7 +63,11 @@ const CarouselBox = ({
         autoplay={false}
         arrows={false}
         className={addExtraClassNames(" max-h-[20rem]", carouselClassName)}
-        infinite={infinite}
+        infinite={
+          isSmallScreen
+            ? data.length > slidesToShowSmall
+            : data.length > slidesToShow
+        }
       >
         {data.map((item, i) => {
           if (clickAble) {

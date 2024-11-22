@@ -29,6 +29,7 @@ const inititalState = {
   listByGenre: [],
   listByGenreStatus: null,
   listByGenreMsg: null,
+  listByGenreTotal: 0,
 };
 
 export const fetchMovieDetails = createAsyncThunk(
@@ -180,6 +181,7 @@ const movieSlice = createSlice({
       .addCase(fetchByGenreId.fulfilled, (state, action) => {
         state.listByGenreStatus = "success";
         state.listByGenre = action.payload.data.content_genres;
+        state.listByGenreTotal = action.payload.data.total_count;
         state.listByGenreMsg = action.payload.responseMessage;
       })
       .addCase(fetchByGenreId.rejected, (state, action) => {
@@ -207,5 +209,6 @@ export const tvDetailsMsgSelector = (state) => state.movie.tvDetailsMsg;
 export const listByGenreSelector = (state) => state.movie.listByGenre;
 export const listByGenreStatusSelector = (state) =>
   state.movie.listByGenreStatus;
+export const listByGenreTotalSelector = (state) => state.movie.listByGenreTotal;
 export const listByGenreMsgSelector = (state) => state.movie.listByGenreMsg;
 export default movieSlice.reducer;

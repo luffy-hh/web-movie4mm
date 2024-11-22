@@ -103,7 +103,7 @@ const GridBox = ({
         <List
           grid={{ ...grid }}
           dataSource={items}
-          className={`p-5 flex flex-col gap-4`}
+          className={`p-2 flex flex-col gap-4`}
           pagination={pagination}
           onChange={onChange}
           loading={loading}

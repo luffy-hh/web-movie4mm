@@ -82,7 +82,7 @@ const MovieDetails = () => {
         api: `/single_details?type=${type}&id=${id}`,
       }),
     );
-  }, [dispatch, is_tvseries, id]);
+  }, [dispatch, id, type]);
   console.log(details, playerRef);
 
   useEffect(() => {}, []);

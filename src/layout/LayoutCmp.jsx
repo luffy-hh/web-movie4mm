@@ -11,6 +11,7 @@ import Footer from "./components/Footer.jsx";
 import Loader from "../components/Loader/Loader.jsx";
 import {
   selectIsDarkMode,
+  setIsMediumScreen,
   setIsSmallScreen,
 } from "../app/ThemeConfig/themeConfigSlice.jsx";
 import {
@@ -83,7 +84,10 @@ const LayoutCmp = () => {
     const handleMediaQueryChange = (e) => {
       dispatch(setIsSmallScreen(e.matches));
     };
+
+    const mediumQuery = window.matchMedia("(max-width: 1024px)");
     // console.log(mediaQuery);
+    dispatch(setIsMediumScreen(mediumQuery.matches));
 
     // Check if the screen size is small when the component mounts
     if (mediaQuery.matches) {
@@ -95,10 +99,15 @@ const LayoutCmp = () => {
 
     // Add the listener
     mediaQuery.addEventListener("change", handleMediaQueryChange);
-
+    mediumQuery.addEventListener("change", (e) => {
+      dispatch(setIsMediumScreen(e.matches));
+    });
     // Clean up the listener on component unmount
     return () => {
       mediaQuery.removeEventListener("change", handleMediaQueryChange);
+      mediumQuery.removeEventListener("change", (e) => {
+        dispatch(setIsMediumScreen(e.matches));
+      });
     };
   }, [dispatch]);
   useEffect(() => {
@@ -151,7 +160,9 @@ const LayoutCmp = () => {
         />
         <Content
           className={`${
-            isSmallScreen ? "px-2 w-full" : "w-[70%] mx-auto"
+            isSmallScreen
+              ? "px-2 w-full"
+              : "w-[70%] xl:w-[60%] 2xl:w-[50%] mx-auto"
           } ${isDarkMode ? "bg-zinc-900" : ""}`}
         >
           <Outlet />

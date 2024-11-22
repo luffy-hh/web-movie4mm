@@ -1,29 +1,31 @@
-import React, {useEffect, useState} from 'react';
-import {useLocation, useParams} from 'react-router-dom';
-import GridBox from '../../components/Boxes/GridBox';
-import ListPageTitle from '../../components/ListPageTitle';
-import {useDispatch, useSelector} from 'react-redux';
-import {selectIsDarkMode} from '../../app/ThemeConfig/themeConfigSlice.jsx';
+import React, { useEffect, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
+import GridBox from "../../components/Boxes/GridBox";
+import ListPageTitle from "../../components/ListPageTitle";
+import { useDispatch, useSelector } from "react-redux";
+import { selectIsDarkMode } from "../../app/ThemeConfig/themeConfigSlice.jsx";
 import {
   fetchByGenreId,
   listByGenreSelector,
   listByGenreStatusSelector,
-} from '../../app/MovieSlice/MovieSlice.jsx';
+  listByGenreTotalSelector,
+} from "../../app/MovieSlice/MovieSlice.jsx";
 
 const Genre = () => {
-  const {id} = useParams();
+  const { id } = useParams();
   const dispatch = useDispatch();
   const isDarkMode = useSelector(selectIsDarkMode);
   const listByGenreId = useSelector(listByGenreSelector);
   const listByGenreStatus = useSelector(listByGenreStatusSelector);
+  const listByGenreTotal = useSelector(listByGenreTotalSelector);
   const location = useLocation();
-  const {type} = location.state;
+  const { type } = location.state;
   console.log(location);
 
   const routes = [
     {
-      path: '/',
-      breadcrumbName: 'Home',
+      path: "/",
+      breadcrumbName: "Home",
     },
     {
       path: `/genre/${id}`,
@@ -34,35 +36,43 @@ const Genre = () => {
     current: 1,
     pageSize: 24,
     total: 0,
-    position: 'both',
-    align: 'center',
+    position: "both",
+    align: "center",
     showSizeChanger: false,
-    className: isDarkMode ? 'dark' : '',
+    className: isDarkMode ? "dark" : "",
     onChange: (page) => {
-      setPagination((prev) => ({...prev, current: page}));
+      setPagination((prev) => ({ ...prev, current: page }));
     },
   });
   useEffect(() => {
+    if (listByGenreStatus === "success") {
+      setPagination((prev) => ({
+        ...prev,
+        total: listByGenreTotal,
+      }));
+    }
+  }, []);
+  useEffect(() => {
     dispatch(
-        fetchByGenreId({
-          api: `/content_by_genre_id?id=${id}&page=${pagination.current}`,
-        }),
+      fetchByGenreId({
+        api: `/content_by_genre_id?id=${id}&page=${pagination.current}`,
+      }),
     );
   }, [pagination, dispatch, id]);
   console.log(listByGenreId);
 
   //   console.log(type);
   return (
-      <div className={`my-8 ${isDarkMode && 'text-white'}`}>
-        <ListPageTitle routes={routes} title={`GENRE: ${type?.toUpperCase()}`}/>
-        <GridBox
-            loading={listByGenreStatus === 'loading'}
-            items={listByGenreId}
-            pagination={pagination}
-            cardClassName={'!p-0'}
-            grid={{gutter: 16, xs: 2, sm: 2, md: 3, lg: 5, xl: 6, xxl: 6}}
-        />
-      </div>
+    <div className={`my-8 ${isDarkMode && "text-white"}`}>
+      <ListPageTitle routes={routes} title={`GENRE: ${type?.toUpperCase()}`} />
+      <GridBox
+        loading={listByGenreStatus === "loading"}
+        items={listByGenreId}
+        pagination={pagination}
+        cardClassName={"!p-0"}
+        grid={{ gutter: 16, xs: 2, sm: 2, md: 3, lg: 5, xl: 6, xxl: 6 }}
+      />
+    </div>
   );
 };
 

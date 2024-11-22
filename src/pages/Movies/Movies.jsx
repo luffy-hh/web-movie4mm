@@ -11,7 +11,12 @@ import {
   movieListStatusSelector,
   movieListTotalSelector,
 } from "../../app/MovieSlice/MovieSlice.jsx";
-import { selectIsDarkMode } from "../../app/ThemeConfig/themeConfigSlice.jsx";
+import {
+  selectIsDarkMode,
+  selectIsMediumScreen,
+} from "../../app/ThemeConfig/themeConfigSlice.jsx";
+import { FaFilter, FaX } from "react-icons/fa6";
+import { Drawer } from "antd";
 
 const Filters = lazy(() => import("../../components/Filters/Filters.jsx"));
 
@@ -21,6 +26,7 @@ const Movies = () => {
   const movieListStatus = useSelector(movieListStatusSelector);
   const movieListTotal = useSelector(movieListTotalSelector);
   const isDarkMode = useSelector(selectIsDarkMode);
+  const isMediumScreen = useSelector(selectIsMediumScreen);
   const [searchParams, setSearchParams] = useState({
     page: 1,
     sort: "",
@@ -42,6 +48,7 @@ const Movies = () => {
       setSearchParams((prev) => ({ ...prev, page }));
     },
   });
+  const [openFilter, setOpenFilter] = useState(false);
 
   useEffect(() => {
     dispatch(
@@ -71,14 +78,46 @@ const Movies = () => {
         title={"WATCH MOVIES"}
         titleClass={`${isDarkMode ? "text-white" : ""}`}
       />
+      {isMediumScreen && (
+        <div
+          className={`${
+            isDarkMode ? "text-white" : ""
+          } flex justify-end cursor-pointer text-2xl`}
+          onClick={() => setOpenFilter(true)}
+        >
+          <FaFilter />
+        </div>
+      )}
+      <Drawer
+        placement="top"
+        open={openFilter}
+        onClose={() => setOpenFilter(false)}
+        key="top"
+        closeIcon={
+          <div style={{ color: isDarkMode ? "white" : "black" }}>
+            <FaX />
+          </div>
+        }
+        styles={{
+          header: {
+            padding: "4px 10px",
+            background: isDarkMode ? "#001529" : "#fff",
+          },
+          body: {
+            padding: 0,
+            background: isDarkMode ? "#001529" : "#fff",
+          },
+        }}
+      >
+        <Filters setSearchParams={setSearchParams} />
+      </Drawer>
       <div className="flex gap-2 mt-2">
         <Suspense fallback={<Loader spin={true} />}>
-          <Filters setSearchParams={setSearchParams} />
-
+          {!isMediumScreen && <Filters setSearchParams={setSearchParams} />}
           <GridBox
             loading={movieListStatus === "loading"}
             items={movieList}
-            className={"flex-1"}
+            className={"flex-1 "}
             cardClassName={"!p-0"}
             grid={{ gutter: 16, xs: 2, sm: 2, md: 3, lg: 4, xl: 6, xxl: 6 }}
             pagination={pagination}

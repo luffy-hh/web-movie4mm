@@ -4,6 +4,7 @@ const inititalState = {
   theme: localStorage.getItem("theme") || "light",
   isSmallScreen: false,
   isDarkMode: localStorage.getItem("theme") !== "light",
+  isMediumScreen: false,
 };
 const themeConfigSlice = createSlice({
   name: "theme",
@@ -34,13 +35,18 @@ const themeConfigSlice = createSlice({
     setIsSmallScreen: (state, action) => {
       state.isSmallScreen = action.payload;
     },
+    setIsMediumScreen: (state, action) => {
+      state.isMediumScreen = action.payload;
+    },
   },
 });
 
 export const selectTheme = (state) => state.theme.theme;
 export const selectIsSmallScreen = (state) => state.theme.isSmallScreen;
 export const selectIsDarkMode = (state) => state.theme.isDarkMode;
+export const selectIsMediumScreen = (state) => state.theme.isMediumScreen;
 
-export const { setTheme, setIsSmallScreen } = themeConfigSlice.actions;
+export const { setIsMediumScreen, setTheme, setIsSmallScreen } =
+  themeConfigSlice.actions;
 
 export default themeConfigSlice.reducer;

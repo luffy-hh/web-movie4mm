@@ -7,13 +7,17 @@ import {
   selectAllCountry,
 } from "../../app/HomeSlice/HomeSlice.jsx";
 import { useSelector } from "react-redux";
-import { selectIsDarkMode } from "../../app/ThemeConfig/themeConfigSlice.jsx";
+import {
+  selectIsDarkMode,
+  selectIsMediumScreen,
+} from "../../app/ThemeConfig/themeConfigSlice.jsx";
 import PropTypes from "prop-types";
 
 const Filters = ({ setSearchParams }) => {
   const genreList = useSelector(getAllGenres);
   const countryList = useSelector(selectAllCountry);
   const isDarkMode = useSelector(selectIsDarkMode);
+  const isMediumScreen = useSelector(selectIsMediumScreen);
 
   const [selectGenre, setSelectedGenre] = useState(null);
   const [selectedSort, setSelectedSort] = useState(null);
@@ -186,7 +190,7 @@ const Filters = ({ setSearchParams }) => {
   ];
   return (
     <Tabs
-      className="w-[20%]"
+      className="lg:w-[20%] w-[80%] mx-auto "
       type="card"
       defaultActiveKey="1"
       centered
