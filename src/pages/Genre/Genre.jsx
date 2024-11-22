@@ -35,7 +35,7 @@ const Genre = () => {
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 24,
-    total: 0,
+    total: listByGenreTotal,
     position: "both",
     align: "center",
     showSizeChanger: false,
@@ -45,13 +45,11 @@ const Genre = () => {
     },
   });
   useEffect(() => {
-    if (listByGenreStatus === "success") {
-      setPagination((prev) => ({
-        ...prev,
-        total: listByGenreTotal,
-      }));
-    }
-  }, []);
+    setPagination((prev) => ({
+      ...prev,
+      total: listByGenreTotal,
+    }));
+  }, [listByGenreTotal]);
   useEffect(() => {
     dispatch(
       fetchByGenreId({
