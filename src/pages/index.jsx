@@ -76,7 +76,7 @@ const Home = () => {
                 adaptiveHeight={true}
                 arrowSize={20}
                 className={`${
-                  isSmallScreen ? "h-[30rem]" : "h-[50rem]"
+                  isSmallScreen ? "h-[30rem]" : "h-[40rem]"
                 } w-full mx-auto mt-8 bg-slate-400/10 rounded-xl overflow-hidden`}
               >
                 {Object.keys(slider).length > 0 &&

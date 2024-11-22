@@ -164,9 +164,7 @@ const LayoutCmp = () => {
         />
         <Content
           className={`${
-            isSmallScreen
-              ? "px-2 w-full"
-              : "w-[70%] xl:w-[60%] 2xl:w-[50%] mx-auto"
+            isSmallScreen ? "px-2 w-full" : "w-[70%] xl:w-[60%]  mx-auto"
           } ${isDarkMode ? "bg-zinc-900" : ""}`}
         >
           <Outlet />

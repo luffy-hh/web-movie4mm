@@ -15,6 +15,7 @@ import {
 import Loader from "../../components/Loader/Loader.jsx";
 import dayjs from "dayjs";
 import { selectIsDarkMode } from "../../app/ThemeConfig/themeConfigSlice.jsx";
+import ReactPlayer from "react-player";
 
 const MovieDetails = () => {
   const location = useLocation();
@@ -92,6 +93,12 @@ const MovieDetails = () => {
         <Loader spin={movieDetailsStatus === "loading"} />
       ) : (
         <div className="w-full mx-auto pt-5">
+          {/*<ReactPlayer*/}
+          {/*  url={videoLink}*/}
+          {/*  controls={true}*/}
+          {/*  width={"100%"}*/}
+          {/*  height={"auto"}*/}
+          {/*/>*/}
           <Plyr
             ref={playerRef}
             source={{
@@ -122,8 +129,8 @@ const MovieDetails = () => {
               ],
               settings: ["captions", "quality", "speed"],
               i18n: {
-                rewind: "Rewind 10 seconds",
-                fastForward: "Fast forward 10 seconds",
+                rewind: "rewind",
+                fastForward: "forward",
               },
               seekTime: 10,
               quality: {
@@ -168,7 +175,7 @@ const MovieDetails = () => {
               // centered={true}
               tabBarGutter={5}
               type={"card"}
-              className={`${isDarkMode && "dark"} mt-4`}
+              className={`${isDarkMode ? "dark" : ""} mt-4`}
               items={details.seriesArray.map((item) => ({
                 label: item.seasons_name,
                 key: item.seasons_id,
@@ -193,7 +200,7 @@ const MovieDetails = () => {
               }))}
             />
           )}
-          <div className={isDarkMode && "text-white"}>
+          <div className={isDarkMode ? "text-white" : ""}>
             <div className="flex items-center gap-4 mb-4 mt-4">
               <p className="text-xl font-semibold pb-2 border-b-2 border-[#0769b4]">
                 {title}
