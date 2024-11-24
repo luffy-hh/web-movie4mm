@@ -42,7 +42,7 @@ const Header = ({ router }) => {
         return {
           key: `/${item.live_tv_category_id}`,
           label: item.title,
-          column: item.title,
+          column: "tv",
         };
       });
       categoryList.unshift({
