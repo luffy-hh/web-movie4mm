@@ -126,8 +126,8 @@ const Home = () => {
           {liveSport.length > 0 && (
             <CarouselBox
               data={liveSport}
-              slidesToShow={5}
-              slidesToShowSmall={3}
+              slidesToShow={3}
+              slidesToShowSmall={2}
               slidesToScroll={1}
               title={"Live-Sport"}
               imgClassName={"h-[18rem]"}

@@ -422,110 +422,110 @@ export const countriesArray = [
 export const aToZ = [
   {
     label: "0-9",
-    key: "number",
+    key: "09",
   },
   {
     label: "A",
-    key: "a",
+    key: "A",
   },
   {
     label: "B",
-    key: "b",
+    key: "B",
   },
   {
     label: "C",
-    key: "c",
+    key: "C",
   },
   {
     label: "D",
-    key: "d",
+    key: "D",
   },
   {
     label: "E",
-    key: "e",
+    key: "E",
   },
   {
     label: "F",
-    key: "f",
+    key: "F",
   },
   {
     label: "G",
-    key: "g",
+    key: "G",
   },
   {
     label: "H",
-    key: "h",
+    key: "H",
   },
   {
     label: "I",
-    key: "i",
+    key: "I",
   },
   {
     label: "J",
-    key: "j",
+    key: "J",
   },
   {
     label: "K",
-    key: "k",
+    key: "K",
   },
   {
     label: "L",
-    key: "l",
+    key: "L",
   },
   {
     label: "M",
-    key: "m",
+    key: "M",
   },
   {
     label: "N",
-    key: "n",
+    key: "N",
   },
   {
     label: "O",
-    key: "o",
+    key: "O",
   },
   {
     label: "P",
-    key: "p",
+    key: "P",
   },
   {
     label: "Q",
-    key: "q",
+    key: "Q",
   },
   {
     label: "R",
-    key: "r",
+    key: "R",
   },
   {
     label: "S",
-    key: "s",
+    key: "S",
   },
   {
     label: "T",
-    key: "t",
+    key: "T",
   },
   {
     label: "U",
-    key: "u",
+    key: "U",
   },
   {
     label: "V",
-    key: "v",
+    key: "V",
   },
   {
     label: "W",
-    key: "w",
+    key: "W",
   },
   {
     label: "X",
-    key: "x",
+    key: "X",
   },
   {
     label: "Y",
-    key: "y",
+    key: "Y",
   },
   {
     label: "Z",
-    key: "z",
+    key: "Z",
   },
 ];

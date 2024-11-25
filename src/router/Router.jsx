@@ -20,6 +20,7 @@ import PopularStars from "../pages/PopularStars/PopularStars.jsx";
 import Search from "../pages/Search/Search.jsx";
 import ContentByPopularStars from "../pages/PopularStars/ContentByPopularStars.jsx";
 import Country from "../pages/Country/Country.jsx";
+import ReleaseList from "../pages/Release/ReleaseList.jsx";
 
 const Router = () => {
   // const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -32,6 +33,7 @@ const Router = () => {
           <Route path="/" element={<LayoutCmp />}>
             <Route index element={<Home />} />
             <Route path="genre/:id" element={<Genre />} />
+            <Route path="release" element={<ReleaseList />} />
             <Route path="release/:year" element={<Release />} />
             <Route path="movies" element={<Movies />} />
             {/*<Route element={<PrivateRoute />}> */}

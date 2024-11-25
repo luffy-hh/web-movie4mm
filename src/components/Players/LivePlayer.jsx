@@ -5,17 +5,27 @@ import PropTypes from "prop-types";
 const LivePlayer = ({ url }) => {
   const [isPlaying, setIsPlaying] = useState(true);
 
-  useEffect(() => {
-    // Set isPlaying to true when component mounts
-    setIsPlaying(true);
+  // useEffect(() => {
+  //   // Set isPlaying to true when component mounts
+  //   setIsPlaying(true);
+  //
+  //   // Cleanup function to stop playing when the component unmounts
+  //   return () => {
+  //     // console.log("unmounted");
+  //
+  //     setIsPlaying(false);
+  //   };
+  // }, []);
 
-    // Cleanup function to stop playing when the component unmounts
-    return () => {
-      // console.log("unmounted");
+  const handleRetry = () => {
+    setIsPlaying(false); // Pause playback
+    setTimeout(() => {
+      // setRetryCount((prev) => prev + 1); // Increment retry count
+      setIsPlaying(true); // Retry playback
+    }, 3000); // Retry after 3 seconds
+  };
+  console.log(isPlaying);
 
-      setIsPlaying(false);
-    };
-  }, []);
   return (
     <>
       <ReactPlayer
@@ -24,6 +34,9 @@ const LivePlayer = ({ url }) => {
         controls={true}
         width={"100%"}
         height={"auto"}
+        onError={() => {
+          handleRetry();
+        }}
       />
     </>
   );

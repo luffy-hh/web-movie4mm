@@ -40,10 +40,50 @@ const inititalState = {
   contentByCountryTotal: 0,
   contentByCountryStatus: null,
   contentByCountryMsg: null,
+
+  contentByAToZ: [],
+  contentByAToZTotal: 0,
+  contentByAToZStatus: null,
+  contentByAToZMsg: null,
+
+  contentByYear: [],
+  contentByYearTotal: 0,
+  contentByYearStatus: null,
+  contentByYearMsg: null,
 };
 
 export const fetchContentByCountry = createAsyncThunk(
   "movie/getContentByCountry",
+  async ({ api }, thunkApi) => {
+    try {
+      const response = await getData(api);
+      if (response.responseCode !== "000" || response.status === false) {
+        return thunkApi.rejectWithValue(response);
+      }
+      return response;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
+export const fetchContentByYear = createAsyncThunk(
+  "movie/getContentByYear",
+  async ({ api }, thunkApi) => {
+    try {
+      const response = await getData(api);
+      if (response.responseCode !== "000" || response.status === false) {
+        return thunkApi.rejectWithValue(response);
+      }
+      return response;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
+export const fetchContentByAToZ = createAsyncThunk(
+  "movie/getContentByAToZ",
   async ({ api }, thunkApi) => {
     try {
       const response = await getData(api);
@@ -254,6 +294,35 @@ const movieSlice = createSlice({
         state.contentByCountryStatus = "failed";
         state.contentByCountryMsg = action.payload.responseMessage;
       });
+
+    builder
+      .addCase(fetchContentByAToZ.pending, (state) => {
+        state.contentByAToZStatus = "loading";
+      })
+      .addCase(fetchContentByAToZ.fulfilled, (state, action) => {
+        state.contentByAToZStatus = "success";
+        state.contentByAToZ = action.payload.data.movie_list;
+        state.contentByAToZTotal = action.payload.data.total_count;
+        state.contentByAToZMsg = action.payload.responseMessage;
+      })
+      .addCase(fetchContentByAToZ.rejected, (state, action) => {
+        state.contentByAToZStatus = "failed";
+        state.contentByAToZMsg = action.payload.responseMessage;
+      });
+    builder
+      .addCase(fetchContentByYear.fulfilled, (state, action) => {
+        state.contentByYear = action.payload.data.movie_list;
+        state.contentByYearTotal = action.payload.data.total_count;
+        state.contentByYearMsg = action.payload.responseMessage;
+        state.contentByYearStatus = "success";
+      })
+      .addCase(fetchContentByYear.rejected, (state, action) => {
+        state.contentByYearStatus = "failed";
+        state.contentByYearMsg = action.payload.responseMessage;
+      })
+      .addCase(fetchContentByYear.pending, (state) => {
+        state.contentByYearStatus = "loading";
+      });
   },
 });
 
@@ -291,4 +360,16 @@ export const contentByCountryMsgSelector = (state) =>
   state.movie.contentByCountryMsg;
 export const contentByCountryTotalSelector = (state) =>
   state.movie.contentByCountryTotal;
+export const contentByAToZSelector = (state) => state.movie.contentByAToZ;
+export const contentByAToZStatusSelector = (state) =>
+  state.movie.contentByAToZStatus;
+export const contentByAToZMsgSelector = (state) => state.movie.contentByAToZMsg;
+export const contentByAToZTotalSelector = (state) =>
+  state.movie.contentByAToZTotal;
+export const contentByYearSelector = (state) => state.movie.contentByYear;
+export const contentByYearStatusSelector = (state) =>
+  state.movie.contentByYearStatus;
+export const contentByYearMsgSelector = (state) => state.movie.contentByYearMsg;
+export const contentByYearTotalSelector = (state) =>
+  state.movie.contentByYearTotal;
 export default movieSlice.reducer;

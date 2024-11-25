@@ -18,6 +18,7 @@ import {
   fetchAllCountry,
   fetchAllGenre,
   fetchAllTvCategory,
+  fetchYearList,
   getHomeContent,
 } from "../app/HomeSlice/HomeSlice.jsx";
 
@@ -115,6 +116,7 @@ const LayoutCmp = () => {
     dispatch(fetchAllGenre({ api: "/all_genre" }));
     dispatch(fetchAllCountry({ api: "/all_country" }));
     dispatch(fetchAllTvCategory({ api: "/all_tv_channel_categories" }));
+    dispatch(fetchYearList({ api: "/release_years" }));
   }, [dispatch]);
 
   useEffect(() => {
@@ -164,7 +166,7 @@ const LayoutCmp = () => {
         />
         <Content
           className={`${
-            isSmallScreen ? "px-2 w-full" : "w-[70%] xl:w-[60%]  mx-auto"
+            isSmallScreen ? "px-2 w-full" : "w-[70%] xl:w-[65%]  mx-auto"
           } ${isDarkMode ? "bg-zinc-900" : ""}`}
         >
           <Outlet />

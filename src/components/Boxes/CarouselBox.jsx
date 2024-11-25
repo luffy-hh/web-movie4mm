@@ -46,10 +46,28 @@ const CarouselBox = ({
           {title}
         </p>
         <div className="flex gap-2">
-          <Button onClick={prev}>
+          <Button
+            onClick={() => {
+              if (isSmallScreen && data.length > slidesToShowSmall) {
+                prev();
+              }
+              if (!isSmallScreen && data.length > slidesToShow) {
+                prev();
+              }
+            }}
+          >
             <FaCaretLeft />
           </Button>
-          <Button onClick={next}>
+          <Button
+            onClick={() => {
+              if (isSmallScreen && data.length > slidesToShowSmall) {
+                next();
+              }
+              if (!isSmallScreen && data.length > slidesToShow) {
+                next();
+              }
+            }}
+          >
             <FaCaretRight />
           </Button>
         </div>
@@ -63,11 +81,7 @@ const CarouselBox = ({
         autoplay={false}
         arrows={false}
         className={addExtraClassNames(" max-h-[20rem]", carouselClassName)}
-        infinite={
-          isSmallScreen
-            ? data.length > slidesToShowSmall
-            : data.length > slidesToShow
-        }
+        infinite={infinite}
       >
         {data.map((item, i) => {
           if (clickAble) {
@@ -109,7 +123,10 @@ const CarouselBox = ({
                     <img
                       src={item.poster_url}
                       alt="photo"
-                      className={addExtraClassNames("w-full", imgClassName)}
+                      className={addExtraClassNames(
+                        "w-full aspect-[3/2]",
+                        imgClassName,
+                      )}
                     />
                   </div>
                   <p className=" text-center mt-4 text-xl">{item.tv_name}</p>

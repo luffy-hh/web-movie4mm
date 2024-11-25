@@ -1,6 +1,6 @@
 import { Badge } from "antd";
 
-export const sideBarData = (genres, categories) => {
+export const sideBarData = (genres, categories, years) => {
   // console.log(categories);
 
   return [
@@ -26,44 +26,7 @@ export const sideBarData = (genres, categories) => {
       label: "Release",
       // icon: <FaCaretDown />,
       key: "release",
-      children: [
-        {
-          label: "2024",
-          key: "/2024",
-        },
-        {
-          label: "2023",
-          key: "/2023",
-        },
-        {
-          label: "2022",
-          key: "/2022",
-        },
-        {
-          label: "2021",
-          key: "/2021",
-        },
-        {
-          label: "2020",
-          key: "/2020",
-        },
-        {
-          label: "2019",
-          key: "/2019",
-        },
-        {
-          label: "2018",
-          key: "/2018",
-        },
-        {
-          label: "2017",
-          key: "/2017",
-        },
-        {
-          label: "2016",
-          key: "/2016",
-        },
-      ],
+      children: years,
     },
     {
       label: "Movies",

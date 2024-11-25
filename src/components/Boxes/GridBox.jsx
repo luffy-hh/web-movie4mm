@@ -111,7 +111,7 @@ const GridBox = ({
             <List.Item>
               <div
                 className={addExtraClassNames(
-                  "relative aspect-[16/21] w-full group overflow-hidden",
+                  "relative aspect-[2/3] w-full group overflow-hidden",
                   cardClassName,
                 )}
               >

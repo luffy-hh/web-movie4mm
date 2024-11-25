@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getAllGenres,
   selectAllTvCategory,
+  selectYearList,
 } from "../../app/HomeSlice/HomeSlice.jsx";
 import {
   selectIsDarkMode,
@@ -29,13 +30,17 @@ const Header = ({ router }) => {
   const isSmallScreen = useSelector((state) => state.theme.isSmallScreen);
   const [renderScreen, setRenderScreen] = useState(false);
   const [categorySelectList, setCategorySelectList] = useState([]);
+  const [yearSelectList, setYearSelectList] = useState([]);
   const [keyword, setKeyword] = useState("");
   // console.log(isSmallScreen, sideBarData);
   const genreList = useSelector(getAllGenres);
   const theme = useSelector(selectTheme);
   const isDarkMode = useSelector(selectIsDarkMode);
   const allCategory = useSelector(selectAllTvCategory);
+  const yearList = useSelector(selectYearList);
   // console.log(allCategory);
+  console.log(yearSelectList);
+
   useEffect(() => {
     if (allCategory.length > 0) {
       const categoryList = allCategory.map((item) => {
@@ -52,7 +57,23 @@ const Header = ({ router }) => {
       setCategorySelectList(categoryList);
     }
   }, [allCategory]);
-
+  useEffect(() => {
+    if (yearList.length > 0) {
+      const years = yearList.map((item) => {
+        return {
+          key: `/${item.release_year}`,
+          label: item.release_year,
+          column: "movie",
+        };
+      });
+      const arr = years.slice(0, 20);
+      arr.push({
+        key: "",
+        label: "See More",
+      });
+      setYearSelectList(arr);
+    }
+  }, [yearList]);
   useEffect(() => {
     setRenderScreen(isSmallScreen);
   }, [isSmallScreen]);
@@ -157,7 +178,11 @@ const Header = ({ router }) => {
     // console.log(e);
 
     const selectedKey = (e.keyPath[1] ? e.keyPath[1] : "") + e?.keyPath[0];
-    const selectedItem = sideBarData(genreList, categorySelectList)
+    const selectedItem = sideBarData(
+      genreList,
+      categorySelectList,
+      yearSelectList,
+    )
       .flatMap((item) => (item.children ? item.children : []))
       .find((child) => child.key === e.keyPath[0]);
     // console.log(selectedItem, selectedKey, e?.keyPath[0]);
@@ -207,7 +232,7 @@ const Header = ({ router }) => {
             }}
             mode="horizontal"
             theme={isDarkMode ? "dark" : "light"}
-            items={sideBarData(genreList, categorySelectList)}
+            items={sideBarData(genreList, categorySelectList, yearSelectList)}
           />
           <Search
             placeholder="Search"
@@ -313,7 +338,7 @@ const Header = ({ router }) => {
             mode="inline"
             theme={isDarkMode ? "dark" : "light"}
             items={transformMenuItems(
-              sideBarData(genreList, categorySelectList),
+              sideBarData(genreList, categorySelectList, yearSelectList),
             )}
             onClick={menuItemClickHandler}
           />
