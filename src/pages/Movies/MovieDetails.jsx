@@ -253,7 +253,7 @@ const MovieDetails = () => {
                           to={`/genre/${item.genre_id}`}
                           state={{ ...item, type: item.name }}
                           key={index}
-                          className=" text-indigo-700"
+                          className=" text-cyan-500"
                         >
                           {item.name}
                         </Link>
@@ -273,7 +273,7 @@ const MovieDetails = () => {
                           to={`/content-by-star/${item.star_id}`}
                           state={{ ...item }}
                           key={index}
-                          className=" text-indigo-700"
+                          className=" text-cyan-500"
                         >
                           {item.name}
                         </Link>
@@ -293,7 +293,7 @@ const MovieDetails = () => {
                           to={`/country/${item.country_id}`}
                           state={{ ...item }}
                           key={index}
-                          className=" text-indigo-700"
+                          className=" text-cyan-500"
                         >
                           {item.name}
                         </Link>

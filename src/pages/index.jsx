@@ -131,6 +131,7 @@ const Home = () => {
               slidesToScroll={1}
               title={"Live-Sport"}
               imgClassName={"h-[18rem]"}
+              type={"tv"}
             />
           )}
           <CarouselBox

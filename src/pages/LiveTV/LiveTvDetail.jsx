@@ -16,11 +16,13 @@ import Loader from "../../components/Loader/Loader.jsx";
 import LivePlayer from "../../components/Players/LivePlayer.jsx";
 import Notification from "../../components/Notification.jsx";
 import { toast } from "react-toastify";
+import { selectIsDarkMode } from "../../app/ThemeConfig/themeConfigSlice.jsx";
 
 const LiveTvDetail = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const nav = useNavigate();
+  const isDarkMode = useSelector(selectIsDarkMode);
   const [sourceUrl, setSourceUrl] = useState(location.state?.stream_url);
   const [type, setType] = useState("tv");
   const [options, setOptions] = useState([]);
@@ -50,15 +52,15 @@ const LiveTvDetail = () => {
     if (location.state) {
       setSourceUrl(location.state.stream_url);
     }
-    if (location.state?.type) {
-      setType(location.state.type);
-    } else {
-      nav("/");
-    }
+    // if (location.state?.type) {
+    //   setType(location.state.type);
+    // } else {
+    //   nav("/");
+    // }
   }, [tvDetails, location]);
   useEffect(() => {
     // console.log("worked");
-    dispatch(fetchTvDetails({ api: `/single_details?id=${id}&type=${type}` }));
+    dispatch(fetchTvDetails({ api: `/single_details?id=${id}&type=tv` }));
   }, [dispatch, id, type]);
   useEffect(() => {
     tvDetailsStatus === "faild" &&
@@ -74,11 +76,11 @@ const LiveTvDetail = () => {
       {tvDetailsStatus === "loading" ? (
         <Loader spin={true} />
       ) : (
-        <div className="w-full mx-auto">
+        <div className={`w-full mx-auto ${isDarkMode && "text-white"}`}>
           <Notification />
           <LivePlayer url={sourceUrl} />
           <div className="flex my-4 gap-8">
-            <div className="w-[8rem]">
+            <div className="w-[12rem]">
               <img
                 src={tvDetails.thumbnail_url}
                 alt={tvDetails.tv_name}

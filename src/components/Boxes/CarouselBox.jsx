@@ -12,7 +12,7 @@ const CarouselBox = ({
   slidesToShow = 1,
   slidesToShowSmall = 3,
   title,
-  type,
+  type = "tv",
   wrapperClassName,
   carouselClassName,
   imgClassName,

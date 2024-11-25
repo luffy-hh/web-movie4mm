@@ -1,36 +1,14 @@
 import React, { useState } from "react";
-import { Card, List, Tag } from "antd";
-import { FaMaximize, FaMinimize } from "react-icons/fa6";
-import { FaAngleDoubleRight, FaInfoCircle } from "react-icons/fa";
+import { List, Tag } from "antd";
+import { FaAngleDoubleRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { addExtraClassNames } from "../../utilities/UtilFunctions";
 import withRouter from "../HOCs/withRouter";
 import { useSelector } from "react-redux";
 import { selectIsDarkMode } from "../../app/ThemeConfig/themeConfigSlice.jsx";
+import { BsStar } from "react-icons/bs";
 
-const data = [
-  { id: 1, title: "Title 1 Testing" },
-  { id: 2, title: "Title 2 long form" },
-  { id: 3, title: "Title 3 super very long form" },
-  { id: 4, title: "Title 4" },
-  { id: 5, title: "Title 5" },
-  { id: 6, title: "Title 6" },
-  { id: 7, title: "Title 1 Testing" },
-  { id: 8, title: "Title 2 long form" },
-  { id: 9, title: "Title 3 super very long form" },
-  { id: 10, title: "Title 4" },
-  { id: 11, title: "Title 5" },
-  { id: 12, title: "Title 6" },
-  { id: 13, title: "Title 1 Testing" },
-  { id: 14, title: "Title 2 long form" },
-  { id: 15, title: "Title 3 super very long form" },
-  { id: 16, title: "Title 4" },
-  { id: 17, title: "Title 5" },
-  { id: 18, title: "Title 6" },
-  { id: 19, title: "Title 1 Testing" },
-  { id: 20, title: "Title 2 long form" },
-];
 const GridBox = ({
   pagination = false,
   router,
@@ -111,7 +89,7 @@ const GridBox = ({
             <List.Item>
               <div
                 className={addExtraClassNames(
-                  "relative aspect-[2/3] w-full group overflow-hidden",
+                  "relative aspect-[2/3] w-full group overflow-hidden rounded-md",
                   cardClassName,
                 )}
               >
@@ -120,7 +98,7 @@ const GridBox = ({
                   alt={item.title}
                   className="absolute top-0 left-0 w-full h-full z-10"
                 />
-                <div className="absolute top-2 w-full left-0 z-20 flex justify-between items-center px-1 flex-wrap gap-2">
+                <div className="absolute top-2 w-full left-0 z-20 flex justify-between items-center px-1 flex-wrap gap-y-2">
                   <div className="flex gap-2">
                     <Tag className="text-sm !m-0" color="#7e22ce">
                       {item.video_quality}
@@ -133,14 +111,13 @@ const GridBox = ({
                     className="text-sm !m-0 flex items-center gap-1"
                     color="#fbbf24"
                   >
-                    <FaInfoCircle /> IMDB {item.imdb_rating}
+                    <BsStar /> {item.imdb_rating}
                   </Tag>
                 </div>
 
                 <p className="absolute text-center bottom-0 left-0 w-[100%] bg-gradient-to-t from-gray-500 to-transparent z-20 text-white break-words overflow-ellipsis">
                   {item.title}
                 </p>
-
                 {/* Hover Overlay with Spread Animation on X-axis */}
                 <div className="absolute inset-0 bg-black/40 z-30 opacity-0 scale-x-0 origin-center group-hover:scale-x-100 group-hover:opacity-100 transition-all duration-500 ease-out"></div>
 
