@@ -59,7 +59,12 @@ const PopularStarsCarousel = () => {
         ref={carouselRef}
       >
         {popularStars.map((star, i) => (
-          <div className="text-blue-700 hover:text-slate-500 px-2 mr-2" key={i}>
+          <div
+            className={`${
+              isDarkMode ? "text-white" : "text-blue-700"
+            } hover:text-slate-500 px-2 mr-2`}
+            key={i}
+          >
             <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
               <img
                 src={star.image_url}

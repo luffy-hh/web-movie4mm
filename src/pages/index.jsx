@@ -133,7 +133,9 @@ const Home = () => {
               // titleTag={item.type}
               type={item.type === "latest_tvseries" ? "tvseries" : "movie"}
               items={item.movies}
-              seeMorePath={`movies/${item.type}`}
+              seeMorePath={
+                item.type === "latest_tvseries" ? "series" : "movies"
+              }
             />
           ))}
         </>

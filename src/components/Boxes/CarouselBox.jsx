@@ -118,7 +118,11 @@ const CarouselBox = ({
                 className="px-6 mr-5"
                 key={i}
               >
-                <div className="text-blue-700 hover:text-slate-500">
+                <div
+                  className={`${
+                    isDarkMode ? "text-white" : "text-blue-700"
+                  } hover:text-slate-500 `}
+                >
                   <div className="h-[100%] bg-no-repeat bg-[length:100%_100%] bg-center">
                     <img
                       src={item.poster_url}

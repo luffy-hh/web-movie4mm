@@ -14,6 +14,7 @@ import Loader from "../components/Loader/Loader";
 import Notification from "../components/Notification";
 import { toast } from "react-toastify";
 import CustomInput from "../components/Inputs/CustomInput";
+
 const Login = () => {
   const nav = useNavigate();
   const dispatch = useDispatch();
@@ -30,9 +31,9 @@ const Login = () => {
 
     dispatch(
       login({
-        api: "adminlogin",
+        api: "/login",
         userData: values,
-      })
+      }),
     );
   };
   useEffect(() => {
@@ -45,7 +46,7 @@ const Login = () => {
       });
   }, [loginStatus]);
   useEffect(() => {
-    if (currentUser) nav("/");
+    if (currentUser) nav(-1);
   }, [currentUser]);
   return (
     <div className="login h-[100vh] w-full bg-gradient-to-br from-[#36D1DC] to-[#5B86E5]">
@@ -54,15 +55,13 @@ const Login = () => {
       <div className=" box flex w-[70%] h-[80%] rounded-2xl overflow-hidden">
         <div className="left md:w-[50%]"></div>
         <div className="right w-full mx-auto md:w-[50%] flex flex-col justify-center items-center">
-          <div className="logo w-[13rem] h-[13rem] mt-8 mx-auto">
+          <div className="logo w-[26rem] h-[13rem] mt-8 mx-auto">
             <img src="/imgs/logo.png" alt="logo" />
           </div>
-          <h4 className="box-form--title mt-8">
-            Sign in to start your session
-          </h4>
+          <h4 className="box-form--title mt-8">Sign in to start Watching.</h4>
           <form className="box-form mt-10 mx-auto" onSubmit={loginHandle}>
             <CustomInput
-              placeholder={"Login Id (or) Email"}
+              placeholder={"Site Code (or) Email"}
               type="text"
               id="loginId"
               required={true}

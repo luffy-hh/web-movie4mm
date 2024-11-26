@@ -55,7 +55,7 @@ const Search = ({ router }) => {
       total: searchResultTotal,
       pageSize: searchResultPerPage,
     }));
-  }, []);
+  }, [searchResultTotal, searchResultPerPage]);
   // console.log(router.location);
 
   return (
