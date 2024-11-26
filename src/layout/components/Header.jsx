@@ -38,8 +38,6 @@ const Header = ({ router }) => {
   const isDarkMode = useSelector(selectIsDarkMode);
   const allCategory = useSelector(selectAllTvCategory);
   const yearList = useSelector(selectYearList);
-  // console.log(allCategory);
-  console.log(yearSelectList);
 
   useEffect(() => {
     if (allCategory.length > 0) {

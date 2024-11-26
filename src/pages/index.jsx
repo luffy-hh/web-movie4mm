@@ -39,15 +39,15 @@ const Home = () => {
 
   useEffect(() => {
     if (movieList.length > 0) {
-      setMovie4K(movieList.find((item) => item.type === "4k").movies);
+      setMovie4K(movieList.find((item) => item.type === "4k")?.movies);
       setCurrentYear(
         movieList.find((item) => item.type === "current_year")?.movies,
       );
       setLatestMovies(
-        movieList.find((item) => item.type === "latest_movies").movies,
+        movieList.find((item) => item.type === "latest_movies")?.movies,
       );
       setLatestTvSeries(
-        movieList.find((item) => item.type === "latest_tvseries").movies,
+        movieList.find((item) => item.type === "latest_tvseries")?.movies,
       );
     }
   }, [movieList]);

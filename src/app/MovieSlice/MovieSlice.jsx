@@ -8,37 +8,42 @@ import {
 
 const inititalState = {
   movieDetails: {},
-  movieDetailsStatus: null,
+  movieDetailsStatus: "idle",
   movieDetailsMsg: null,
   movieList: [],
-  movieListStatus: null,
+  movieListPerPage: 0,
+  movieListStatus: "idle",
   movieListTotal: 0,
   movieListMsg: null,
   movieListPagination: null,
 
   seriesList: [],
-  seriesListStatus: null,
+  seriesListStatus: "idle",
+  seriesListPerPage: 0,
   seriesListTotal: 0,
   seriesListMsg: null,
   seriesListPagination: null,
 
   tvDetails: {},
-  tvDetailsStatus: null,
+  tvDetailsStatus: "idle",
   tvDetailsMsg: null,
 
   listByGenre: [],
-  listByGenreStatus: null,
+  listByGenreStatus: "idle",
+  listByGenrePerPage: 0,
   listByGenreMsg: null,
   listByGenreTotal: 0,
 
   contentByStars: [],
   contentByStarsTotal: 0,
-  contentByStarsStatus: null,
+  contentByStarsPerPage: 0,
+  contentByStarsStatus: "idle",
   contentByStarsMsg: null,
 
   contentByCountry: [],
   contentByCountryTotal: 0,
-  contentByCountryStatus: null,
+  contentByCountryPerPage: 0,
+  contentByCountryStatus: "idle",
   contentByCountryMsg: null,
 
   contentByAToZ: [],
@@ -48,6 +53,7 @@ const inititalState = {
 
   contentByYear: [],
   contentByYearTotal: 0,
+  contentByYearPerPage: 0,
   contentByYearStatus: null,
   contentByYearMsg: null,
 };
@@ -162,8 +168,6 @@ export const fetchMovieList = createAsyncThunk(
   async ({ api, reqData }, thunkApi) => {
     try {
       const response = await postMultipartData(api, reqData);
-      // console.log(response);
-
       if (response.responseCode !== "000" || response.status === false) {
         return thunkApi.rejectWithValue(response);
       }
@@ -213,6 +217,7 @@ const movieSlice = createSlice({
       })
       .addCase(fetchMovieList.fulfilled, (state, action) => {
         state.movieListStatus = "success";
+        state.movieListPerPage = action.payload.data.per_page;
         state.movieList = action.payload.data.movie_list;
         // console.log(action);
 
@@ -229,7 +234,7 @@ const movieSlice = createSlice({
       })
       .addCase(fetchSeriesList.fulfilled, (state, action) => {
         state.seriesListStatus = "success";
-
+        state.seriesListPerPage = action.payload.data.per_page;
         state.seriesListMsg = action.payload.responseMessage;
         state.seriesList = action.payload.data.series_list;
         state.seriesListTotal = action.payload.data?.total_count;
@@ -260,6 +265,7 @@ const movieSlice = createSlice({
         state.listByGenreStatus = "success";
         state.listByGenre = action.payload.data.content_genres;
         state.listByGenreTotal = action.payload.data.total_count;
+        state.listByGenrePerPage = action.payload.data.per_page;
         state.listByGenreMsg = action.payload.responseMessage;
       })
       .addCase(fetchByGenreId.rejected, (state, action) => {
@@ -272,6 +278,7 @@ const movieSlice = createSlice({
       })
       .addCase(fetchContentByStars.fulfilled, (state, action) => {
         state.contentByStarsStatus = "success";
+        state.contentByStarsPerPage = action.payload.data.per_page;
         state.contentByStars = action.payload.data.content_star;
         state.contentByStarsTotal = action.payload.data.total_count;
         state.contentByStarsMsg = action.payload.responseMessage;
@@ -286,6 +293,7 @@ const movieSlice = createSlice({
       })
       .addCase(fetchContentByCountry.fulfilled, (state, action) => {
         state.contentByCountryStatus = "success";
+        state.contentByCountryPerPage = action.payload.data.per_page;
         state.contentByCountry = action.payload.data.content_country;
         state.contentByCountryTotal = action.payload.data.total_count;
         state.contentByCountryMsg = action.payload.responseMessage;
@@ -312,6 +320,7 @@ const movieSlice = createSlice({
     builder
       .addCase(fetchContentByYear.fulfilled, (state, action) => {
         state.contentByYear = action.payload.data.movie_list;
+        state.contentByYearPerPage = action.payload.data.per_page;
         state.contentByYearTotal = action.payload.data.total_count;
         state.contentByYearMsg = action.payload.responseMessage;
         state.contentByYearStatus = "success";
@@ -331,10 +340,13 @@ export const movieDetailsStatusSelector = (state) =>
   state.movie.movieDetailsStatus;
 export const movieDetailsMsgSelector = (state) => state.movie.movieDetailsMsg;
 export const movieListSelector = (state) => state.movie.movieList;
+export const movieListPerPageSelector = (state) => state.movie.movieListPerPage;
 export const movieListTotalSelector = (state) => state.movie.movieListTotal;
 export const movieListStatusSelector = (state) => state.movie.movieListStatus;
 export const movieListMsgSelector = (state) => state.movie.movieListMsg;
 export const seriesListSelector = (state) => state.movie.seriesList;
+export const seriesListPerPageSelector = (state) =>
+  state.movie.seriesListPerPage;
 export const seriesListTotalSelector = (state) => state.movie.seriesListTotal;
 export const seriesListStatusSelector = (state) => state.movie.seriesListStatus;
 export const seriesListMsgSelector = (state) => state.movie.seriesListMsg;
@@ -344,9 +356,13 @@ export const tvDetailsMsgSelector = (state) => state.movie.tvDetailsMsg;
 export const listByGenreSelector = (state) => state.movie.listByGenre;
 export const listByGenreStatusSelector = (state) =>
   state.movie.listByGenreStatus;
+export const listByGenrePerPageSelector = (state) =>
+  state.movie.listByGenrePerPage;
 export const listByGenreTotalSelector = (state) => state.movie.listByGenreTotal;
 export const listByGenreMsgSelector = (state) => state.movie.listByGenreMsg;
 export const contentByStarsSelector = (state) => state.movie.contentByStars;
+export const contentByStarsPerPageSelector = (state) =>
+  state.movie.contentByStarsPerPage;
 export const contentByStarsStatusSelector = (state) =>
   state.movie.contentByStarsStatus;
 export const contentByStarsMsgSelector = (state) =>
@@ -354,6 +370,8 @@ export const contentByStarsMsgSelector = (state) =>
 export const contentByStarsTotalSelector = (state) =>
   state.movie.contentByStarsTotal;
 export const contentByCountrySelector = (state) => state.movie.contentByCountry;
+export const contentByCountryPerPageSelector = (state) =>
+  state.movie.contentByCountryPerPage;
 export const contentByCountryStatusSelector = (state) =>
   state.movie.contentByCountryStatus;
 export const contentByCountryMsgSelector = (state) =>
@@ -367,6 +385,8 @@ export const contentByAToZMsgSelector = (state) => state.movie.contentByAToZMsg;
 export const contentByAToZTotalSelector = (state) =>
   state.movie.contentByAToZTotal;
 export const contentByYearSelector = (state) => state.movie.contentByYear;
+export const contentByYearPerPageSelector = (state) =>
+  state.movie.contentByYearPerPage;
 export const contentByYearStatusSelector = (state) =>
   state.movie.contentByYearStatus;
 export const contentByYearMsgSelector = (state) => state.movie.contentByYearMsg;

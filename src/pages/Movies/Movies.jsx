@@ -7,6 +7,7 @@ import Loader from "../../components/Loader/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchMovieList,
+  movieListPerPageSelector,
   movieListSelector,
   movieListStatusSelector,
   movieListTotalSelector,
@@ -23,6 +24,7 @@ const Filters = lazy(() => import("../../components/Filters/Filters.jsx"));
 const Movies = () => {
   const dispatch = useDispatch();
   const movieList = useSelector(movieListSelector);
+  const movieListPerPage = useSelector(movieListPerPageSelector);
   const movieListStatus = useSelector(movieListStatusSelector);
   const movieListTotal = useSelector(movieListTotalSelector);
   const isDarkMode = useSelector(selectIsDarkMode);
@@ -37,7 +39,7 @@ const Movies = () => {
   });
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 24,
+    pageSize: movieListPerPage,
     total: movieListTotal,
     position: "both",
     align: "center",

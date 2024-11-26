@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import GridBox from "../../components/Boxes/GridBox.jsx";
 import {
+  contentByCountryPerPageSelector,
   contentByCountrySelector,
   contentByCountryStatusSelector,
   contentByCountryTotalSelector,
@@ -20,10 +21,11 @@ const Country = ({ router }) => {
   const contentByCountry = useSelector(contentByCountrySelector);
   const isDarkMode = useSelector(selectIsDarkMode);
   const contentByCountryTotal = useSelector(contentByCountryTotalSelector);
+  const contentByCountryPerPage = useSelector(contentByCountryPerPageSelector);
   const contentByCountryStatus = useSelector(contentByCountryStatusSelector);
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 24,
+    pageSize: contentByCountryPerPage,
     total: contentByCountryTotal,
     position: "both",
     align: "center",

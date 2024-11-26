@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectIsDarkMode } from "../../app/ThemeConfig/themeConfigSlice.jsx";
 import {
   fetchByGenreId,
+  listByGenrePerPageSelector,
   listByGenreSelector,
   listByGenreStatusSelector,
   listByGenreTotalSelector,
@@ -19,6 +20,7 @@ const Genre = () => {
   const listByGenreStatus = useSelector(listByGenreStatusSelector);
   const listByGenreTotal = useSelector(listByGenreTotalSelector);
   const location = useLocation();
+  const listByGenrePerPage = useSelector(listByGenrePerPageSelector);
   const { type } = location.state;
 
   const routes = [
@@ -33,7 +35,7 @@ const Genre = () => {
   ];
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 24,
+    pageSize: listByGenrePerPage,
     total: listByGenreTotal,
     position: "both",
     align: "center",

@@ -6,6 +6,7 @@ import Filters from "../../components/Filters/Filters";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchSeriesList,
+  seriesListPerPageSelector,
   seriesListSelector,
   seriesListStatusSelector,
   seriesListTotalSelector,
@@ -20,7 +21,7 @@ import { Drawer } from "antd";
 const Series = () => {
   const dispatch = useDispatch();
   const seriesList = useSelector(seriesListSelector);
-  // console.log(seriesList);
+  const seriesListPerPage = useSelector(seriesListPerPageSelector);
 
   const seriesListTotal = useSelector(seriesListTotalSelector);
   const seriesListStatus = useSelector(seriesListStatusSelector);
@@ -38,7 +39,7 @@ const Series = () => {
   });
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 24,
+    pageSize: seriesListPerPage,
     total: seriesListTotal,
     position: "both",
     align: "center",
@@ -58,7 +59,11 @@ const Series = () => {
     );
   }, [dispatch, pagination, searchParams]);
   useEffect(() => {
-    setPagination((prev) => ({ ...prev, total: seriesListTotal }));
+    setPagination((prev) => ({
+      ...prev,
+      total: seriesListTotal,
+      // pageSize: seriesList.length,
+    }));
   }, [seriesListTotal]);
   return (
     <Container className="my-8">

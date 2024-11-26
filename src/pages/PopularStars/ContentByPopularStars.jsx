@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  contentByStarsPerPageSelector,
   contentByStarsSelector,
   contentByStarsStatusSelector,
   contentByStarsTotalSelector,
@@ -21,11 +22,12 @@ const ContentByPopularStars = ({ router }) => {
   const { id } = useParams();
   const contentByStar = useSelector(contentByStarsSelector);
   const contentByStarTotal = useSelector(contentByStarsTotalSelector);
+  const contentByStarsPerPage = useSelector(contentByStarsPerPageSelector);
   const contentByStarStatus = useSelector(contentByStarsStatusSelector);
   const isDarkMode = useSelector(selectIsDarkMode);
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 24,
+    pageSize: contentByStarsPerPage,
     total: 0,
     position: "both",
     align: "center",
@@ -46,7 +48,11 @@ const ContentByPopularStars = ({ router }) => {
   }, [dispatch, id, pagination]);
 
   useEffect(() => {
-    setPagination((prev) => ({ ...prev, total: contentByStarTotal }));
+    setPagination((prev) => ({
+      ...prev,
+      total: contentByStarTotal,
+      pageSize: contentByStar.length,
+    }));
   }, [contentByStarTotal]);
 
   return (

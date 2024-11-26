@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   contentByYearMsgSelector,
+  contentByYearPerPageSelector,
   contentByYearSelector,
   contentByYearStatusSelector,
   contentByYearTotalSelector,
@@ -16,11 +17,14 @@ const Release = () => {
   const contentByYear = useSelector(contentByYearSelector);
   const contentByYearStatus = useSelector(contentByYearStatusSelector);
   const contentByYearTotal = useSelector(contentByYearTotalSelector);
+  const contentByYearPerPage = useSelector(contentByYearPerPageSelector);
   const contentByYearMsg = useSelector(contentByYearMsgSelector);
+  console.log(contentByYearTotal, contentByYear.length);
+
   const { year } = useParams();
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 24,
+    pageSize: contentByYearPerPage,
     total: contentByYearTotal,
     position: "both",
     align: "center",
@@ -52,10 +56,10 @@ const Release = () => {
       setPagination((prev) => ({
         ...prev,
         total: contentByYearTotal,
-        pageSize: contentByYear.length,
+        // pageSize: contentByYear.length,
       }));
     }
-  }, [contentByYearStatus]);
+  }, [contentByYear.length, contentByYearStatus, contentByYearTotal]);
   return (
     <div className="my-8">
       <ListPageTitle routes={routes} title={`Release: ${year}`} />
