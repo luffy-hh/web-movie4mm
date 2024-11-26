@@ -61,8 +61,12 @@ const Movies = () => {
     );
   }, [dispatch, pagination, searchParams]);
   useEffect(() => {
-    setPagination((prev) => ({ ...prev, total: movieListTotal }));
-  }, [movieListTotal]);
+    setPagination((prev) => ({
+      ...prev,
+      total: movieListTotal,
+      pageSize: movieListPerPage,
+    }));
+  }, [movieListPerPage, movieListTotal]);
 
   return (
     <Container className="my-8">

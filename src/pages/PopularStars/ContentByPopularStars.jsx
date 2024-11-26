@@ -51,9 +51,9 @@ const ContentByPopularStars = ({ router }) => {
     setPagination((prev) => ({
       ...prev,
       total: contentByStarTotal,
-      pageSize: contentByStar.length,
+      pageSize: contentByStarsPerPage,
     }));
-  }, [contentByStarTotal]);
+  }, [contentByStarTotal, contentByStarsPerPage]);
 
   return (
     <>

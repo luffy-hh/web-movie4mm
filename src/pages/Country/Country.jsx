@@ -43,7 +43,11 @@ const Country = ({ router }) => {
     );
   }, [id, pagination]);
   useEffect(() => {
-    setPagination((prev) => ({ ...prev, total: contentByCountryTotal }));
+    setPagination((prev) => ({
+      ...prev,
+      total: contentByCountryTotal,
+      pageSize: contentByCountryPerPage,
+    }));
   }, [contentByCountryTotal]);
   return (
     <div className={`my-2`}>

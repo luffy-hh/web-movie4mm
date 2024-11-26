@@ -62,9 +62,9 @@ const Series = () => {
     setPagination((prev) => ({
       ...prev,
       total: seriesListTotal,
-      // pageSize: seriesList.length,
+      pageSize: seriesListPerPage,
     }));
-  }, [seriesListTotal]);
+  }, [seriesListPerPage, seriesListTotal]);
   return (
     <Container className="my-8">
       <ListPageTitle

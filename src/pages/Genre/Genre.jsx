@@ -49,8 +49,9 @@ const Genre = () => {
     setPagination((prev) => ({
       ...prev,
       total: listByGenreTotal,
+      pageSize: listByGenrePerPage,
     }));
-  }, [listByGenreTotal]);
+  }, [listByGenrePerPage, listByGenreTotal]);
   useEffect(() => {
     dispatch(
       fetchByGenreId({

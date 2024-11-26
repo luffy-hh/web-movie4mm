@@ -56,10 +56,10 @@ const Release = () => {
       setPagination((prev) => ({
         ...prev,
         total: contentByYearTotal,
-        // pageSize: contentByYear.length,
+        pageSize: contentByYearPerPage,
       }));
     }
-  }, [contentByYear.length, contentByYearStatus, contentByYearTotal]);
+  }, [contentByYearPerPage, contentByYearStatus, contentByYearTotal]);
   return (
     <div className="my-8">
       <ListPageTitle routes={routes} title={`Release: ${year}`} />
