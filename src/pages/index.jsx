@@ -26,7 +26,6 @@ const Home = () => {
   const slider = useSelector(getSlider);
   const liveSport = useSelector(getLiveSport);
   const movieList = useSelector(getMovieList);
-  console.log(movieList);
 
   const popularStars = useSelector(getPopularStars);
   const featuredTvChannels = useSelector(getFeaturedTvChannels);

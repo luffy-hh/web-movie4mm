@@ -52,13 +52,7 @@ const A_Z = () => {
       }));
     }
   }, [contentByAToZStatus]);
-  console.log(contentByAToZ);
 
-  // useEffect(() => {
-  //   setData(aToZ.push());
-  // console.log(aToZ,aToZ.length);
-  // }, [aToZ]);
-  // console.log(data);
   return (
     <div className="mx-auto w-full mb-5">
       <PagesTitle

@@ -21,7 +21,6 @@ const Release = () => {
   const contentByYearTotal = useSelector(contentByYearTotalSelector);
   const contentByYearPerPage = useSelector(contentByYearPerPageSelector);
   const contentByYearMsg = useSelector(contentByYearMsgSelector);
-  console.log(contentByYearTotal, contentByYear.length);
 
   const { year } = useParams();
   const [pagination, setPagination] = useState({

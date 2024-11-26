@@ -24,7 +24,6 @@ const LivePlayer = ({ url }) => {
       setIsPlaying(true); // Retry playback
     }, 3000); // Retry after 3 seconds
   };
-  console.log(isPlaying);
 
   return (
     <>
