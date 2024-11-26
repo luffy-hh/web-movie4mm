@@ -7,8 +7,12 @@ const Footer = () => {
       <div className="w-[70%] mx-auto flex items-center justify-between">
         <p>Copyright {currentYear}</p>
         <div className="flex gap-4">
-          <p>Live TV</p>
-          <p>Series</p>
+          <a href={"https://movie4mm.com/#Phdownload"} target={"_blank"}>
+            Download Android App
+          </a>
+          <a href={"https://movie4mm.com/#TVdownload"} target={"_blank"}>
+            Download Tv App
+          </a>
         </div>
       </div>
     </div>

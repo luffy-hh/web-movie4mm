@@ -47,6 +47,7 @@ const inititalState = {
   contentByCountryMsg: null,
 
   contentByAToZ: [],
+  contentByAToZPerPage: 0,
   contentByAToZTotal: 0,
   contentByAToZStatus: null,
   contentByAToZMsg: null,
@@ -309,6 +310,7 @@ const movieSlice = createSlice({
       })
       .addCase(fetchContentByAToZ.fulfilled, (state, action) => {
         state.contentByAToZStatus = "success";
+        state.contentByAToZPerPage = action.payload.data.per_page;
         state.contentByAToZ = action.payload.data.movie_list;
         state.contentByAToZTotal = action.payload.data.total_count;
         state.contentByAToZMsg = action.payload.responseMessage;
@@ -379,6 +381,8 @@ export const contentByCountryMsgSelector = (state) =>
 export const contentByCountryTotalSelector = (state) =>
   state.movie.contentByCountryTotal;
 export const contentByAToZSelector = (state) => state.movie.contentByAToZ;
+export const contentByAToZPerPageSelector = (state) =>
+  state.movie.contentByAToZPerPage;
 export const contentByAToZStatusSelector = (state) =>
   state.movie.contentByAToZStatus;
 export const contentByAToZMsgSelector = (state) => state.movie.contentByAToZMsg;

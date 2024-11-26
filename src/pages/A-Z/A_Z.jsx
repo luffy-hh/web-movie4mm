@@ -7,6 +7,7 @@ import { dummyList } from "../../constants/dummyData";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  contentByAToZPerPageSelector,
   contentByAToZSelector,
   contentByAToZStatusSelector,
   contentByAToZTotalSelector,
@@ -17,12 +18,13 @@ import { selectIsDarkMode } from "../../app/ThemeConfig/themeConfigSlice.jsx";
 const A_Z = () => {
   const dispatch = useDispatch();
   const contentByAToZ = useSelector(contentByAToZSelector);
+  const contentByAToZPerPage = useSelector(contentByAToZPerPageSelector);
   const contentByAToZStatus = useSelector(contentByAToZStatusSelector);
   const contentByAToZTotal = useSelector(contentByAToZTotalSelector);
   const isDarkMode = useSelector(selectIsDarkMode);
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 24,
+    pageSize: contentByAToZPerPage,
     total: 0,
     position: "bottom",
     align: "center",
@@ -46,7 +48,7 @@ const A_Z = () => {
       setPagination((prev) => ({
         ...prev,
         total: contentByAToZTotal,
-        pageSize: contentByAToZ.length,
+        pageSize: contentByAToZPerPage,
       }));
     }
   }, [contentByAToZStatus]);

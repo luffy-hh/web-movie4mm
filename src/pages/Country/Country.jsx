@@ -50,7 +50,7 @@ const Country = ({ router }) => {
     }));
   }, [contentByCountryTotal]);
   return (
-    <div className={`my-2`}>
+    <div className={`my-2 ${isDarkMode && "text-white"}`}>
       <ListPageTitle
         title={`Content By Country: ${name}`}
         routes={[
@@ -64,6 +64,7 @@ const Country = ({ router }) => {
           },
         ]}
       />
+      <p className={"pl-5 my-4"}>{contentByCountryTotal} Results</p>
       <GridBox
         loading={contentByCountryStatus === "loading"}
         items={contentByCountry}

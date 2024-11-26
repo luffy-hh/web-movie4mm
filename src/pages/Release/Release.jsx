@@ -11,10 +11,12 @@ import {
   contentByYearTotalSelector,
   fetchContentByYear,
 } from "../../app/MovieSlice/MovieSlice.jsx";
+import { selectIsDarkMode } from "../../app/ThemeConfig/themeConfigSlice.jsx";
 
 const Release = () => {
   const dispatch = useDispatch();
   const contentByYear = useSelector(contentByYearSelector);
+  const isDarkMode = useSelector(selectIsDarkMode);
   const contentByYearStatus = useSelector(contentByYearStatusSelector);
   const contentByYearTotal = useSelector(contentByYearTotalSelector);
   const contentByYearPerPage = useSelector(contentByYearPerPageSelector);
@@ -61,8 +63,9 @@ const Release = () => {
     }
   }, [contentByYearPerPage, contentByYearStatus, contentByYearTotal]);
   return (
-    <div className="my-8">
+    <div className={`${isDarkMode && "text-white"} my-8`}>
       <ListPageTitle routes={routes} title={`Release: ${year}`} />
+      <p className={"pl-5 mt-5"}>{contentByYearTotal} Results</p>
       <GridBox
         loading={contentByYearStatus === "loading"}
         items={contentByYear}

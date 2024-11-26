@@ -73,6 +73,9 @@ const ContentByPopularStars = ({ router }) => {
           router.location.state?.star_name || router.location.state?.name
         }`}
       />
+      <p className={`pl-5 mt-2 ${isDarkMode && "text-white"}`}>
+        {contentByStarTotal} Results
+      </p>
       <div className={"mt-2"}>
         <GridBox
           pagination={pagination}

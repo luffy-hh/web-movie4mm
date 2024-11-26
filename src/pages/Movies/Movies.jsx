@@ -117,6 +117,9 @@ const Movies = () => {
       >
         <Filters setSearchParams={setSearchParams} />
       </Drawer>
+      <p className={`pl-5 my-2 ${isDarkMode ? "text-white" : ""}`}>
+        {movieListTotal} Results
+      </p>
       <div className="flex gap-2 mt-2">
         <Suspense fallback={<Loader spin={true} />}>
           {!isMediumScreen && <Filters setSearchParams={setSearchParams} />}

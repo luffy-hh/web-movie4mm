@@ -64,6 +64,7 @@ const Genre = () => {
   return (
     <div className={`my-8 ${isDarkMode && "text-white"}`}>
       <ListPageTitle routes={routes} title={`GENRE: ${type?.toUpperCase()}`} />
+      <p className={"mt-5 pl-5"}>{listByGenreTotal} Results</p>
       <GridBox
         loading={listByGenreStatus === "loading"}
         items={listByGenreId}

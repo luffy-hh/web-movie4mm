@@ -21,7 +21,7 @@ const ListPageTitle = ({ routes, title, titleClass = "" }) => {
     <div className="flex justify-between">
       <p
         className={addExtraClassNames(
-          `${isDarkMode && "text-white"} text-3xl`,
+          `${isDarkMode && "text-white"} text-2xl`,
           titleClass,
         )}
       >

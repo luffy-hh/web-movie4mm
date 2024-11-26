@@ -25,6 +25,8 @@ const initialState = {
 
   allSearchResults: {},
   allSearchResultsStatus: "idle",
+  allSearchResultsTotal: 0,
+  allSearchResultsPerPage: 0,
   allSearchResultsMsg: "",
 
   yearList: [],
@@ -226,6 +228,8 @@ const homeSlice = createSlice({
     builder
       .addCase(fetchSearchAll.fulfilled, (state, action) => {
         state.allSearchResultsStatus = "success";
+        state.allSearchResultsTotal = action.payload.data.total_count;
+        state.allSearchResultsPerPage = action.payload.data.per_page;
         state.allSearchResultsMsg = action.payload.responseMessage;
         state.allSearchResults = action.payload.data;
       })
@@ -276,6 +280,10 @@ export const selectAllTvCategoryMsg = (state) => state.home.allTvCategoryMsg;
 export const selectAllSearchResults = (state) => state.home.allSearchResults;
 export const selectAllSearchResultsStatus = (state) =>
   state.home.allSearchResultsStatus;
+export const selectAllSearchResultsTotal = (state) =>
+  state.home.allSearchResultsTotal;
+export const selectAllSearchResultsPerPage = (state) =>
+  state.home.allSearchResultsPerPage;
 export const selectAllSearchResultsMsg = (state) =>
   state.home.allSearchResultsMsg;
 export const selectYearList = (state) => state.home.yearList;

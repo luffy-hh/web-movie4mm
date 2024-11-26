@@ -114,6 +114,9 @@ const Series = () => {
       >
         <Filters setSearchParams={setSearchParams} />
       </Drawer>
+      <p className={`my-2 pl-5 ${isDarkMode ? "text-white" : ""}`}>
+        {seriesListTotal} Results
+      </p>
       <div className="flex gap-2 mt-2">
         {!isMediumScreen && <Filters setSearchParams={setSearchParams} />}
         <GridBox
