@@ -22,35 +22,18 @@ import PopularStarsCarousel from "../components/PopularStarsCarousel.jsx";
 const Home = () => {
   const dispatch = useDispatch();
   const isSmallScreen = useSelector((state) => state.theme.isSmallScreen);
-  const [movie4K, setMovie4K] = useState([]);
-  const [currentYear, setCurrentYear] = useState([]);
-  const [latestMovies, setLatestMovies] = useState([]);
-  const [latestTvSeries, setLatestTvSeries] = useState([]);
   const homeStatus = useSelector(getHomeStatus);
   const slider = useSelector(getSlider);
   const liveSport = useSelector(getLiveSport);
   const movieList = useSelector(getMovieList);
+  console.log(movieList);
+
   const popularStars = useSelector(getPopularStars);
   const featuredTvChannels = useSelector(getFeaturedTvChannels);
 
   useEffect(() => {
     dispatch(getHomeContent({ api: "/home_content" }));
   }, [dispatch]);
-
-  useEffect(() => {
-    if (movieList.length > 0) {
-      setMovie4K(movieList.find((item) => item.type === "4k")?.movies);
-      setCurrentYear(
-        movieList.find((item) => item.type === "current_year")?.movies,
-      );
-      setLatestMovies(
-        movieList.find((item) => item.type === "latest_movies")?.movies,
-      );
-      setLatestTvSeries(
-        movieList.find((item) => item.type === "latest_tvseries")?.movies,
-      );
-    }
-  }, [movieList]);
 
   return (
     <>
@@ -143,42 +126,17 @@ const Home = () => {
             imgClassName={"h-[10rem]"}
             type={"tv"}
           />
-
-          <GridBox
-            cardClassName={"!p-0"}
-            title={"Resolution"}
-            type={"movie"}
-            titleTag={"4K"}
-            items={movie4K}
-            seeMorePath={"movies"}
-          />
-
-          <GridBox
-            cardClassName={"!p-0"}
-            title={"Release"}
-            titleTag={"2024"}
-            type={"movie"}
-            items={currentYear}
-            seeMorePath={"release/2024"}
-          />
-
-          <GridBox
-            cardClassName={"!p-0"}
-            title={"Latest Movies"}
-            titleTag={""}
-            type={"movie"}
-            items={latestMovies}
-            seeMorePath={"movies"}
-          />
-
-          <GridBox
-            cardClassName={"!p-0"}
-            title={"Latest TV Series"}
-            titleTag={""}
-            type={"tvseries"}
-            items={latestTvSeries}
-            seeMorePath={"series"}
-          />
+          {movieList.map((item, index) => (
+            <GridBox
+              key={index}
+              cardClassName={"!p-0"}
+              title={item.title}
+              // titleTag={item.type}
+              type={item.type === "latest_tvseries" ? "tvseries" : "movie"}
+              items={item.movies}
+              seeMorePath={`movies/${item.type}`}
+            />
+          ))}
         </>
       )}
     </>
