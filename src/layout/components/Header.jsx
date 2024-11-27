@@ -20,6 +20,8 @@ import {
 } from "../../app/ThemeConfig/themeConfigSlice.jsx";
 import { LuMoon, LuSun } from "react-icons/lu";
 import Search from "antd/es/input/Search.js";
+import CustomButton from "../../components/Buttons/CustomButton.jsx";
+import { selectUser } from "../../app/UserSlice/UserSlice.jsx";
 
 const { Header: AntHeader } = Layout;
 
@@ -38,6 +40,7 @@ const Header = ({ router }) => {
   const isDarkMode = useSelector(selectIsDarkMode);
   const allCategory = useSelector(selectAllTvCategory);
   const yearList = useSelector(selectYearList);
+  const currentUser = useSelector(selectUser);
 
   useEffect(() => {
     if (allCategory.length > 0) {
@@ -289,6 +292,13 @@ const Header = ({ router }) => {
               </button>
             )}
           </div>
+          {!currentUser && (
+            <CustomButton
+              click={() => router.nav("/login")}
+              text={"Login"}
+              className={"ml-5"}
+            />
+          )}
         </div>
       )}
       <Drawer
@@ -340,6 +350,13 @@ const Header = ({ router }) => {
             )}
             onClick={menuItemClickHandler}
           />
+          {!currentUser && (
+            <CustomButton
+              click={() => router.nav("/login")}
+              text={"Login"}
+              className={"w-[20rem] mx-auto mt-5"}
+            />
+          )}
         </div>
       </Drawer>
     </AntHeader>

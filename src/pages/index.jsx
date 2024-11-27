@@ -99,7 +99,7 @@ const Home = () => {
                           </div>
                         </div>
                       </Link>
-                    )
+                    ),
                   )}
               </Carousel>
             </ConfigProvider>
@@ -108,11 +108,11 @@ const Home = () => {
           {liveSport.length > 0 && (
             <CarouselBox
               data={liveSport}
-              slidesToShow={3}
+              slidesToShow={4}
               slidesToShowSmall={2}
               slidesToScroll={1}
               title={"Live-Sport"}
-              imgClassName={"h-[18rem]"}
+              imgClassName={"h-[10rem]"}
               type={"tv"}
             />
           )}

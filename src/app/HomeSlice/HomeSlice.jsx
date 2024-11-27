@@ -32,10 +32,29 @@ const initialState = {
   yearList: [],
   yearListStatus: "idle",
   yearListMsg: "",
+
+  config: {},
+  configStatus: "idle",
+  configMsg: "",
 };
 
 export const fetchSearchAll = createAsyncThunk(
   "home/fetchSearchAll",
+  async ({ api }, thunkApi) => {
+    try {
+      const response = await getData(api);
+      if (response.responseCode !== "000" || response.status === false) {
+        return thunkApi.rejectWithValue(response);
+      }
+      return response;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
+export const fetchConfig = createAsyncThunk(
+  "home/fetchConfig",
   async ({ api }, thunkApi) => {
     try {
       const response = await getData(api);
@@ -254,6 +273,20 @@ const homeSlice = createSlice({
       .addCase(fetchYearList.pending, (state) => {
         state.yearListStatus = "loading";
       });
+
+    builder
+      .addCase(fetchConfig.fulfilled, (state, action) => {
+        state.configStatus = "success";
+        state.configMsg = action.payload.responseMessage;
+        state.config = action.payload.data.config;
+      })
+      .addCase(fetchConfig.rejected, (state, action) => {
+        state.configStatus = "failed";
+        state.configMsg = action.payload.responseMessage;
+      })
+      .addCase(fetchConfig.pending, (state) => {
+        state.configStatus = "loading";
+      });
   },
 });
 
@@ -289,6 +322,9 @@ export const selectAllSearchResultsMsg = (state) =>
 export const selectYearList = (state) => state.home.yearList;
 export const selectYearListStatus = (state) => state.home.yearListStatus;
 export const selectYearListMsg = (state) => state.home.yearListMsg;
+export const selectConfig = (state) => state.home.config;
+export const selectConfigStatus = (state) => state.home.configStatus;
+export const selectConfigMsg = (state) => state.home.configMsg;
 
 export const { resetHomeStatus } = homeSlice.actions;
 

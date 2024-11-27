@@ -14,7 +14,7 @@ export const getDataWithToken = async (api) => {
       // mode:"no-cors",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
+        Authorization: `${JSON.parse(localStorage.getItem("token"))}`,
         ...headers,
       },
     });
@@ -62,9 +62,9 @@ export const postData = async (api, postData) => {
       },
       body: JSON.stringify(postData),
     });
-    if (response.status === 401) {
-      expireToken();
-    }
+    // if (response.status === 401) {
+    //   expireToken();
+    // }
     // console.log(`${api}>> Post:`, postData);
     return await response.json();
   } catch (error) {
@@ -119,7 +119,8 @@ export const postMultipartDataWithToken = async (api, postData) => {
       method: "POST",
       // mode:"no-cors",
       headers: {
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
+        ...headers,
+        Authorization: `${JSON.parse(localStorage.getItem("token"))}`,
       },
       body: formData,
     });

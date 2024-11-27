@@ -6,6 +6,8 @@ import { addExtraClassNames } from "../../utilities/UtilFunctions";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectIsDarkMode } from "../../app/ThemeConfig/themeConfigSlice.jsx";
+import withRouter from "../HOCs/withRouter.jsx";
+import { selectUser } from "../../app/UserSlice/UserSlice.jsx";
 
 const CarouselBox = ({
   slidesToScroll = 1,
@@ -20,10 +22,13 @@ const CarouselBox = ({
   clickAble = false,
   onClick = () => {},
   infinite = true,
+  router,
 }) => {
   const isDarkMode = useSelector(selectIsDarkMode);
   const isSmallScreen = useSelector((state) => state.theme.isSmallScreen);
   const carouselRef = useRef();
+  const { nav } = router;
+  const currentUser = useSelector(selectUser);
   const next = () => {
     carouselRef.current.next();
     // console.log(carouselRef.current);
@@ -87,7 +92,7 @@ const CarouselBox = ({
           if (clickAble) {
             return (
               <div
-                className=" bg-gray-500 hover:text-slate-200 relative shadow-lg cursor-pointer p-2 mr-5"
+                className="bg-gray-500 hover:text-slate-200 relative shadow-lg cursor-pointer p-2 mr-5"
                 key={i}
                 onClick={() => onClick(item.file_url)}
               >
@@ -112,9 +117,16 @@ const CarouselBox = ({
             );
           } else {
             return (
-              <Link
-                to={`/watch-live/${item.live_tv_id}`}
-                state={{ ...item, type: type }}
+              <div
+                onClick={() => {
+                  // if (currentUser) {
+                  nav(`/watch-live/${item.live_tv_id}`, {
+                    state: { ...item, type: type },
+                  });
+                  // } else {
+                  //   nav("/login");
+                  // }
+                }}
                 className="px-6 mr-5"
                 key={i}
               >
@@ -135,7 +147,7 @@ const CarouselBox = ({
                   </div>
                   <p className=" text-center mt-4 text-xl">{item.tv_name}</p>
                 </div>
-              </Link>
+              </div>
             );
           }
         })}
@@ -159,6 +171,8 @@ CarouselBox.propTypes = {
   onClick: PropTypes.func,
   infinite: PropTypes.bool,
   type: PropTypes.string,
+  router: PropTypes.object,
 };
 
-export default CarouselBox;
+const CarouselBoxWithRouter = withRouter(CarouselBox);
+export default CarouselBoxWithRouter;

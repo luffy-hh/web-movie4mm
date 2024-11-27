@@ -29,28 +29,29 @@ const Router = () => {
       <Suspense fallback={<Loader spin={true} />}>
         <Routes>
           {/* <Route path="/login" element={<Login />} /> */}
-          {/* <Route element={<PrivateRoute />}> */}
           <Route path="/" element={<LayoutCmp />}>
-            <Route index element={<Home />} />
-            <Route path="genre/:id" element={<Genre />} />
-            <Route path="release" element={<ReleaseList />} />
-            <Route path="release/:year" element={<Release />} />
-            <Route path="movies" element={<Movies />} />
-            {/*<Route element={<PrivateRoute />}> */}
-            <Route path="watch/:type/:id" element={<MovieDetails />} />
-            {/* </Route> */}
-            <Route path="series" element={<Series />} />
-            <Route path="a-z" element={<A_Z />} />
-            <Route path="live-tv" element={<LiveTv />} />
-            <Route path="live-tv/:id" element={<LiveTvCategory />} />
-            <Route path="watch-live/:id" element={<LiveTvDetail />} />
-            <Route path={"popular-stars"} element={<PopularStars />} />
-            <Route
-              path={"content-by-star/:id"}
-              element={<ContentByPopularStars />}
-            />
-            <Route path={"country/:id"} element={<Country />} />
-            <Route path={"search"} element={<Search />} />
+            <Route element={<PrivateRoute />}>
+              <Route index element={<Home />} />
+              <Route path="genre/:id" element={<Genre />} />
+              <Route path="release" element={<ReleaseList />} />
+              <Route path="release/:year" element={<Release />} />
+              <Route path="movies" element={<Movies />} />
+              {/*<Route element={<PrivateRoute />}> */}
+              <Route path="watch/:type/:id" element={<MovieDetails />} />
+              {/* </Route> */}
+              <Route path="series" element={<Series />} />
+              <Route path="a-z" element={<A_Z />} />
+              <Route path="live-tv" element={<LiveTv />} />
+              <Route path="live-tv/:id" element={<LiveTvCategory />} />
+              <Route path="watch-live/:id" element={<LiveTvDetail />} />
+              <Route path={"popular-stars"} element={<PopularStars />} />
+              <Route
+                path={"content-by-star/:id"}
+                element={<ContentByPopularStars />}
+              />
+              <Route path={"country/:id"} element={<Country />} />
+              <Route path={"search"} element={<Search />} />
+            </Route>
           </Route>
           <Route path={"/login"} element={<Login />} />
           <Route path="*" element={<NotFoundPage />} />

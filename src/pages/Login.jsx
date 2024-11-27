@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 import {
   login,
-  selectLoginError,
-  selectLoginLoading,
   selectLoginStatus,
   selectUser,
 } from "../app/UserSlice/UserSlice";
@@ -23,12 +21,11 @@ const Login = () => {
   const currentUser = useSelector(selectUser);
   const loginMsg = useSelector((state) => state.user.loginMsg);
   const loginStatus = useSelector(selectLoginStatus);
-  const loading = useSelector(selectLoginLoading);
+  // const loading = useSelector(selectLoginLoading);
   // console.log(error);
   const loginHandle = (e) => {
     e.preventDefault();
-    const values = { loginId: email, password: password };
-
+    const values = { username: email, password: password };
     dispatch(
       login({
         api: "/login",
@@ -45,12 +42,13 @@ const Login = () => {
         theme: "light",
       });
   }, [loginStatus]);
+
   useEffect(() => {
-    if (currentUser) nav(-1);
+    if (currentUser) nav("/");
   }, [currentUser]);
   return (
     <div className="login h-[100vh] w-full bg-gradient-to-br from-[#36D1DC] to-[#5B86E5]">
-      <Loader spin={loading} fullscreen />
+      <Loader spin={loginStatus === "loading"} fullscreen />
       <Notification />
       <div className=" box flex w-[70%] h-[80%] rounded-2xl overflow-hidden">
         <div className="left md:w-[50%]"></div>

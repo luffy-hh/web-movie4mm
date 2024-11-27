@@ -30,7 +30,7 @@ export const timeFormatChange = (date) => {
 export const expireToken = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
-  window.location.href = "/login";
+  // window.location.href = "/login";
 };
 
 // export const photoUrlFix = (array, folder, attributes) => {
@@ -141,6 +141,7 @@ export const base64Changer = async (values, attributes) => {
   }
   return updatedValues;
 };
+
 function toBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();

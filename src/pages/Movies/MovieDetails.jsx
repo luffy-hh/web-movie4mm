@@ -86,7 +86,6 @@ const MovieDetails = () => {
   }, [dispatch, id, type]);
   // console.log(details, playerRef);
 
-  useEffect(() => {}, []);
   return (
     <>
       {movieDetailsStatus === "loading" ? (
@@ -175,7 +174,7 @@ const MovieDetails = () => {
               // centered={true}
               tabBarGutter={5}
               type={"card"}
-              className={`${isDarkMode ? "dark" : ""} mt-4`}
+              className={`${isDarkMode ? "dark" : ""} mt-4 w-full`}
               items={details.seriesArray.map((item) => ({
                 label: item.seasons_name,
                 key: item.seasons_id,
@@ -193,7 +192,7 @@ const MovieDetails = () => {
                     title={""}
                     key={item.seasons_id}
                     clickAble={true}
-                    infinite={false}
+                    infinite={true}
                     onClick={setVideoLink}
                   />
                 ),

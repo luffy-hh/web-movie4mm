@@ -8,6 +8,7 @@ import withRouter from "../HOCs/withRouter";
 import { useSelector } from "react-redux";
 import { selectIsDarkMode } from "../../app/ThemeConfig/themeConfigSlice.jsx";
 import { BsStar } from "react-icons/bs";
+import { selectUser } from "../../app/UserSlice/UserSlice.jsx";
 
 const GridBox = ({
   pagination = false,
@@ -36,6 +37,7 @@ const GridBox = ({
   const handleMaximize = () => {
     setIsMaximized(!isMaximized);
   };
+  const currentUser = useSelector(selectUser);
   const isDarkMode = useSelector(selectIsDarkMode);
   // console.log(pagination);
 
@@ -125,7 +127,8 @@ const GridBox = ({
                 <div className="absolute inset-0 flex justify-center items-center z-40 opacity-0 scale-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 ease-out ">
                   {/* Play Button Wrapper */}
                   <div
-                    onClick={() =>
+                    onClick={() => {
+                      // if(currentUser){
                       router.nav(
                         `/watch/${
                           item.is_tvseries === "1" ? "tvseries" : "movie"
@@ -133,8 +136,11 @@ const GridBox = ({
                         {
                           state: { ...item },
                         },
-                      )
-                    }
+                      );
+                      // } else {
+                      //   router.nav("/login");
+                      // }
+                    }}
                     className="relative w-20 h-20 flex justify-center items-center  rounded-full custom-group"
                   >
                     {/* Border that will change on button hover */}

@@ -50,7 +50,7 @@ const PopularStarsCarousel = () => {
       <Carousel
         dots={false}
         draggable={true}
-        slidesToShow={isSmallScreen ? 5 : 8}
+        slidesToShow={isSmallScreen ? 8 : 10}
         slidesToScroll={isSmallScreen ? 3 : 5}
         autoplay={false}
         arrows={false}

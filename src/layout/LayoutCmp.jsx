@@ -18,8 +18,10 @@ import {
   fetchAllCountry,
   fetchAllGenre,
   fetchAllTvCategory,
+  fetchConfig,
   fetchYearList,
   getHomeContent,
+  selectConfigStatus,
 } from "../app/HomeSlice/HomeSlice.jsx";
 
 const LayoutCmp = () => {
@@ -29,6 +31,7 @@ const LayoutCmp = () => {
   const [showTopButton, setShowTopButton] = useState(false);
   const isSmallScreen = useSelector((state) => state.theme.isSmallScreen);
   const isDarkMode = useSelector(selectIsDarkMode);
+  const configStatus = useSelector(selectConfigStatus);
 
   // console.log(carsFull, driversFull);
   // const { car_no } = location.state;
@@ -68,14 +71,6 @@ const LayoutCmp = () => {
   useEffect(() => {
     window.addEventListener("scroll", onScrollHandler);
 
-    // const screenLoader = document.getElementsByClassName("screen_loader");
-    // if (screenLoader?.length) {
-    //   screenLoader[0].classList.add("animate__fadeOut");
-    //   setTimeout(() => {
-    //     setShowLoader(false);
-    //   }, 200);
-    // }
-
     return () => {
       window.removeEventListener("onscroll", onScrollHandler);
     };
@@ -112,6 +107,7 @@ const LayoutCmp = () => {
     };
   }, [dispatch]);
   useEffect(() => {
+    dispatch(fetchConfig({ api: "/config" }));
     dispatch(getHomeContent({ api: "/home_content" }));
     dispatch(fetchAllGenre({ api: "/all_genre" }));
     dispatch(fetchAllCountry({ api: "/all_country" }));
@@ -123,56 +119,59 @@ const LayoutCmp = () => {
     document.title = getTitle(location.pathname);
   }, [location.pathname]);
 
-  useEffect(() => {}, []);
   return (
     <Suspense fallback={<Loader spin={true} fullscreen={true} />}>
-      <Layout
-        className={`antialiased min-h-[100vh] ${
-          isDarkMode ? "bg-zinc-900" : ""
-        }`}
-      >
-        <div
-          className={`fixed ${
-            showTopButton ? "move-to-top" : "move-to-bottom"
-          } ani right-[10%] rtl:left-6 z-50`}
+      {configStatus === "loading" ? (
+        <Loader spin={true} fullscreen={true} />
+      ) : (
+        <Layout
+          className={`antialiased min-h-[100vh] ${
+            isDarkMode ? "bg-zinc-900" : ""
+          }`}
         >
-          {showTopButton && (
-            <button
-              type="button"
-              className="rounded-full p-2 bg-[#C427C4] border-[#C427C4] border-2 shadow-lg hover:shadow-xl"
-              onClick={goToTop}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="white"
-                strokeWidth="1.5"
+          <div
+            className={`fixed ${
+              showTopButton ? "move-to-top" : "move-to-bottom"
+            } ani right-[10%] rtl:left-6 z-50`}
+          >
+            {showTopButton && (
+              <button
+                type="button"
+                className="rounded-full p-2 bg-[#C427C4] border-[#C427C4] border-2 shadow-lg hover:shadow-xl"
+                onClick={goToTop}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M8 7l4-4m0 0l4 4m-4-4v18"
-                />
-              </svg>
-            </button>
-          )}
-        </div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="white"
+                  strokeWidth="1.5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M8 7l4-4m0 0l4 4m-4-4v18"
+                  />
+                </svg>
+              </button>
+            )}
+          </div>
 
-        <Header
-          isSmallScreen={isSmallScreen}
-          setIsSmallScreen={setIsSmallScreen}
-        />
-        <Content
-          className={`${
-            isSmallScreen ? "px-2 w-full" : "w-[70%] xl:w-[65%]  mx-auto"
-          } ${isDarkMode ? "bg-zinc-900" : ""}`}
-        >
-          <Outlet />
-        </Content>
-        <Footer />
-      </Layout>
+          <Header
+            isSmallScreen={isSmallScreen}
+            setIsSmallScreen={setIsSmallScreen}
+          />
+          <Content
+            className={`${
+              isSmallScreen ? "px-2 w-full" : "w-[70%] xl:w-[65%]  mx-auto"
+            } ${isDarkMode ? "bg-zinc-900" : ""}`}
+          >
+            <Outlet />
+          </Content>
+          <Footer />
+        </Layout>
+      )}
     </Suspense>
   );
 };

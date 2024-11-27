@@ -123,7 +123,7 @@ export const fetchMovieDetails = createAsyncThunk(
   "movie/getMovieDetails",
   async ({ api }, thunkApi) => {
     try {
-      const response = await getData(api);
+      const response = await getDataWithToken(api);
       if (response.responseCode !== "000" || response.status === false) {
         return thunkApi.rejectWithValue(response);
       }
