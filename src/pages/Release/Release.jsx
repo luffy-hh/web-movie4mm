@@ -23,10 +23,12 @@ const Release = () => {
   const contentByYearMsg = useSelector(contentByYearMsgSelector);
 
   const { year } = useParams();
+  const [total, setTotal] = useState(contentByYearTotal);
+  const [pageSize, setPageSize] = useState(contentByYearPerPage);
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: contentByYearPerPage,
-    total: contentByYearTotal,
+    // pageSize: contentByYearPerPage,
+    // total: contentByYearTotal,
     position: "both",
     align: "center",
     showSizeChanger: false,
@@ -49,16 +51,18 @@ const Release = () => {
     dispatch(
       fetchContentByYear({
         api: `/release_year_moives?year=${year}&page=${pagination.current}`,
-      }),
+      })
     );
   }, [year, pagination.current]);
   useEffect(() => {
     if (contentByYearStatus === "success") {
-      setPagination((prev) => ({
-        ...prev,
-        total: contentByYearTotal,
-        pageSize: contentByYearPerPage,
-      }));
+      // setPagination((prev) => ({
+      //   ...prev,
+      //   total: contentByYearTotal,
+      //   pageSize: contentByYearPerPage,
+      // }));
+      setTotal(contentByYearTotal);
+      setPageSize(contentByYearPerPage);
     }
   }, [contentByYearPerPage, contentByYearStatus, contentByYearTotal]);
   return (
@@ -68,7 +72,7 @@ const Release = () => {
       <GridBox
         loading={contentByYearStatus === "loading"}
         items={contentByYear}
-        pagination={pagination}
+        pagination={{ ...pagination, total: total, pageSize: pageSize }}
         cardClassName={"!p-0"}
         grid={{ gutter: 16, xs: 2, sm: 2, md: 3, lg: 5, xl: 6, xxl: 6 }}
       />

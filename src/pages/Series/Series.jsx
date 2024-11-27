@@ -37,10 +37,12 @@ const Series = () => {
     minimum_rating: 0,
     maximum_rating: 10,
   });
+  const [pageSize, setPageSize] = useState(seriesListPerPage);
+  const [total, setTotal] = useState(seriesListTotal);
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: seriesListPerPage,
-    total: seriesListTotal,
+    // pageSize: seriesListPerPage,
+    // total: seriesListTotal,
     position: "both",
     align: "center",
     showSizeChanger: false,
@@ -55,15 +57,17 @@ const Series = () => {
       fetchSeriesList({
         api: `/tvseries`,
         reqData: { ...searchParams },
-      }),
+      })
     );
   }, [dispatch, pagination, searchParams]);
   useEffect(() => {
-    setPagination((prev) => ({
-      ...prev,
-      total: seriesListTotal,
-      pageSize: seriesListPerPage,
-    }));
+    // setPagination((prev) => ({
+    //   ...prev,
+    //   total: seriesListTotal,
+    //   pageSize: seriesListPerPage,
+    // }));
+    setPageSize(seriesListPerPage);
+    setTotal(seriesListTotal);
   }, [seriesListPerPage, seriesListTotal]);
   return (
     <Container className="my-8">
@@ -120,7 +124,11 @@ const Series = () => {
       <div className="flex gap-2 mt-2">
         {!isMediumScreen && <Filters setSearchParams={setSearchParams} />}
         <GridBox
-          pagination={pagination}
+          pagination={{
+            ...pagination,
+            pageSize: pageSize,
+            total: total,
+          }}
           loading={seriesListStatus === "loading"}
           items={seriesList}
           className={"flex-1"}

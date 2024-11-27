@@ -33,10 +33,10 @@ const Genre = () => {
       breadcrumbName: type.toUpperCase(),
     },
   ];
+  const [pageSize, setPageSize] = useState(listByGenrePerPage);
+  const [total, setTotal] = useState(listByGenreTotal);
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: listByGenrePerPage,
-    total: listByGenreTotal,
     position: "both",
     align: "center",
     showSizeChanger: false,
@@ -46,19 +46,21 @@ const Genre = () => {
     },
   });
   useEffect(() => {
-    setPagination((prev) => ({
-      ...prev,
-      total: listByGenreTotal,
-      pageSize: listByGenrePerPage,
-    }));
+    // setPagination((prev) => ({
+    //   ...prev,
+    //   total: listByGenreTotal,
+    //   pageSize: listByGenrePerPage,
+    // }));
+    setTotal(listByGenreTotal);
+    setPageSize(listByGenrePerPage);
   }, [listByGenrePerPage, listByGenreTotal]);
   useEffect(() => {
     dispatch(
       fetchByGenreId({
         api: `/content_by_genre_id?id=${id}&page=${pagination.current}`,
-      }),
+      })
     );
-  }, [pagination, dispatch, id]);
+  }, [dispatch, id, pagination]);
 
   //   console.log(type);
   return (
@@ -68,7 +70,11 @@ const Genre = () => {
       <GridBox
         loading={listByGenreStatus === "loading"}
         items={listByGenreId}
-        pagination={pagination}
+        pagination={{
+          ...pagination,
+          total: total,
+          pageSize: pageSize,
+        }}
         cardClassName={"!p-0"}
         grid={{ gutter: 16, xs: 2, sm: 2, md: 3, lg: 5, xl: 6, xxl: 6 }}
       />

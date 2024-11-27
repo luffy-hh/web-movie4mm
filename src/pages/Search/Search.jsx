@@ -59,7 +59,7 @@ const Search = ({ router }) => {
   // console.log(router.location);
 
   return (
-    <>
+    <div className={"mt-4"}>
       <ListPageTitle routes={[]} title={`Search Result: ${keyword}`} />
       <p className={`pl-5 mt-2 ${isDarkMode && "text-white"}`}>
         {searchResultTotal} Results
@@ -70,7 +70,7 @@ const Search = ({ router }) => {
         loading={searchResultStatus === "loading"}
         grid={{ gutter: 16, xs: 2, sm: 2, md: 3, lg: 5, xl: 6, xxl: 6 }}
       />
-    </>
+    </div>
   );
 };
 

@@ -30,9 +30,9 @@ const Home = () => {
   const popularStars = useSelector(getPopularStars);
   const featuredTvChannels = useSelector(getFeaturedTvChannels);
 
-  useEffect(() => {
-    dispatch(getHomeContent({ api: "/home_content" }));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getHomeContent({ api: "/home_content" }));
+  // }, [dispatch]);
 
   return (
     <>
@@ -99,7 +99,7 @@ const Home = () => {
                           </div>
                         </div>
                       </Link>
-                    ),
+                    )
                   )}
               </Carousel>
             </ConfigProvider>

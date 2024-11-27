@@ -37,10 +37,12 @@ const Movies = () => {
     minimum_rating: 0,
     maximum_rating: 10,
   });
+  const [total, setTotal] = useState(movieListTotal);
+  const [pageSize, setPageSize] = useState(movieListPerPage);
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: movieListPerPage,
-    total: movieListTotal,
+    // pageSize: movieListPerPage,
+    // total: movieListTotal,
     position: "both",
     align: "center",
     showSizeChanger: false,
@@ -57,15 +59,17 @@ const Movies = () => {
       fetchMovieList({
         api: `/movies`,
         reqData: { ...searchParams },
-      }),
+      })
     );
   }, [dispatch, pagination, searchParams]);
   useEffect(() => {
-    setPagination((prev) => ({
-      ...prev,
-      total: movieListTotal,
-      pageSize: movieListPerPage,
-    }));
+    // setPagination((prev) => ({
+    //   ...prev,
+    //   total: movieListTotal,
+    //   pageSize: movieListPerPage,
+    // }));
+    setPageSize(movieListPerPage);
+    setTotal(movieListTotal);
   }, [movieListPerPage, movieListTotal]);
 
   return (
@@ -129,7 +133,7 @@ const Movies = () => {
             className={"flex-1 "}
             cardClassName={"!p-0"}
             grid={{ gutter: 16, xs: 2, sm: 2, md: 3, lg: 4, xl: 6, xxl: 6 }}
-            pagination={pagination}
+            pagination={{ ...pagination, total: total, pageSize: pageSize }}
             type={"movie"}
           />
         </Suspense>
