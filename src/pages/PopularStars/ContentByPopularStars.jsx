@@ -25,10 +25,12 @@ const ContentByPopularStars = ({ router }) => {
   const contentByStarsPerPage = useSelector(contentByStarsPerPageSelector);
   const contentByStarStatus = useSelector(contentByStarsStatusSelector);
   const isDarkMode = useSelector(selectIsDarkMode);
+  const [total, setTotal] = useState(contentByStarTotal);
+  const [pageSize, setPageSize] = useState(contentByStarsPerPage);
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: contentByStarsPerPage,
-    total: 0,
+    // pageSize: contentByStarsPerPage,
+    // total: 0,
     position: "both",
     align: "center",
     showSizeChanger: false,
@@ -43,16 +45,18 @@ const ContentByPopularStars = ({ router }) => {
     dispatch(
       fetchContentByStars({
         api: `/content_by_star_id?id=${id}&page=${pagination.current}`,
-      }),
+      })
     );
   }, [dispatch, id, pagination]);
 
   useEffect(() => {
-    setPagination((prev) => ({
-      ...prev,
-      total: contentByStarTotal,
-      pageSize: contentByStarsPerPage,
-    }));
+    // setPagination((prev) => ({
+    //   ...prev,
+    //   total: contentByStarTotal,
+    //   pageSize: contentByStarsPerPage,
+    // }));
+    setTotal(contentByStarTotal);
+    setPageSize(contentByStarsPerPage);
   }, [contentByStarTotal, contentByStarsPerPage]);
 
   return (
@@ -78,7 +82,7 @@ const ContentByPopularStars = ({ router }) => {
       </p>
       <div className={"mt-2"}>
         <GridBox
-          pagination={pagination}
+          pagination={{ ...pagination, total: total, pageSize: pageSize }}
           items={contentByStar}
           loading={contentByStarStatus === "loading"}
           grid={{ gutter: 16, xs: 2, sm: 2, md: 3, lg: 4, xl: 6, xxl: 6 }}

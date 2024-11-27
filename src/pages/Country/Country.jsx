@@ -23,10 +23,10 @@ const Country = ({ router }) => {
   const contentByCountryTotal = useSelector(contentByCountryTotalSelector);
   const contentByCountryPerPage = useSelector(contentByCountryPerPageSelector);
   const contentByCountryStatus = useSelector(contentByCountryStatusSelector);
+  const [total, setTotal] = useState(contentByCountryTotal);
+  const [pageSize, setPageSize] = useState(contentByCountryPerPage);
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: contentByCountryPerPage,
-    total: contentByCountryTotal,
     position: "both",
     align: "center",
     showSizeChanger: false,
@@ -39,16 +39,18 @@ const Country = ({ router }) => {
     dispatch(
       fetchContentByCountry({
         api: `/content_by_country_id?id=${id}&page=${pagination.current}`,
-      }),
+      })
     );
   }, [id, pagination]);
   useEffect(() => {
-    setPagination((prev) => ({
-      ...prev,
-      total: contentByCountryTotal,
-      pageSize: contentByCountryPerPage,
-    }));
-  }, [contentByCountryTotal]);
+    // setPagination((prev) => ({
+    //   ...prev,
+    //   total: contentByCountryTotal,
+    //   pageSize: contentByCountryPerPage,
+    // }));
+    setTotal(contentByCountryTotal);
+    setPageSize(contentByCountryPerPage);
+  }, [contentByCountryPerPage, contentByCountryTotal]);
   return (
     <div className={`my-2 ${isDarkMode && "text-white"}`}>
       <ListPageTitle
@@ -68,7 +70,7 @@ const Country = ({ router }) => {
       <GridBox
         loading={contentByCountryStatus === "loading"}
         items={contentByCountry}
-        pagination={pagination}
+        pagination={{ ...pagination, total: total, pageSize: pageSize }}
         grid={{ gutter: 16, xs: 2, sm: 2, md: 3, lg: 5, xl: 6, xxl: 6 }}
       />
     </div>
