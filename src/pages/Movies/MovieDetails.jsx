@@ -27,7 +27,7 @@ const MovieDetails = () => {
   const dispatch = useDispatch();
   const movieDetails = useSelector(movieDetailsSelector);
   const isDarkMode = useSelector(selectIsDarkMode);
-  const addToFavoriteStatus = useSelector();
+  // const addToFavoriteStatus = useSelector();
   const currentUser = useSelector(selectUser);
   const movieDetailsStatus = useSelector(movieDetailsStatusSelector);
   const [videoLink, setVideoLink] = useState("");
