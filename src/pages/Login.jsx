@@ -30,7 +30,7 @@ const Login = () => {
       login({
         api: "/login",
         userData: values,
-      })
+      }),
     );
   };
 
@@ -53,8 +53,13 @@ const Login = () => {
       <Loader spin={loginStatus === "loading"} fullscreen />
       <Notification />
       <div className=" box flex w-[70%] h-[80%] rounded-2xl overflow-hidden">
-        <div className="left md:w-[50%]"></div>
-        <div className="right w-full mx-auto md:w-[50%] flex flex-col justify-center items-center">
+        <div
+          className="left md:w-[50%] bg-[url(/imgs/login_info.png)]"
+          style={{
+            backgroundSize: "100% 100%",
+          }}
+        ></div>
+        <div className="right w-full mx-auto md:w-[50%] flex flex-col justify-center items-center ">
           <div className="logo w-[26rem] h-[13rem] mt-8 mx-auto">
             <img src="/imgs/logo.png" alt="logo" />
           </div>
