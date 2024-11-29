@@ -21,7 +21,7 @@ import {
 import { LuMoon, LuSun } from "react-icons/lu";
 import Search from "antd/es/input/Search.js";
 import CustomButton from "../../components/Buttons/CustomButton.jsx";
-import { selectUser } from "../../app/UserSlice/UserSlice.jsx";
+import { logout, selectUser } from "../../app/UserSlice/UserSlice.jsx";
 
 const { Header: AntHeader } = Layout;
 
@@ -292,10 +292,18 @@ const Header = ({ router }) => {
               </button>
             )}
           </div>
-          {!currentUser && (
+          {!currentUser ? (
             <CustomButton
               click={() => router.nav("/login")}
               text={"Login"}
+              className={"ml-5"}
+            />
+          ) : (
+            <CustomButton
+              click={() => {
+                dispatch(logout());
+              }}
+              text={"LogOut"}
               className={"ml-5"}
             />
           )}
@@ -354,6 +362,15 @@ const Header = ({ router }) => {
             <CustomButton
               click={() => router.nav("/login")}
               text={"Login"}
+              className={"w-[20rem] mx-auto mt-5"}
+            />
+          )}
+          {currentUser && (
+            <CustomButton
+              click={() => {
+                dispatch(logout());
+              }}
+              text={"Logout"}
               className={"w-[20rem] mx-auto mt-5"}
             />
           )}

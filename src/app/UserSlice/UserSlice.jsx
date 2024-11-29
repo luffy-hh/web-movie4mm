@@ -35,6 +35,7 @@ export const logout = createAsyncThunk("user/logout", async (thunkApi) => {
   try {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+    window.location.href = "/login";
   } catch (error) {
     return thunkApi.rejectWithValue(error);
   }
