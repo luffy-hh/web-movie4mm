@@ -21,6 +21,8 @@ import Search from "../pages/Search/Search.jsx";
 import ContentByPopularStars from "../pages/PopularStars/ContentByPopularStars.jsx";
 import Country from "../pages/Country/Country.jsx";
 import ReleaseList from "../pages/Release/ReleaseList.jsx";
+import User from "../pages/User/User.jsx";
+import UserFavorite from "../pages/Favorite/UserFavorite.jsx";
 
 const Router = () => {
   // const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -32,6 +34,8 @@ const Router = () => {
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<LayoutCmp />}>
               <Route index element={<Home />} />
+              <Route path={"fav-list"} element={<UserFavorite />} />
+              <Route path="profile" element={<User />} />
               <Route path="genre/:id" element={<Genre />} />
               <Route path="release" element={<ReleaseList />} />
               <Route path="release/:year" element={<Release />} />

@@ -23,6 +23,7 @@ import {
   getHomeContent,
   selectConfigStatus,
 } from "../app/HomeSlice/HomeSlice.jsx";
+import { fetchUser, selectUser } from "../app/UserSlice/UserSlice.jsx";
 
 const LayoutCmp = () => {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ const LayoutCmp = () => {
   const isSmallScreen = useSelector((state) => state.theme.isSmallScreen);
   const isDarkMode = useSelector(selectIsDarkMode);
   const configStatus = useSelector(selectConfigStatus);
+  const currentUser = useSelector(selectUser);
 
   // console.log(carsFull, driversFull);
   // const { car_no } = location.state;
@@ -108,6 +110,9 @@ const LayoutCmp = () => {
   }, [dispatch]);
   useEffect(() => {
     dispatch(fetchConfig({ api: "/config" }));
+    dispatch(
+      fetchUser({ api: "/my_account", data: { user_id: currentUser.user_id } })
+    );
     dispatch(getHomeContent({ api: "/home_content" }));
     dispatch(fetchAllGenre({ api: "/all_genre" }));
     dispatch(fetchAllCountry({ api: "/all_country" }));

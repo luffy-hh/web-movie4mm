@@ -10,6 +10,6 @@ export default function PrivateRoute() {
   const [open, setOpen] = useState(false);
   useEffect(() => {
     !config?.mandatory_login && !currentUser && nav("/login");
-  }, [config?.mandatory_login, currentUser, nav]);
+  }, [config, nav]);
   return <Outlet />;
 }

@@ -127,7 +127,7 @@ const CarouselBox = ({
                   //   nav("/login");
                   // }
                 }}
-                className="px-6 mr-5"
+                className="px-6 mr-5 cursor-pointer"
                 key={i}
               >
                 <div
@@ -141,7 +141,7 @@ const CarouselBox = ({
                       alt="photo"
                       className={addExtraClassNames(
                         "w-full aspect-[3/2]",
-                        imgClassName,
+                        imgClassName
                       )}
                     />
                   </div>

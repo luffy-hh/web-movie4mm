@@ -11,11 +11,14 @@ import {
   fetchMovieDetails,
   movieDetailsSelector,
   movieDetailsStatusSelector,
+  addToFavorite,
 } from "../../app/MovieSlice/MovieSlice.jsx";
 import Loader from "../../components/Loader/Loader.jsx";
 import dayjs from "dayjs";
 import { selectIsDarkMode } from "../../app/ThemeConfig/themeConfigSlice.jsx";
 import ReactPlayer from "react-player";
+import { selectUser } from "../../app/UserSlice/UserSlice.jsx";
+import Notification from "../../components/Notification.jsx";
 
 const MovieDetails = () => {
   const location = useLocation();
@@ -24,6 +27,8 @@ const MovieDetails = () => {
   const dispatch = useDispatch();
   const movieDetails = useSelector(movieDetailsSelector);
   const isDarkMode = useSelector(selectIsDarkMode);
+  const addToFavoriteStatus = useSelector();
+  const currentUser = useSelector(selectUser);
   const movieDetailsStatus = useSelector(movieDetailsStatusSelector);
   const [videoLink, setVideoLink] = useState("");
   const [is_tvseries, setIs_tvseries] = useState(false);
@@ -43,7 +48,6 @@ const MovieDetails = () => {
     relatedArray: [],
     seriesArray: [],
   });
-
   // const { title, is_tvseries } = location.state;
   useEffect(() => {
     if (Object.keys(movieDetails).length > 0) {
@@ -84,6 +88,7 @@ const MovieDetails = () => {
       }),
     );
   }, [dispatch, id, type]);
+  useEffect(() => {}, []);
   // console.log(details, playerRef);
 
   return (
@@ -92,6 +97,7 @@ const MovieDetails = () => {
         <Loader spin={movieDetailsStatus === "loading"} />
       ) : (
         <div className="w-full mx-auto pt-5">
+          <Notification />
           {/*<ReactPlayer*/}
           {/*  url={videoLink}*/}
           {/*  controls={true}*/}
@@ -228,16 +234,27 @@ const MovieDetails = () => {
               <p className="text-xl font-semibold">{title}</p>
               <div className="flex gap-2">
                 <Tag
+                  onClick={() => {
+                    dispatch(
+                      addToFavorite({
+                        api: "/add_favorite",
+                        reqData: {
+                          user_id: currentUser?.user_id,
+                          videos_id: details.detail.videos_id,
+                        },
+                      }),
+                    );
+                  }}
                   color="#111827"
                   icon={<FaHeart />}
-                  className="text-2xl py-2 font-semibold cursor-default"
+                  className="text-2xl py-2 font-semibold cursor-pointer hover:text-red-600"
                 />
 
-                <Tag
-                  color="#111827"
-                  icon={<FaClock />}
-                  className="text-2xl py-2 font-semibold cursor-default"
-                />
+                {/*<Tag*/}
+                {/*  color="#111827"*/}
+                {/*  icon={<FaClock />}*/}
+                {/*  className="text-2xl py-2 font-semibold cursor-pointer hover:text-gray-400"*/}
+                {/*/>*/}
               </div>
               <p className=" leading-8 my-4">{details.description}</p>
               <div className="flex gap-5">

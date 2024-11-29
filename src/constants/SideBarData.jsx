@@ -1,4 +1,7 @@
 import { Badge } from "antd";
+import { FaUser } from "react-icons/fa";
+import { FiLogOut } from "react-icons/fi";
+import { FaHeart } from "react-icons/fa6";
 
 export const sideBarData = (genres, categories, years) => {
   // console.log(categories);
@@ -55,6 +58,33 @@ export const sideBarData = (genres, categories, years) => {
       // icon: ,
       key: "live-tv",
       children: categories,
+    },
+  ];
+};
+
+export const afterLoginMenu = (name, days) => {
+  return [
+    {
+      label: name,
+      key: "profile",
+      icon: <FaUser />,
+      disabled: true,
+    },
+    {
+      label: `Remaining Days: ${days}`,
+      key: "days",
+      icon: <FaUser />,
+      disabled: true,
+    },
+    {
+      label: "Favorite List",
+      key: "fav-list",
+      icon: <FaHeart />,
+    },
+    {
+      label: "Logout",
+      key: "logout",
+      icon: <FiLogOut />,
     },
   ];
 };

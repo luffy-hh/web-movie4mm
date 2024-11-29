@@ -11,6 +11,9 @@ const initialState = {
   currentUser: JSON.parse(localStorage.getItem("user")),
   loginStatus: "idle",
   loginMsg: "",
+
+  userDetailStatus: "idle",
+  userDetailMsg: "",
 };
 
 export const login = createAsyncThunk(
@@ -18,9 +21,6 @@ export const login = createAsyncThunk(
   async ({ api, userData }, thunkApi) => {
     try {
       const response = await postMultipartData(api, userData);
-      // console.log(api, userData);
-      // console.log(response);
-
       if (response.responseCode === "000") {
         localStorage.setItem("user", JSON.stringify(response.data));
         localStorage.setItem("token", JSON.stringify(response.api_token));
@@ -29,8 +29,24 @@ export const login = createAsyncThunk(
     } catch (error) {
       return thunkApi.rejectWithValue(error);
     }
-  },
+  }
 );
+
+export const fetchUser = createAsyncThunk(
+  "user/fetchUser",
+  async ({ api, data }, thunkApi) => {
+    try {
+      const response = await postMultipartData(api, data);
+      if (response.status === true) {
+        localStorage.setItem("user", JSON.stringify(response));
+      }
+      return response;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  }
+);
+
 export const logout = createAsyncThunk("user/logout", async (thunkApi) => {
   try {
     localStorage.removeItem("user");
@@ -61,6 +77,18 @@ const userSlice = createSlice({
       })
       .addCase(logout.fulfilled, (state) => {
         state.currentUser = null;
+      });
+    builder
+      .addCase(fetchUser.pending, (state) => {
+        state.userDetailStatus = "loading";
+      })
+      .addCase(fetchUser.fulfilled, (state, action) => {
+        state.userDetailStatus = "success";
+        state.currentUser = { ...action.payload.data, ...state.currentUser };
+      })
+      .addCase(fetchUser.rejected, (state, action) => {
+        state.userDetailStatus = "failed";
+        state.userDetailMsg = action.payload.responseMessage;
       });
   },
 });

@@ -30,9 +30,10 @@ const Login = () => {
       login({
         api: "/login",
         userData: values,
-      }),
+      })
     );
   };
+
   useEffect(() => {
     loginStatus === "fail" &&
       toast.error(loginMsg, {
@@ -41,6 +42,7 @@ const Login = () => {
         closeOnClick: true,
         theme: "light",
       });
+    loginStatus === "success" && nav("/");
   }, [loginStatus]);
 
   useEffect(() => {

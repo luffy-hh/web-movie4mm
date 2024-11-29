@@ -17,6 +17,12 @@ const inititalState = {
   movieListMsg: null,
   movieListPagination: null,
 
+  addFavoriteStatus: "idle",
+  addFavoriteMsg: null,
+
+  removeFavoriteStatus: "idle",
+  removeFavoriteMsg: null,
+
   seriesList: [],
   seriesListStatus: "idle",
   seriesListPerPage: 0,
@@ -57,6 +63,10 @@ const inititalState = {
   contentByYearPerPage: 0,
   contentByYearStatus: null,
   contentByYearMsg: null,
+
+  userFavorite: [],
+  userFavoriteStatus: "idle",
+  userFavoriteMsg: null,
 };
 
 export const fetchContentByCountry = createAsyncThunk(
@@ -64,6 +74,51 @@ export const fetchContentByCountry = createAsyncThunk(
   async ({ api }, thunkApi) => {
     try {
       const response = await getData(api);
+      if (response.responseCode !== "000" || response.status === false) {
+        return thunkApi.rejectWithValue(response);
+      }
+      return response;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
+export const removeFromFavorite = createAsyncThunk(
+  "movie/removeFavorite",
+  async ({ api, data }, thunkApi) => {
+    try {
+      const response = await postMultipartData(api, data);
+      if (response.responseCode !== "000" || response.status === false) {
+        return thunkApi.rejectWithValue(response);
+      }
+      return response;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
+export const addToFavorite = createAsyncThunk(
+  "movie/addToFavorite",
+  async ({ api, reqData }, thunkApi) => {
+    try {
+      const response = await postMultipartData(api, reqData);
+      if (response.responseCode !== "000" || response.status === false) {
+        return thunkApi.rejectWithValue(response);
+      }
+      return response;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
+export const fetchUserFavorite = createAsyncThunk(
+  "movie/getUserFavorite",
+  async ({ api }, thunkApi) => {
+    try {
+      const response = await getDataWithToken(api);
       if (response.responseCode !== "000" || response.status === false) {
         return thunkApi.rejectWithValue(response);
       }
@@ -334,6 +389,44 @@ const movieSlice = createSlice({
       .addCase(fetchContentByYear.pending, (state) => {
         state.contentByYearStatus = "loading";
       });
+
+    builder
+      .addCase(addToFavorite.pending, (state) => {
+        state.addFavoriteStatus = "loading";
+      })
+      .addCase(addToFavorite.fulfilled, (state, action) => {
+        state.addFavoriteStatus = "success";
+        state.addFavoriteMsg = action.payload.responseMessage;
+      })
+      .addCase(addToFavorite.rejected, (state, action) => {
+        state.addFavoriteStatus = "failed";
+        state.addFavoriteMsg = action.payload.responseMessage;
+      });
+    builder
+      .addCase(removeFromFavorite.pending, (state) => {
+        state.removeFavoriteStatus = "loading";
+      })
+      .addCase(removeFromFavorite.fulfilled, (state, action) => {
+        state.removeFavoriteStatus = "success";
+        state.removeFavoriteMsg = action.payload.responseMessage;
+      })
+      .addCase(removeFromFavorite.rejected, (state, action) => {
+        state.removeFavoriteStatus = "failed";
+        state.removeFavoriteMsg = action.payload.responseMessage;
+      });
+    builder
+      .addCase(fetchUserFavorite.pending, (state) => {
+        state.userFavoriteStatus = "loading";
+      })
+      .addCase(fetchUserFavorite.fulfilled, (state, action) => {
+        state.userFavoriteStatus = "success";
+        state.userFavoriteMsg = action.payload.responseMessage;
+        state.userFavorite = action.payload.data.favourite_list;
+      })
+      .addCase(fetchUserFavorite.rejected, (state, action) => {
+        state.userFavoriteStatus = "failed";
+        state.userFavoriteMsg = action.payload.responseMessage;
+      });
   },
 });
 
@@ -396,4 +489,15 @@ export const contentByYearStatusSelector = (state) =>
 export const contentByYearMsgSelector = (state) => state.movie.contentByYearMsg;
 export const contentByYearTotalSelector = (state) =>
   state.movie.contentByYearTotal;
+export const addFavoriteStatusSelector = (state) =>
+  state.movie.addFavoriteStatus;
+export const addFavoriteMsgSelector = (state) => state.movie.addFavoriteMsg;
+export const removeFavoriteStatusSelector = (state) =>
+  state.movie.removeFavoriteStatus;
+export const removeFavoriteMsgSelector = (state) =>
+  state.movie.removeFavoriteMsg;
+export const userFavoriteSelector = (state) => state.movie.userFavorite;
+export const userFavoriteStatusSelector = (state) =>
+  state.movie.userFavoriteStatus;
+export const userFavoriteMsgSelector = (state) => state.movie.userFavoriteMsg;
 export default movieSlice.reducer;

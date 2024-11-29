@@ -1,7 +1,7 @@
 import { lazy, useEffect, useState } from "react";
-import { Drawer, Layout, Menu } from "antd";
+import { Avatar, Drawer, Dropdown, Layout, Menu } from "antd";
 
-import { sideBarData } from "../../constants/SideBarData";
+import { afterLoginMenu, sideBarData } from "../../constants/SideBarData";
 import { FaBars, FaDesktop, FaX } from "react-icons/fa6";
 import CustomInput from "../../components/Inputs/CustomInput";
 import { Link } from "react-router-dom";
@@ -22,6 +22,7 @@ import { LuMoon, LuSun } from "react-icons/lu";
 import Search from "antd/es/input/Search.js";
 import CustomButton from "../../components/Buttons/CustomButton.jsx";
 import { logout, selectUser } from "../../app/UserSlice/UserSlice.jsx";
+import { FaUser } from "react-icons/fa";
 
 const { Header: AntHeader } = Layout;
 
@@ -41,6 +42,10 @@ const Header = ({ router }) => {
   const allCategory = useSelector(selectAllTvCategory);
   const yearList = useSelector(selectYearList);
   const currentUser = useSelector(selectUser);
+  const items = afterLoginMenu(
+    currentUser.user_name,
+    currentUser.remaining_days,
+  );
 
   useEffect(() => {
     if (allCategory.length > 0) {
@@ -299,13 +304,21 @@ const Header = ({ router }) => {
               className={"ml-5"}
             />
           ) : (
-            <CustomButton
-              click={() => {
-                dispatch(logout());
+            <Dropdown
+              menu={{
+                items,
+                onClick: (e) => {
+                  if (e.key === "logout") {
+                    dispatch(logout());
+                  }
+                  if (e.key === "fav-list") {
+                    router.nav("fav-list");
+                  }
+                },
               }}
-              text={"LogOut"}
-              className={"ml-5"}
-            />
+            >
+              <Avatar icon={<FaUser />} />
+            </Dropdown>
           )}
         </div>
       )}
@@ -366,13 +379,22 @@ const Header = ({ router }) => {
             />
           )}
           {currentUser && (
-            <CustomButton
-              click={() => {
-                dispatch(logout());
-              }}
-              text={"Logout"}
-              className={"w-[20rem] mx-auto mt-5"}
-            />
+            <div className="flex items-center justify-around mt-5">
+              {/* <CustomButton
+                text={currentUser?.user_name}
+                icon={<FaUser />}
+                click={() => {
+                  router.nav("/profile");
+                }}
+              /> */}
+              <CustomButton
+                click={() => {
+                  dispatch(logout());
+                }}
+                text={"Logout"}
+                className={"w-[20rem]"}
+              />
+            </div>
           )}
         </div>
       </Drawer>
