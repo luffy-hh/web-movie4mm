@@ -43,8 +43,8 @@ const Header = ({ router }) => {
   const yearList = useSelector(selectYearList);
   const currentUser = useSelector(selectUser);
   const items = afterLoginMenu(
-    currentUser.user_name,
-    currentUser.remaining_days,
+    currentUser?.user_name,
+    currentUser?.remaining_days,
   );
 
   useEffect(() => {

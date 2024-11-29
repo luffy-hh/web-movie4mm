@@ -110,15 +110,21 @@ const LayoutCmp = () => {
   }, [dispatch]);
   useEffect(() => {
     dispatch(fetchConfig({ api: "/config" }));
-    dispatch(
-      fetchUser({ api: "/my_account", data: { user_id: currentUser.user_id } })
-    );
+
     dispatch(getHomeContent({ api: "/home_content" }));
     dispatch(fetchAllGenre({ api: "/all_genre" }));
     dispatch(fetchAllCountry({ api: "/all_country" }));
     dispatch(fetchAllTvCategory({ api: "/all_tv_channel_categories" }));
     dispatch(fetchYearList({ api: "/release_years" }));
-  }, [dispatch]);
+  }, [dispatch ]);
+
+  useEffect(()=>{
+   if(currentUser){
+     dispatch(
+         fetchUser({ api: "/my_account", data: { user_id: currentUser?.user_id } })
+     );
+   }
+  },[currentUser?.user_id, dispatch])
 
   useEffect(() => {
     document.title = getTitle(location.pathname);
