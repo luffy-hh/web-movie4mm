@@ -309,7 +309,14 @@ const Header = ({ router }) => {
                 items,
                 onClick: (e) => {
                   if (e.key === "logout") {
-                    dispatch(logout());
+                    dispatch(
+                      logout({
+                        api: "/logout",
+                        data: {
+                          user_id: currentUser.user_id,
+                        },
+                      }),
+                    );
                   }
                   if (e.key === "fav-list") {
                     router.nav("fav-list");
@@ -389,7 +396,14 @@ const Header = ({ router }) => {
               /> */}
               <CustomButton
                 click={() => {
-                  dispatch(logout());
+                  dispatch(
+                    logout({
+                      api: "/logout",
+                      data: {
+                        user_id: currentUser.user_id,
+                      },
+                    }),
+                  );
                 }}
                 text={"Logout"}
                 className={"w-[20rem]"}

@@ -5,6 +5,7 @@ import {
   postData,
   postDataWithToken,
   postMultipartData,
+  postMultipartDataWithToken,
 } from "../../utilities/ApiCalls";
 
 const initialState = {
@@ -49,15 +50,23 @@ export const fetchUser = createAsyncThunk(
   },
 );
 
-export const logout = createAsyncThunk("user/logout", async (thunkApi) => {
-  try {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    window.location.href = "/login";
-  } catch (error) {
-    return thunkApi.rejectWithValue(error);
-  }
-});
+export const logout = createAsyncThunk(
+  "user/logout",
+  async ({ api, data }, thunkApi) => {
+    try {
+      const response = await postMultipartDataWithToken(api, data);
+      if (response.responseCode !== 200) {
+        return thunkApi.rejectWithValue(response);
+      } else {
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+      }
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
 
 const userSlice = createSlice({
   name: "user",
