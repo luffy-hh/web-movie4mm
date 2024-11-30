@@ -24,12 +24,14 @@ export const login = createAsyncThunk(
       if (response.responseCode === "000") {
         localStorage.setItem("user", JSON.stringify(response.data));
         localStorage.setItem("token", JSON.stringify(response.api_token));
+      } else {
+        return thunkApi.rejectWithValue(response);
       }
       return response;
     } catch (error) {
       return thunkApi.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const fetchUser = createAsyncThunk(
@@ -44,7 +46,7 @@ export const fetchUser = createAsyncThunk(
     } catch (error) {
       return thunkApi.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const logout = createAsyncThunk("user/logout", async (thunkApi) => {

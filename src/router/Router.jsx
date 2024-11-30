@@ -31,8 +31,8 @@ const Router = () => {
       <Suspense fallback={<Loader spin={true} />}>
         <Routes>
           {/* <Route path="/login" element={<Login />} /> */}
-          <Route element={<PrivateRoute />}>
-            <Route path="/" element={<LayoutCmp />}>
+          <Route path="/" element={<LayoutCmp />}>
+            <Route element={<PrivateRoute />}>
               <Route index element={<Home />} />
               <Route path={"fav-list"} element={<UserFavorite />} />
               <Route path="profile" element={<User />} />

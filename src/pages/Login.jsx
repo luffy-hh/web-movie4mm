@@ -12,6 +12,7 @@ import Loader from "../components/Loader/Loader";
 import Notification from "../components/Notification";
 import { toast } from "react-toastify";
 import CustomInput from "../components/Inputs/CustomInput";
+import { fetchConfig } from "../app/HomeSlice/HomeSlice.jsx";
 
 const Login = () => {
   const nav = useNavigate();
@@ -44,10 +45,13 @@ const Login = () => {
       });
     loginStatus === "success" && nav("/");
   }, [loginStatus]);
-
   useEffect(() => {
-    if (currentUser) nav("/");
-  }, [currentUser]);
+    dispatch(fetchConfig({ api: "/config" }));
+  }, [dispatch]);
+  // useEffect(() => {
+  //   if (currentUser) nav('/');
+  // }, [currentUser]);
+
   return (
     <div className="login h-[100vh] w-full bg-gradient-to-br from-[#36D1DC] to-[#5B86E5]">
       <Loader spin={loginStatus === "loading"} fullscreen />

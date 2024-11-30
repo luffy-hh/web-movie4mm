@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Outlet, Navigate, useNavigate } from "react-router-dom";
-import { selectConfig } from "../app/HomeSlice/HomeSlice.jsx";
+import { fetchConfig, selectConfig } from "../app/HomeSlice/HomeSlice.jsx";
 
 export default function PrivateRoute() {
+  const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state?.user);
   const config = useSelector(selectConfig);
   const nav = useNavigate();
   const [open, setOpen] = useState(false);
-  useEffect(() => {
-    !config?.mandatory_login && !currentUser && nav("/login");
-  }, [config, nav]);
-  return <Outlet />;
+
+  return !config?.mandatory_login ? (
+    <Outlet />
+  ) : currentUser ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/login" />
+  );
 }
