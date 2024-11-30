@@ -179,6 +179,9 @@ const homeSlice = createSlice({
         state.featuredTvChannels = action.payload.data.featured_tv_channels;
         state.liveSport = action.payload.data.live_sport;
         state.movieList = action.payload.data.movie_list;
+        state.allCountry = action.payload.data?.all_country;
+        state.allTvCategory = action.payload.data?.all_tv_channels;
+        state.yearList = action.payload.data?.years;
       })
       .addCase(getHomeContent.rejected, (state, action) => {
         state.homeStatus = "failed";
@@ -188,19 +191,19 @@ const homeSlice = createSlice({
         state.homeStatus = "loading";
       });
 
-    builder
-      .addCase(fetchAllGenre.fulfilled, (state, action) => {
-        state.homeStatus = "success";
-        state.contentMsg = action.payload.responseMessage;
-        state.allGenres = action.payload.data.genres;
-      })
-      .addCase(fetchAllGenre.rejected, (state, action) => {
-        state.homeStatus = "failed";
-        state.contentMsg = action.payload.responseMessage;
-      })
-      .addCase(fetchAllGenre.pending, (state) => {
-        state.homeStatus = "loading";
-      });
+    // builder
+    //   .addCase(fetchAllGenre.fulfilled, (state, action) => {
+    //     state.homeStatus = "success";
+    //     state.contentMsg = action.payload.responseMessage;
+    //     state.allGenres = action.payload.data.genres;
+    //   })
+    //   .addCase(fetchAllGenre.rejected, (state, action) => {
+    //     state.homeStatus = "failed";
+    //     state.contentMsg = action.payload.responseMessage;
+    //   })
+    //   .addCase(fetchAllGenre.pending, (state) => {
+    //     state.homeStatus = "loading";
+    //   });
 
     builder
       .addCase(fetchAllPopularStars.fulfilled, (state, action) => {
@@ -216,33 +219,33 @@ const homeSlice = createSlice({
         state.allPopularStarsStatus = "loading";
       });
 
-    builder
-      .addCase(fetchAllCountry.fulfilled, (state, action) => {
-        state.allCountryStatus = "success";
-        state.allCountryMsg = action.payload.responseMessage;
-        state.allCountry = action.payload.data.countries;
-      })
-      .addCase(fetchAllCountry.rejected, (state, action) => {
-        state.allCountryStatus = "failed";
-        state.allCountryMsg = action.payload.responseMessage;
-      })
-      .addCase(fetchAllCountry.pending, (state) => {
-        state.allCountryStatus = "loading";
-      });
+    // builder
+    //   .addCase(fetchAllCountry.fulfilled, (state, action) => {
+    //     state.allCountryStatus = "success";
+    //     state.allCountryMsg = action.payload.responseMessage;
+    //     state.allCountry = action.payload.data.countries;
+    //   })
+    //   .addCase(fetchAllCountry.rejected, (state, action) => {
+    //     state.allCountryStatus = "failed";
+    //     state.allCountryMsg = action.payload.responseMessage;
+    //   })
+    //   .addCase(fetchAllCountry.pending, (state) => {
+    //     state.allCountryStatus = "loading";
+    //   });
 
-    builder
-      .addCase(fetchAllTvCategory.fulfilled, (state, action) => {
-        state.allTvCategoryStatus = "success";
-        state.allTvCategoryMsg = action.payload.responseMessage;
-        state.allTvCategory = action.payload.data.channel_list;
-      })
-      .addCase(fetchAllTvCategory.rejected, (state, action) => {
-        state.allTvCategoryStatus = "failed";
-        state.allTvCategoryMsg = action.payload.responseMessage;
-      })
-      .addCase(fetchAllTvCategory.pending, (state) => {
-        state.allTvCategoryStatus = "loading";
-      });
+    // builder
+    //   .addCase(fetchAllTvCategory.fulfilled, (state, action) => {
+    //     state.allTvCategoryStatus = "success";
+    //     state.allTvCategoryMsg = action.payload.responseMessage;
+    //     state.allTvCategory = action.payload.data.channel_list;
+    //   })
+    //   .addCase(fetchAllTvCategory.rejected, (state, action) => {
+    //     state.allTvCategoryStatus = "failed";
+    //     state.allTvCategoryMsg = action.payload.responseMessage;
+    //   })
+    //   .addCase(fetchAllTvCategory.pending, (state) => {
+    //     state.allTvCategoryStatus = "loading";
+    //   });
 
     builder
       .addCase(fetchSearchAll.fulfilled, (state, action) => {
@@ -260,19 +263,19 @@ const homeSlice = createSlice({
         state.allSearchResultsStatus = "loading";
       });
 
-    builder
-      .addCase(fetchYearList.fulfilled, (state, action) => {
-        state.yearListStatus = "success";
-        state.yearListMsg = action.payload.responseMessage;
-        state.yearList = action.payload.data.years;
-      })
-      .addCase(fetchYearList.rejected, (state, action) => {
-        state.yearListStatus = "failed";
-        state.yearListMsg = action.payload.responseMessage;
-      })
-      .addCase(fetchYearList.pending, (state) => {
-        state.yearListStatus = "loading";
-      });
+    // builder
+    //   .addCase(fetchYearList.fulfilled, (state, action) => {
+    //     state.yearListStatus = "success";
+    //     state.yearListMsg = action.payload.responseMessage;
+    //     state.yearList = action.payload.data.years;
+    //   })
+    //   .addCase(fetchYearList.rejected, (state, action) => {
+    //     state.yearListStatus = "failed";
+    //     state.yearListMsg = action.payload.responseMessage;
+    //   })
+    //   .addCase(fetchYearList.pending, (state) => {
+    //     state.yearListStatus = "loading";
+    //   });
 
     builder
       .addCase(fetchConfig.fulfilled, (state, action) => {
