@@ -1,5 +1,5 @@
 import { lazy, useEffect, useState } from "react";
-import { Avatar, Drawer, Dropdown, Layout, Menu } from "antd";
+import { Avatar, Button, Drawer, Dropdown, Layout, Menu, Popover } from "antd";
 
 import { afterLoginMenu, sideBarData } from "../../constants/SideBarData";
 import { FaBars, FaDesktop, FaX } from "react-icons/fa6";
@@ -386,14 +386,28 @@ const Header = ({ router }) => {
             />
           )}
           {currentUser && (
-            <div className="flex items-center justify-around mt-5">
-              {/* <CustomButton
-                text={currentUser?.user_name}
-                icon={<FaUser />}
-                click={() => {
-                  router.nav("/profile");
-                }}
-              /> */}
+            <div className="flex flex-col items-center justify-center gap-3 mt-5">
+              <div className={"flex items-center gap-5"}>
+                <Popover
+                  trigger={"click"}
+                  content={
+                    <>
+                      <p>User's SiteCode: {currentUser?.user_name}</p>
+                      <p>Remaining Days: {currentUser?.remaining_days}</p>
+                    </>
+                  }
+                  placement={"bottom"}
+                >
+                  <Button>Profile</Button>
+                </Popover>
+                <CustomButton
+                  click={() => {
+                    router.nav("fav-list");
+                  }}
+                  text={"Favourite List"}
+                  className={"w-full"}
+                />
+              </div>
               <CustomButton
                 click={() => {
                   dispatch(

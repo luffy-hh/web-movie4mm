@@ -67,7 +67,9 @@ const Home = () => {
                       <div className={"h-full"} key={index}>
                         <div
                           style={{ backgroundImage: `url(${item.image_link})` }}
-                          className={`h-[50rem] bg-no-repeat bg-[length:100%_100%] bg-center group relative`}
+                          className={`${
+                            isSmallScreen ? "h-[25rem]" : "h-[40rem]"
+                          } bg-no-repeat bg-[length:100%_100%] bg-center group relative`}
                         ></div>
                       </div>
                     ) : (
@@ -79,7 +81,9 @@ const Home = () => {
                       >
                         <div
                           style={{ backgroundImage: `url(${item.image_link})` }}
-                          className={`h-[50rem] bg-no-repeat bg-[length:100%_100%] bg-center group relative`}
+                          className={`${
+                            isSmallScreen ? "h-[25rem]" : "h-[40rem]"
+                          } bg-no-repeat bg-[length:100%_100%] bg-center group relative`}
                         >
                           <div className="p-4 w-[20rem] bg-slate-700/40 h-full text-white absolute left-0 transform translate-x-[-20rem] opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
                             <p className="text-2xl text-blue-600">

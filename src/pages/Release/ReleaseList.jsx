@@ -38,7 +38,7 @@ const ReleaseList = () => {
         <List
           loading={yearListStatus === "loading"}
           dataSource={fixYears}
-          grid={{ gutter: 16, xs: 2, sm: 4, md: 6, lg: 8, xl: 10, xxl: 12 }}
+          grid={{ gutter: 16, xs: 4, sm: 4, md: 6, lg: 8, xl: 10, xxl: 12 }}
           renderItem={(item) => (
             <List.Item>
               <Tag color={"#7e22ce"} className={"text-xl p-4"}>
