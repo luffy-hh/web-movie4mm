@@ -58,7 +58,7 @@ const Home = () => {
                 adaptiveHeight={true}
                 arrowSize={20}
                 className={`${
-                  isSmallScreen ? "h-[30rem]" : "h-[40rem]"
+                  isSmallScreen ? "h-[25rem]" : "h-[40rem]"
                 } w-full mx-auto mt-8 bg-slate-400/10 rounded-xl overflow-hidden`}
               >
                 {Object.keys(slider).length > 0 &&
@@ -119,7 +119,7 @@ const Home = () => {
           <CarouselBox
             data={featuredTvChannels}
             slidesToShow={5}
-            slidesToShowSmall={3}
+            slidesToShowSmall={2}
             slidesToScroll={1}
             title={"Featured TV Channels"}
             imgClassName={"h-[10rem]"}

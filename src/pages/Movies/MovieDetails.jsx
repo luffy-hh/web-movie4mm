@@ -205,8 +205,8 @@ const MovieDetails = () => {
               }))}
             />
           )}
-          <div className={isDarkMode ? "text-white" : ""}>
-            <div className="flex items-center gap-4 mb-4 mt-4">
+          <div className={`${isDarkMode ? "text-white" : ""} my-4`}>
+            <div className="flex items-center gap-4">
               <p className="text-xl font-semibold pb-2 border-b-2 border-[#0769b4]">
                 {title}
               </p>
