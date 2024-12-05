@@ -38,6 +38,9 @@ const UserFavorite = () => {
     setPageSize(userFavoritePerPage);
   }, [userFavoriteTotal, userFavoritePerPage]);
   useEffect(() => {
+    if (!currentUser.user_id) {
+      window.location.href = "/";
+    }
     dispatch(
       fetchUserFavorite({
         api: `/favorite?user_id=${currentUser.user_id}&page=${pagination.current}`,

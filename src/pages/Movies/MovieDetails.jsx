@@ -100,13 +100,14 @@ const MovieDetails = () => {
     );
   }, [dispatch, id, type]);
   useEffect(() => {
-    dispatch(
-      fetchIsFavorite({
-        api: `/verify_favorite_list?user_id=${currentUser.user_id}&videos_id=${id}`,
-      }),
-    );
+    currentUser &&
+      dispatch(
+        fetchIsFavorite({
+          api: `/verify_favorite_list?user_id=${currentUser?.user_id}&videos_id=${id}`,
+        }),
+      );
   }, [
-    currentUser.user_id,
+    currentUser?.user_id,
     dispatch,
     id,
     addToFavoriteStatus,
@@ -127,8 +128,6 @@ const MovieDetails = () => {
       toast.error(removeFromFavoriteMessage);
     }
   }, [removeFromFavoriteStatus, removeFromFavoriteMessage]);
-
-  console.log(isFavorite);
 
   return (
     <>
@@ -238,7 +237,7 @@ const MovieDetails = () => {
               }))}
             />
           )}
-          <div className={`${isDarkMode ? "text-white" : ""} my-4`}>
+          <div className={`${isDarkMode ? "text-white" : ""} mb-4 mt-8`}>
             <div className="flex items-center gap-4">
               <p className="text-xl font-semibold pb-2 border-b-2 border-[#0769b4]">
                 {title}
@@ -265,44 +264,46 @@ const MovieDetails = () => {
             </div>
             <div className="flex flex-col">
               <p className="text-xl font-semibold">{title}</p>
-              <div className="flex gap-2">
-                <Tag
-                  onClick={() => {
-                    if (isFavorite) {
-                      dispatch(
-                        removeFromFavorite({
-                          api: "/remove_favorite",
-                          reqData: {
-                            user_id: currentUser?.user_id,
-                            videos_id: details.detail.videos_id,
-                          },
-                        }),
-                      );
-                    } else {
-                      dispatch(
-                        addToFavorite({
-                          api: "/add_favorite",
-                          reqData: {
-                            user_id: currentUser?.user_id,
-                            videos_id: details.detail.videos_id,
-                          },
-                        }),
-                      );
-                    }
-                  }}
-                  color="#111827"
-                  icon={<FaHeart />}
-                  className={`text-2xl py-2 font-semibold cursor-pointer hover:text-red-600 ${
-                    isFavorite ? "!text-red-600" : ""
-                  }`}
-                />
+              {currentUser && (
+                <div className="flex gap-2">
+                  <Tag
+                    onClick={() => {
+                      if (isFavorite) {
+                        dispatch(
+                          removeFromFavorite({
+                            api: "/remove_favorite",
+                            reqData: {
+                              user_id: currentUser?.user_id,
+                              videos_id: details.detail.videos_id,
+                            },
+                          }),
+                        );
+                      } else {
+                        dispatch(
+                          addToFavorite({
+                            api: "/add_favorite",
+                            reqData: {
+                              user_id: currentUser?.user_id,
+                              videos_id: details.detail.videos_id,
+                            },
+                          }),
+                        );
+                      }
+                    }}
+                    color="#111827"
+                    icon={<FaHeart />}
+                    className={`text-2xl py-2 font-semibold cursor-pointer hover:text-red-600 ${
+                      isFavorite ? "!text-red-600" : ""
+                    }`}
+                  />
 
-                {/*<Tag*/}
-                {/*  color="#111827"*/}
-                {/*  icon={<FaClock />}*/}
-                {/*  className="text-2xl py-2 font-semibold cursor-pointer hover:text-gray-400"*/}
-                {/*/>*/}
-              </div>
+                  {/*<Tag*/}
+                  {/*  color="#111827"*/}
+                  {/*  icon={<FaClock />}*/}
+                  {/*  className="text-2xl py-2 font-semibold cursor-pointer hover:text-gray-400"*/}
+                  {/*/>*/}
+                </div>
+              )}
               <p className=" leading-8 my-4">{details.description}</p>
               <div className="flex gap-5">
                 <div className="flex flex-col w-3/4 gap-2">

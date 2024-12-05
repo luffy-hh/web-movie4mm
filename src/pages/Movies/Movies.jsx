@@ -61,11 +61,6 @@ const Movies = () => {
     );
   }, [dispatch, pagination, searchParams]);
   useEffect(() => {
-    // setPagination((prev) => ({
-    //   ...prev,
-    //   total: movieListTotal,
-    //   pageSize: movieListPerPage,
-    // }));
     setPageSize(movieListPerPage);
     setTotal(movieListTotal);
   }, [movieListPerPage, movieListTotal]);
