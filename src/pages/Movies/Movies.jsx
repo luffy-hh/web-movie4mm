@@ -41,8 +41,6 @@ const Movies = () => {
   const [pageSize, setPageSize] = useState(movieListPerPage);
   const [pagination, setPagination] = useState({
     current: 1,
-    // pageSize: movieListPerPage,
-    // total: movieListTotal,
     position: "both",
     align: "center",
     showSizeChanger: false,
@@ -59,7 +57,7 @@ const Movies = () => {
       fetchMovieList({
         api: `/movies`,
         reqData: { ...searchParams },
-      })
+      }),
     );
   }, [dispatch, pagination, searchParams]);
   useEffect(() => {

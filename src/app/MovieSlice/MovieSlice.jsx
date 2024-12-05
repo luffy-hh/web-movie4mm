@@ -67,6 +67,10 @@ const inititalState = {
   userFavorite: [],
   userFavoriteStatus: "idle",
   userFavoriteMsg: null,
+  userFavoriteTotal: 0,
+  userFavoritePerPage: 0,
+
+  isFavorite: false,
 };
 
 export const fetchContentByCountry = createAsyncThunk(
@@ -84,11 +88,26 @@ export const fetchContentByCountry = createAsyncThunk(
   },
 );
 
+export const fetchIsFavorite = createAsyncThunk(
+  "movie/isFavorite",
+  async ({ api }, thunkApi) => {
+    try {
+      const response = await getDataWithToken(api);
+      if (response.responseCode !== "000" || response.status === false) {
+        return thunkApi.rejectWithValue(response);
+      }
+      return response;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
 export const removeFromFavorite = createAsyncThunk(
   "movie/removeFavorite",
-  async ({ api, data }, thunkApi) => {
+  async ({ api, reqData }, thunkApi) => {
     try {
-      const response = await postMultipartData(api, data);
+      const response = await postMultipartData(api, reqData);
       if (response.responseCode !== "000" || response.status === false) {
         return thunkApi.rejectWithValue(response);
       }
@@ -422,10 +441,19 @@ const movieSlice = createSlice({
         state.userFavoriteStatus = "success";
         state.userFavoriteMsg = action.payload.responseMessage;
         state.userFavorite = action.payload.data.favourite_list;
+        state.userFavoriteTotal = action.payload.data.total_count;
+        state.userFavoritePerPage = action.payload.data.per_page;
       })
       .addCase(fetchUserFavorite.rejected, (state, action) => {
         state.userFavoriteStatus = "failed";
         state.userFavoriteMsg = action.payload.responseMessage;
+      });
+    builder
+      .addCase(fetchIsFavorite.fulfilled, (state, action) => {
+        state.isFavorite = true;
+      })
+      .addCase(fetchIsFavorite.rejected, (state, action) => {
+        state.isFavorite = false;
       });
   },
 });
@@ -500,4 +528,9 @@ export const userFavoriteSelector = (state) => state.movie.userFavorite;
 export const userFavoriteStatusSelector = (state) =>
   state.movie.userFavoriteStatus;
 export const userFavoriteMsgSelector = (state) => state.movie.userFavoriteMsg;
+export const userFavoritePerPageSelector = (state) =>
+  state.movie.userFavoritePerPage;
+export const userFavoriteTotalSelector = (state) =>
+  state.movie.userFavoriteTotal;
+export const isFavoriteSelector = (state) => state.movie.isFavorite;
 export default movieSlice.reducer;

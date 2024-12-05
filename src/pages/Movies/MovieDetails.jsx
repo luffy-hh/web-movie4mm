@@ -3,7 +3,7 @@ import Plyr from "plyr-react";
 import { Radio, Rate, Tabs, Tag } from "antd";
 import { FaExclamationTriangle } from "react-icons/fa";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { FaClock, FaHeart } from "react-icons/fa6";
+import { FaHeart } from "react-icons/fa6";
 import GridBoxWithRouter from "../../components/Boxes/GridBox";
 import CarouselBox from "../../components/Boxes/CarouselBox.jsx";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,23 +12,34 @@ import {
   movieDetailsSelector,
   movieDetailsStatusSelector,
   addToFavorite,
+  addFavoriteStatusSelector,
+  addFavoriteMsgSelector,
+  fetchIsFavorite,
+  isFavoriteSelector,
+  removeFromFavorite,
+  removeFavoriteStatusSelector,
+  removeFavoriteMsgSelector,
 } from "../../app/MovieSlice/MovieSlice.jsx";
 import Loader from "../../components/Loader/Loader.jsx";
 import dayjs from "dayjs";
 import { selectIsDarkMode } from "../../app/ThemeConfig/themeConfigSlice.jsx";
-import ReactPlayer from "react-player";
+
 import { selectUser } from "../../app/UserSlice/UserSlice.jsx";
 import Notification from "../../components/Notification.jsx";
+import { toast } from "react-toastify";
 
 const MovieDetails = () => {
-  const location = useLocation();
   const { id, type } = useParams();
   const playerRef = useRef(null);
   const dispatch = useDispatch();
   const movieDetails = useSelector(movieDetailsSelector);
   const isDarkMode = useSelector(selectIsDarkMode);
-  // const addToFavoriteStatus = useSelector();
+  const addToFavoriteStatus = useSelector(addFavoriteStatusSelector);
+  const addToFavoriteMessage = useSelector(addFavoriteMsgSelector);
+  const removeFromFavoriteStatus = useSelector(removeFavoriteStatusSelector);
+  const removeFromFavoriteMessage = useSelector(removeFavoriteMsgSelector);
   const currentUser = useSelector(selectUser);
+  const isFavorite = useSelector(isFavoriteSelector);
   const movieDetailsStatus = useSelector(movieDetailsStatusSelector);
   const [videoLink, setVideoLink] = useState("");
   const [is_tvseries, setIs_tvseries] = useState(false);
@@ -88,8 +99,36 @@ const MovieDetails = () => {
       }),
     );
   }, [dispatch, id, type]);
-  useEffect(() => {}, []);
-  // console.log(details, playerRef);
+  useEffect(() => {
+    dispatch(
+      fetchIsFavorite({
+        api: `/verify_favorite_list?user_id=${currentUser.user_id}&videos_id=${id}`,
+      }),
+    );
+  }, [
+    currentUser.user_id,
+    dispatch,
+    id,
+    addToFavoriteStatus,
+    removeFromFavoriteStatus,
+  ]);
+  useEffect(() => {
+    if (addToFavoriteStatus === "success") {
+      toast.success("Added to favorite");
+    } else if (addToFavoriteStatus === "failed") {
+      toast.error(addToFavoriteMessage);
+    }
+  }, [addToFavoriteStatus, addToFavoriteMessage]);
+
+  useEffect(() => {
+    if (removeFromFavoriteStatus === "success") {
+      toast.success("Removed from favorite");
+    } else if (removeFromFavoriteStatus === "failed") {
+      toast.error(removeFromFavoriteMessage);
+    }
+  }, [removeFromFavoriteStatus, removeFromFavoriteMessage]);
+
+  console.log(isFavorite);
 
   return (
     <>
@@ -98,12 +137,6 @@ const MovieDetails = () => {
       ) : (
         <div className="w-full mx-auto pt-5">
           <Notification />
-          {/*<ReactPlayer*/}
-          {/*  url={videoLink}*/}
-          {/*  controls={true}*/}
-          {/*  width={"100%"}*/}
-          {/*  height={"auto"}*/}
-          {/*/>*/}
           <Plyr
             ref={playerRef}
             source={{
@@ -235,19 +268,33 @@ const MovieDetails = () => {
               <div className="flex gap-2">
                 <Tag
                   onClick={() => {
-                    dispatch(
-                      addToFavorite({
-                        api: "/add_favorite",
-                        reqData: {
-                          user_id: currentUser?.user_id,
-                          videos_id: details.detail.videos_id,
-                        },
-                      }),
-                    );
+                    if (isFavorite) {
+                      dispatch(
+                        removeFromFavorite({
+                          api: "/remove_favorite",
+                          reqData: {
+                            user_id: currentUser?.user_id,
+                            videos_id: details.detail.videos_id,
+                          },
+                        }),
+                      );
+                    } else {
+                      dispatch(
+                        addToFavorite({
+                          api: "/add_favorite",
+                          reqData: {
+                            user_id: currentUser?.user_id,
+                            videos_id: details.detail.videos_id,
+                          },
+                        }),
+                      );
+                    }
                   }}
                   color="#111827"
                   icon={<FaHeart />}
-                  className="text-2xl py-2 font-semibold cursor-pointer hover:text-red-600"
+                  className={`text-2xl py-2 font-semibold cursor-pointer hover:text-red-600 ${
+                    isFavorite ? "!text-red-600" : ""
+                  }`}
                 />
 
                 {/*<Tag*/}

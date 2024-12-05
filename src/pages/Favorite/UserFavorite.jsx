@@ -6,8 +6,10 @@ import { selectIsDarkMode } from "../../app/ThemeConfig/themeConfigSlice.jsx";
 import GridBox from "../../components/Boxes/GridBox.jsx";
 import {
   fetchUserFavorite,
+  userFavoritePerPageSelector,
   userFavoriteSelector,
   userFavoriteStatusSelector,
+  userFavoriteTotalSelector,
 } from "../../app/MovieSlice/MovieSlice.jsx";
 import { selectUser } from "../../app/UserSlice/UserSlice.jsx";
 
@@ -17,8 +19,10 @@ const UserFavorite = () => {
   const currentUser = useSelector(selectUser);
   const userFavorite = useSelector(userFavoriteSelector);
   const userFavoriteStatus = useSelector(userFavoriteStatusSelector);
-  const [total, setTotal] = useState(60);
-  const [pageSize, setPageSize] = useState(30);
+  const userFavoriteTotal = useSelector(userFavoriteTotalSelector);
+  const userFavoritePerPage = useSelector(userFavoritePerPageSelector);
+  const [total, setTotal] = useState(userFavoriteTotal);
+  const [pageSize, setPageSize] = useState(userFavoritePerPage);
   const [pagination, setPagination] = useState({
     current: 1,
     position: "both",
@@ -29,6 +33,10 @@ const UserFavorite = () => {
       setPagination((prev) => ({ ...prev, current: page }));
     },
   });
+  useEffect(() => {
+    setTotal(userFavoriteTotal);
+    setPageSize(userFavoritePerPage);
+  }, [userFavoriteTotal, userFavoritePerPage]);
   useEffect(() => {
     dispatch(
       fetchUserFavorite({

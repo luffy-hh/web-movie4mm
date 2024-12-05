@@ -14,7 +14,7 @@ export const getDataWithToken = async (api) => {
       // mode:"no-cors",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `${JSON.parse(localStorage.getItem("token"))}`,
+        // Authorization: `${JSON.parse(localStorage.getItem("token"))}`,
         ...headers,
       },
     });
