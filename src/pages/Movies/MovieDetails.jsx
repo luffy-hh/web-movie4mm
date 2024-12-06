@@ -27,6 +27,7 @@ import { selectIsDarkMode } from "../../app/ThemeConfig/themeConfigSlice.jsx";
 import { selectUser } from "../../app/UserSlice/UserSlice.jsx";
 import Notification from "../../components/Notification.jsx";
 import { toast } from "react-toastify";
+import FavButton from "../../components/Buttons/FavButton.jsx";
 
 const MovieDetails = () => {
   const { id, type } = useParams();
@@ -131,8 +132,16 @@ const MovieDetails = () => {
 
   return (
     <>
-      {movieDetailsStatus === "loading" ? (
-        <Loader spin={movieDetailsStatus === "loading"} />
+      {movieDetailsStatus === "loading" ||
+      addToFavoriteStatus === "loading" ||
+      removeFromFavoriteStatus === "loading" ? (
+        <Loader
+          spin={
+            movieDetailsStatus === "loading" ||
+            addToFavoriteStatus === "loading" ||
+            removeFromFavoriteStatus === "loading"
+          }
+        />
       ) : (
         <div className="w-full mx-auto pt-5">
           <Notification />
@@ -198,13 +207,13 @@ const MovieDetails = () => {
                 optionType="button"
                 buttonStyle={"solid"}
               />
-              <Tag
-                className="text-md !text-yellow-500 py-2 font-semibold cursor-pointer flex items-center gap-1"
-                color="transparent"
-                icon={<FaExclamationTriangle />}
-              >
-                Report
-              </Tag>
+              {/*<Tag*/}
+              {/*  className="text-md !text-yellow-500 py-2 font-semibold cursor-pointer flex items-center gap-1"*/}
+              {/*  color="transparent"*/}
+              {/*  icon={<FaExclamationTriangle />}*/}
+              {/*>*/}
+              {/*  Report*/}
+              {/*</Tag>*/}
             </div>
           )}
           {is_tvseries && (
@@ -265,43 +274,38 @@ const MovieDetails = () => {
             <div className="flex flex-col">
               <p className="text-xl font-semibold">{title}</p>
               {currentUser && (
-                <div className="flex gap-2">
-                  <Tag
-                    onClick={() => {
-                      if (isFavorite) {
-                        dispatch(
-                          removeFromFavorite({
-                            api: "/remove_favorite",
-                            reqData: {
-                              user_id: currentUser?.user_id,
-                              videos_id: details.detail.videos_id,
-                            },
-                          }),
-                        );
-                      } else {
-                        dispatch(
-                          addToFavorite({
-                            api: "/add_favorite",
-                            reqData: {
-                              user_id: currentUser?.user_id,
-                              videos_id: details.detail.videos_id,
-                            },
-                          }),
-                        );
-                      }
-                    }}
-                    color="#111827"
-                    icon={<FaHeart />}
-                    className={`text-2xl py-2 font-semibold cursor-pointer hover:text-red-600 ${
-                      isFavorite ? "!text-red-600" : ""
-                    }`}
-                  />
-
+                <div className="flex gap-2 justify-end">
                   {/*<Tag*/}
+                  {/*  onClick={() => {*/}
+                  {/*    if (isFavorite) {*/}
+                  {/*      dispatch(*/}
+                  {/*        removeFromFavorite({*/}
+                  {/*          api: "/remove_favorite",*/}
+                  {/*          reqData: {*/}
+                  {/*            user_id: currentUser?.user_id,*/}
+                  {/*            videos_id: details.detail.videos_id,*/}
+                  {/*          },*/}
+                  {/*        }),*/}
+                  {/*      );*/}
+                  {/*    } else {*/}
+                  {/*      dispatch(*/}
+                  {/*        addToFavorite({*/}
+                  {/*          api: "/add_favorite",*/}
+                  {/*          reqData: {*/}
+                  {/*            user_id: currentUser?.user_id,*/}
+                  {/*            videos_id: details.detail.videos_id,*/}
+                  {/*          },*/}
+                  {/*        }),*/}
+                  {/*      );*/}
+                  {/*    }*/}
+                  {/*  }}*/}
                   {/*  color="#111827"*/}
-                  {/*  icon={<FaClock />}*/}
-                  {/*  className="text-2xl py-2 font-semibold cursor-pointer hover:text-gray-400"*/}
+                  {/*  icon={<FaHeart />}*/}
+                  {/*  className={`text-2xl py-2 font-semibold cursor-pointer hover:text-red-600 ${*/}
+                  {/*    isFavorite ? "!text-red-600" : ""*/}
+                  {/*  }`}*/}
                   {/*/>*/}
+                  <FavButton details={details} currentUser={currentUser} />
                 </div>
               )}
               <p className=" leading-8 my-4">{details.description}</p>
@@ -399,10 +403,10 @@ const MovieDetails = () => {
                     </span>
                     {details.imdb}
                   </p>
-                  <strong className=" text-center">
-                    Rating({details.rating})
-                  </strong>
-                  <Rate allowHalf defaultValue={details.rating} />
+                  {/*<strong className=" text-center">*/}
+                  {/*  Rating({details.rating})*/}
+                  {/*</strong>*/}
+                  {/*<Rate allowHalf defaultValue={details.rating} />*/}
                 </div>
               </div>
             </div>
